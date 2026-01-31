@@ -15,7 +15,7 @@ date: 2024-01-01
 
 ## 大语言模型系列
 
-<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+<div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
 
 ### LLM 系列概览
 
@@ -111,7 +111,7 @@ Cursor · Copilot · Code Interpreter
 
 ## 机器学习系列
 
-<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+<div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
 
 ### ML 系列概览
 

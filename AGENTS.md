@@ -35,28 +35,14 @@ python scripts/sync_content.py --series
 python scripts/sync_content.py --pages
 ```
 
-## Project Structure
+## Testing
 
-```
-ai-insights/
-├── content/              # Hugo content (Markdown)
-│   ├── _index.md        # Homepage content
-│   ├── about.md         # About page
-│   ├── daily/           # Daily AI digests
-│   └── series/          # Technical article series
-│       ├── LLM_series/  # LLM series episodes
-│       └── ML_series/   # ML series episodes
-├── layouts/             # Custom Hugo templates
-│   ├── _default/        # Default templates
-│   ├── daily/           # Daily digest templates
-│   ├── series/          # Series templates
-│   ├── partials/        # Template partials
-│   └── index.html       # Homepage layout
-├── static/              # Static assets
-├── themes/congo/        # Congo theme (git submodule)
-├── scripts/             # Python sync scripts
-└── hugo.toml           # Hugo configuration
-```
+No automated test suite configured. Manual verification process:
+
+1. Run `hugo server --buildDrafts`
+2. Check http://localhost:1313
+3. Verify responsive design at mobile breakpoints
+4. Check for broken links or missing assets
 
 ## Code Style Guidelines
 
@@ -80,10 +66,10 @@ description: "AI每日热点 · 2026年01月30日"
 
 ### Hugo Templates (Go Templates)
 
-- Use 2-space indentation
+- Use 2-space indentation (enforced by Prettier)
 - Variables: `{{ .Variable }}` with spaces inside braces
 - Partials: `{{ partial "name.html" . }}` with trailing dot for context
-- Conditionals: Proper spacing and indentation
+- Comments: `{{/* comment */}}`
 
 ```html
 {{ range .Site.RegularPages }}
@@ -101,11 +87,13 @@ description: "AI每日热点 · 2026年01月30日"
 - Use type hints where appropriate
 - Docstrings for all functions
 - Path handling: Use `pathlib.Path` instead of string paths
+- Use f-strings for string formatting
 
 ```python
 def sync_daily_digest() -> None:
     """Sync daily digests to Hugo content."""
     daily_path = CONTENT_FORGE_AI_PATH / "data" / "daily"
+    print(f"✅ Processing: {daily_path}")
 ```
 
 ### CSS (Custom Layouts)
@@ -113,11 +101,18 @@ def sync_daily_digest() -> None:
 - Use CSS custom properties (variables) for theming
 - Naming convention: `--category-name` (kebab-case)
 - Responsive: Use `@media (max-width: 768px)` for mobile
+- Organize by component with section comments
 
 ```css
 .hero {
   padding: var(--space-20) var(--space-6);
   background: var(--color-bg-secondary);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: var(--space-12) var(--space-4);
+  }
 }
 ```
 
@@ -128,13 +123,25 @@ def sync_daily_digest() -> None:
 - **Partials**: descriptive names (e.g., `header.html`, `footer.html`)
 - **Python**: lowercase with underscores (e.g., `sync_content.py`)
 
-## Hugo Configuration (hugo.toml)
+## Project Structure
 
-Key settings to know:
-- `defaultContentLanguage = "zh-cn"`
-- `theme = 'congo'`
-- `summaryLength = 0` (full content)
-- `enableRobotsTXT = true`
+```
+ai-insights/
+├── content/              # Hugo content (Markdown)
+│   ├── _index.md        # Homepage content
+│   ├── about.md         # About page
+│   ├── daily/           # Daily AI digests
+│   └── series/          # Technical article series
+├── layouts/             # Custom Hugo templates
+│   ├── _default/        # Default templates
+│   ├── daily/           # Daily digest templates
+│   ├── series/          # Series templates
+│   └── partials/        # Template partials
+├── static/              # Static assets
+├── themes/congo/        # Congo theme (git submodule)
+├── scripts/             # Python sync scripts
+└── hugo.toml           # Hugo configuration
+```
 
 ## Content Types
 
@@ -149,11 +156,19 @@ Key settings to know:
 
 3. **Static pages** (`content/*.md`): About, index pages
 
+## Hugo Configuration (hugo.toml)
+
+Key settings:
+- `defaultContentLanguage = "zh-cn"`
+- `theme = 'congo'`
+- `summaryLength = 0` (full content)
+- `enableRobotsTXT = true`
+
 ## Git Workflow
 
 - Main branch: `main`
 - GitHub Actions deploys to GitHub Pages on push to main
-- Auto-sync workflow runs daily via cron
+- Auto-sync workflow runs daily via cron (8 AM Beijing Time)
 
 ## Important Notes
 
@@ -161,14 +176,6 @@ Key settings to know:
 - Do not manually edit auto-synced content in `content/daily/` or `content/series/`
 - Custom layouts override theme defaults
 - Congo theme is a git submodule in `themes/congo/`
-
-## Testing
-
-No automated test suite configured. Verify changes:
-1. Run `hugo server --buildDrafts`
-2. Check http://localhost:1313
-3. Verify responsive design at mobile breakpoints
-4. Check for broken links or missing assets
 
 ## Troubleshooting
 

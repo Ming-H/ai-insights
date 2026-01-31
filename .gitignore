@@ -4,6 +4,15 @@
 /assets/jsconfig.json
 hugo_stats.json
 
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Screenshots
+screenshots/
+
 # macOS
 .DS_Store
 

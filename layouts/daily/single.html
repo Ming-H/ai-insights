@@ -236,9 +236,9 @@
   <article class="daily-article">
     <header class="daily-article-header">
       <nav class="breadcrumb">
-        <a href="/">首页</a>
+        <a href="{{ .Site.BaseURL }}">首页</a>
         <span class="breadcrumb-separator">›</span>
-        <a href="/daily/">每日热点</a>
+        <a href="{{ "daily/" | relURL }}">每日热点</a>
         <span class="breadcrumb-separator">›</span>
         <span>{{ .Date.Format "2006-01-02" }}</span>
       </nav>

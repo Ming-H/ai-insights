@@ -143,7 +143,7 @@
 
     <main class="docs-main">
       <nav class="breadcrumb">
-        <a href="{{ "/" | relURL }}">首页</a>
+        <a href="{{ .Site.BaseURL }}">首页</a>
         <span class="breadcrumb-separator">›</span>
         {{ if $hasSubsections }}
           <a href="{{ "series/" | relURL }}">系列文章</a>

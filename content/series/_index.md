@@ -1,17 +1,10 @@
 ---
 title: "系列文章"
 date: 2024-01-01
+description: "系统化的 AI 学习资源，从基础到前沿，构建完整知识体系"
 ---
-
-<div style="text-align: center; padding: 2rem 0; margin-bottom: 3rem;">
-
-# AI 技术系列
 
 系统化的 AI 学习资源，从基础到前沿，构建完整知识体系。
-
-</div>
-
----
 
 ## 大语言模型系列
 
@@ -109,7 +102,7 @@ Cursor · Copilot · Code Interpreter
 
 ---
 
-## 机器学习系列
+### 机器学习系列
 
 <div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
 

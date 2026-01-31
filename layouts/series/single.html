@@ -1,221 +1,204 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ .Title }}</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      line-height: 1.6;
-      color: #202124;
-    }
-    .docs-container {
-      display: flex;
-      min-height: 100vh;
-    }
-    .docs-sidebar {
-      width: 280px;
-      flex-shrink: 0;
-      border-right: 1px solid #e8eaed;
-      padding: 20px 0;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      background: #f8f9fa;
-    }
-    .docs-sidebar-title {
-      padding: 0 20px 15px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #5f6368;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .docs-nav-item {
-      padding: 8px 20px;
-      display: block;
-      color: #1967d2;
-      text-decoration: none;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .docs-nav-item:hover {
-      background: #e8f0fe;
-    }
-    .docs-nav-item.active {
-      background: #e8f0fe;
-      font-weight: 500;
-    }
-    .docs-nav-section {
-      margin-bottom: 30px;
-    }
-    .docs-main {
-      flex: 1;
-      padding: 40px 60px;
-      max-width: 900px;
-    }
-    .docs-breadcrumb {
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: #5f6368;
-    }
-    .docs-breadcrumb a {
-      color: #1967d2;
-      text-decoration: none;
-    }
-    .docs-title {
-      font-size: 36px;
-      font-weight: 400;
-      margin-bottom: 16px;
-      color: #202124;
-    }
-    .docs-description {
-      font-size: 18px;
-      color: #5f6368;
-      margin-bottom: 32px;
-      line-height: 1.6;
-    }
-    .docs-content {
-      font-size: 16px;
-      line-height: 1.8;
-    }
-    .docs-content h2 {
-      font-size: 24px;
-      font-weight: 400;
-      margin: 40px 0 16px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #e8eaed;
-      color: #202124;
-    }
-    .article-list {
-      list-style: none;
-    }
+{{ partial "header.html" . }}
+
+{{ partial "shared-css.html" . }}
+
+<style>
+  /* Series single page specific styles */
+  .series-hero {
+    margin-bottom: var(--space-12);
+  }
+
+  .series-hero-title {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    margin-bottom: var(--space-4);
+  }
+
+  .series-hero-description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .article-list {
+    list-style: none;
+  }
+
+  .article-item {
+    display: flex;
+    gap: var(--space-5);
+    padding: var(--space-8) 0;
+    border-bottom: 1px solid var(--color-border-light);
+    align-items: flex-start;
+  }
+
+  .article-item:last-child {
+    border-bottom: none;
+  }
+
+  .article-number {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+    color: white;
+    font-weight: var(--font-semibold);
+    font-size: var(--text-sm);
+    border-radius: var(--radius-lg);
+  }
+
+  .article-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .article-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-medium);
+    margin-bottom: var(--space-3);
+  }
+
+  .article-title a {
+    color: var(--color-text-primary);
+  }
+
+  .article-title a:hover {
+    color: var(--color-primary);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .article-badge {
+    display: inline-flex;
+    padding: var(--space-1) var(--space-3);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    border-radius: var(--radius-full);
+  }
+
+  .article-badge-secondary {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+  }
+
+  .article-description {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 768px) {
     .article-item {
-      padding: 20px 0;
-      border-bottom: 1px solid #e8eaed;
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
+      flex-direction: column;
+      gap: var(--space-4);
+      padding: var(--space-6) 0;
     }
-    .article-item:last-child {
-      border-bottom: none;
-    }
+
     .article-number {
-      flex-shrink: 0;
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-      color: white;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 14px;
+      width: 48px;
+      height: 48px;
+      font-size: var(--text-xs);
     }
-    .article-content {
-      flex: 1;
+
+    .series-hero-title {
+      font-size: var(--text-3xl);
     }
-    .article-title {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 6px;
+
+    .series-hero-description {
+      font-size: var(--text-base);
     }
-    .article-title a {
-      color: #1967d2;
-      text-decoration: none;
-    }
-    .article-title a:hover {
-      text-decoration: underline;
-    }
-    .article-meta {
-      font-size: 14px;
-      color: #5f6368;
-      margin-bottom: 8px;
-    }
-    .article-description {
-      font-size: 15px;
-      color: #5f6368;
-      line-height: 1.6;
-    }
-    @media (max-width: 768px) {
-      .docs-container {
-        flex-direction: column;
-      }
-      .docs-sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid #e8eaed;
-      }
-      .docs-main {
-        padding: 24px;
-      }
-      .docs-title {
-        font-size: 28px;
-      }
-    }
-  </style>
-</head>
+  }
+</style>
+
 <body>
-  <div class="docs-container">
+  <div class="docs-layout">
     <aside class="docs-sidebar">
-      <div class="docs-sidebar-title">LLM 系列</div>
-      <div class="docs-nav-section">
-        <a href="/series/series_1_llm_foundation/" class="docs-nav-item">LLM 基础</a>
-        <a href="/series/series_2_rag_technique/" class="docs-nav-item">RAG 实战</a>
-        <a href="/series/series_3_agent_development/" class="docs-nav-item">Agent 开发</a>
-        <a href="/series/series_4_prompt_engineering/" class="docs-nav-item">Prompt 工程</a>
-        <a href="/series/series_5_model_deployment/" class="docs-nav-item">模型部署</a>
-        <a href="/series/series_6_multimodal_frontier/" class="docs-nav-item">多模态前沿</a>
-        <a href="/series/series_7_ai_coding_tools/" class="docs-nav-item">AI 编程工具</a>
-        <a href="/series/series_8_ai_data_engineering/" class="docs-nav-item">AI 数据工程</a>
-        <a href="/series/series_9_ai_applications/" class="docs-nav-item">AI 应用场景</a>
-        <a href="/series/series_10_ai_infrastructure/" class="docs-nav-item">AI 基础设施</a>
+      <div class="docs-sidebar-section">
+        <div class="docs-sidebar-title">LLM 系列</div>
+        <a href="/series/series_1_llm_foundation/" class="docs-nav-link">LLM 基础</a>
+        <a href="/series/series_2_rag_technique/" class="docs-nav-link">RAG 实战</a>
+        <a href="/series/series_3_agent_development/" class="docs-nav-link">Agent 开发</a>
+        <a href="/series/series_4_prompt_engineering/" class="docs-nav-link">Prompt 工程</a>
+        <a href="/series/series_5_model_deployment/" class="docs-nav-link">模型部署</a>
+        <a href="/series/series_6_multimodal_frontier/" class="docs-nav-link">多模态前沿</a>
+        <a href="/series/series_7_ai_coding_tools/" class="docs-nav-link">AI 编程工具</a>
+        <a href="/series/series_8_ai_data_engineering/" class="docs-nav-link">AI 数据工程</a>
+        <a href="/series/series_9_ai_applications/" class="docs-nav-link">AI 应用场景</a>
+        <a href="/series/series_10_ai_infrastructure/" class="docs-nav-link">AI 基础设施</a>
       </div>
-      <div class="docs-sidebar-title" style="margin-top: 30px;">ML 系列</div>
-      <div class="docs-nav-section">
-        <a href="/series/ml_series_1_ml_foundation/" class="docs-nav-item">ML 基础</a>
-        <a href="/series/ml_series_2_deep_learning_foundation/" class="docs-nav-item">深度学习</a>
-        <a href="/series/ml_series_3_computer_vision/" class="docs-nav-item">计算机视觉</a>
-        <a href="/series/ml_series_4_natural_language_processing/" class="docs-nav-item">自然语言处理</a>
-        <a href="/series/ml_series_5_reinforcement_learning/" class="docs-nav-item">强化学习</a>
-        <a href="/series/ml_series_6_recommender_systems/" class="docs-nav-item">推荐系统</a>
-        <a href="/series/ml_series_7_model_optimization/" class="docs-nav-item">模型优化</a>
-        <a href="/series/ml_series_8_traditional_ml/" class="docs-nav-item">传统 ML</a>
-        <a href="/series/ml_series_9_feature_engineering/" class="docs-nav-item">特征工程</a>
-        <a href="/series/ml_series_10_advanced_topics/" class="docs-nav-item">高级主题</a>
+      <div class="docs-sidebar-section">
+        <div class="docs-sidebar-title">ML 系列</div>
+        <a href="/series/ml_series_1_ml_foundation/" class="docs-nav-link">ML 基础</a>
+        <a href="/series/ml_series_2_deep_learning_foundation/" class="docs-nav-link">深度学习</a>
+        <a href="/series/ml_series_3_computer_vision/" class="docs-nav-link">计算机视觉</a>
+        <a href="/series/ml_series_4_natural_language_processing/" class="docs-nav-link">自然语言处理</a>
+        <a href="/series/ml_series_5_reinforcement_learning/" class="docs-nav-link">强化学习</a>
+        <a href="/series/ml_series_6_recommender_systems/" class="docs-nav-link">推荐系统</a>
+        <a href="/series/ml_series_7_model_optimization/" class="docs-nav-link">模型优化</a>
+        <a href="/series/ml_series_8_traditional_ml/" class="docs-nav-link">传统 ML</a>
+        <a href="/series/ml_series_9_feature_engineering/" class="docs-nav-link">特征工程</a>
+        <a href="/series/ml_series_10_advanced_topics/" class="docs-nav-link">高级主题</a>
       </div>
     </aside>
+
     <main class="docs-main">
-      <nav class="docs-breadcrumb">
-        <a href="/">首页</a> › <a href="/series/">系列文章</a> › {{ .Title }}
+      <nav class="breadcrumb">
+        <a href="/">首页</a>
+        <span class="breadcrumb-separator">›</span>
+        <a href="/series/">系列文章</a>
+        <span class="breadcrumb-separator">›</span>
+        <span>{{ .Title }}</span>
       </nav>
-      <h1 class="docs-title">{{ .Title }}</h1>
-      <p class="docs-description">{{ .Params.description | default .Params.description }}</p>
-      <div class="docs-content">
+
+      <div class="series-hero">
+        <h1 class="series-hero-title">{{ .Title }}</h1>
+        {{ if .Params.description }}
+          <p class="series-hero-description">{{ .Params.description }}</p>
+        {{ end }}
+      </div>
+
+      <div style="margin-bottom: var(--space-12); color: var(--color-text-secondary);">
         {{ .Content | emojify }}
       </div>
-      {{ if .Data.Pages }}
-        <h2>文章列表</h2>
+
+      {{ if .Pages }}
+        <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-8);">文章列表</h2>
         <ul class="article-list">
           {{ range .Pages }}
             <li class="article-item">
-              <div class="article-number">{{ .Params.episode | default "-" }}</div>
+              {{ if .Params.episode }}
+                <div class="article-number">{{ .Params.episode }}</div>
+              {{ else }}
+                <div class="article-number">•</div>
+              {{ end }}
               <div class="article-content">
                 <div class="article-title">
                   <a href="{{ .Permalink }}">{{ .Title }}</a>
                 </div>
                 <div class="article-meta">
-                  {{ .Date.Format "2006-01-02" }} · {{ if .Params.difficulty }}{{ .Params.difficulty }} · {{ end }}{{ .ReadingTime }} 分钟阅读
+                  {{ if .Params.episode }}
+                    <span class="article-badge">第 {{ .Params.episode }} 期</span>
+                  {{ end }}
+                  {{ .Date.Format "2006-01-02" }}
+                  {{ if .ReadingTime }}
+                    <span>· {{ .ReadingTime }} 分钟阅读</span>
+                  {{ end }}
+                  {{ if .Params.difficulty }}
+                    <span class="article-badge article-badge-secondary">{{ .Params.difficulty }}</span>
+                  {{ end }}
                 </div>
                 {{ if .Params.description }}
                   <div class="article-description">{{ .Params.description }}</div>
@@ -227,5 +210,5 @@
       {{ end }}
     </main>
   </div>
-</body>
-</html>
+
+  {{ partial "footer.html" . }}

@@ -1,0 +1,57 @@
+{{/* Unified Footer Component */}}
+<footer style="background: var(--color-bg-secondary); border-top: 1px solid var(--color-border); padding: var(--space-16) 0; margin-top: var(--space-20);">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-10);">
+      <!-- Brand -->
+      <div>
+        <h3 style="font-size: var(--text-lg); font-weight: var(--font-semibold); margin-bottom: var(--space-4);">{{ .Site.Title }}</h3>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+          AI 驱动的多平台内容自动化生产工厂
+        </p>
+      </div>
+
+      <!-- Navigation -->
+      <div>
+        <h4 style="font-size: var(--text-sm); font-weight: var(--font-semibold); margin-bottom: var(--space-4); color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">导航</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: var(--space-2);"><a href="/" style="font-size: var(--text-sm); color: var(--color-text-secondary);">首页</a></li>
+          <li style="margin-bottom: var(--space-2);"><a href="/daily/" style="font-size: var(--text-sm); color: var(--color-text-secondary);">每日简报</a></li>
+          <li style="margin-bottom: var(--space-2);"><a href="/series/" style="font-size: var(--text-sm); color: var(--color-text-secondary);">系列文章</a></li>
+          <li style="margin-bottom: var(--space-2);"><a href="/about/" style="font-size: var(--text-sm); color: var(--color-text-secondary);">关于</a></li>
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h4 style="font-size: var(--text-sm); font-weight: var(--font-semibold); margin-bottom: var(--space-4); color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">资源</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li style="margin-bottom: var(--space-2);"><a href="https://github.com/Ming-H/content-forge-ai" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--color-text-secondary);">ContentForge AI</a></li>
+          <li style="margin-bottom: var(--space-2);"><a href="https://www.devfoxai.cn/" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--color-text-secondary);">DevFox AI</a></li>
+          <li style="margin-bottom: var(--space-2);"><a href="https://github.com/Ming-H/ai-insights" target="_blank" rel="noopener" style="font-size: var(--text-sm); color: var(--color-text-secondary);">GitHub</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h4 style="font-size: var(--text-sm); font-weight: var(--font-semibold); margin-bottom: var(--space-4); color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">技术栈</h4>
+        <p style="font-size: var(--text-sm); color: var(--color-text-secondary);">
+          Hugo · GitHub Pages · ContentForge AI
+        </p>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div style="margin-top: var(--space-10); padding-top: var(--space-6); border-top: 1px solid var(--color-border-light); display: flex; flex-direction: column; align-items: center; gap: var(--space-4);">
+      <p style="font-size: var(--text-sm); color: var(--color-text-tertiary); margin: 0;">
+        © {{ now.Year }} {{ .Site.Title }}. All rights reserved.
+      </p>
+      <p style="font-size: var(--text-xs); color: var(--color-text-tertiary); margin: 0;">
+        由 <a href="https://github.com/Ming-H/content-forge-ai" target="_blank" rel="noopener" style="color: var(--color-primary);">ContentForge AI</a> 自动生成与维护
+      </p>
+    </div>
+  </div>
+</footer>
+
+{{/* Close body and html tags if not already closed */}}
+</body>
+</html>

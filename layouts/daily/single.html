@@ -1,0 +1,286 @@
+{{ partial "header.html" . }}
+
+{{ partial "shared-css.html" . }}
+
+<style>
+  /* Daily single page styles */
+  .daily-article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--space-16) var(--space-6);
+  }
+
+  .daily-article-header {
+    text-align: center;
+    margin-bottom: var(--space-16);
+    padding-bottom: var(--space-12);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .daily-article-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .daily-article-title {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-bold);
+    line-height: 1.2;
+    margin-bottom: var(--space-6);
+  }
+
+  .daily-article-excerpt {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .daily-article-content {
+    font-size: var(--text-lg);
+    line-height: 1.8;
+  }
+
+  .daily-article-content h2 {
+    font-size: var(--text-2xl);
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-border-light);
+  }
+
+  .daily-article-content h3 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-3);
+  }
+
+  .daily-article-content p {
+    margin-bottom: var(--space-6);
+  }
+
+  .daily-article-content ul,
+  .daily-article-content ol {
+    margin-bottom: var(--space-6);
+    padding-left: var(--space-6);
+  }
+
+  .daily-article-content li {
+    margin-bottom: var(--space-2);
+  }
+
+  .daily-article-content blockquote {
+    margin: var(--space-6) 0;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg-secondary);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .daily-article-content blockquote p {
+    margin-bottom: 0;
+  }
+
+  .daily-article-content code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-sm);
+  }
+
+  .daily-article-content pre {
+    margin: var(--space-6) 0;
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+  }
+
+  .daily-article-content pre code {
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Category sections */
+  .daily-category {
+    margin: var(--space-12) 0;
+    padding: var(--space-8);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-xl);
+  }
+
+  .daily-category-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .daily-category-icon {
+    font-size: var(--text-3xl);
+  }
+
+  .daily-item {
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .daily-item:last-child {
+    border-bottom: none;
+  }
+
+  .daily-item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
+  }
+
+  .daily-item-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-medium);
+    flex: 1;
+  }
+
+  .daily-item-title a {
+    color: var(--color-text-primary);
+  }
+
+  .daily-item-source {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+  }
+
+  .daily-item-summary {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Navigation */
+  .daily-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-top: var(--space-20);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .daily-nav-link {
+    flex: 1;
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    transition: all var(--transition-base);
+  }
+
+  .daily-nav-link:hover {
+    background: var(--color-bg-tertiary);
+  }
+
+  .daily-nav-link.prev {
+    text-align: left;
+  }
+
+  .daily-nav-link.next {
+    text-align: right;
+  }
+
+  @media (max-width: 768px) {
+    .daily-article {
+      padding: var(--space-10) var(--space-6);
+    }
+
+    .daily-article-title {
+      font-size: var(--text-3xl);
+    }
+
+    .daily-article-excerpt {
+      font-size: var(--text-lg);
+    }
+
+    .daily-article-content {
+      font-size: var(--text-base);
+    }
+
+    .daily-nav {
+      flex-direction: column;
+    }
+
+    .daily-item-header {
+      flex-direction: column;
+    }
+
+    .daily-item-source {
+      white-space: normal;
+    }
+  }
+</style>
+
+<body>
+  <article class="daily-article">
+    <header class="daily-article-header">
+      <nav class="breadcrumb">
+        <a href="/">首页</a>
+        <span class="breadcrumb-separator">›</span>
+        <a href="/daily/">每日热点</a>
+        <span class="breadcrumb-separator">›</span>
+        <span>{{ .Date.Format "2006-01-02" }}</span>
+      </nav>
+
+      <div class="daily-article-meta">
+        <span>{{ .Date.Format "2006年01月02日" }}</span>
+        <span>·</span>
+        <span>{{ .ReadingTime }} 分钟阅读</span>
+        {{ if .Params.tags }}
+          <span>·</span>
+          <span>{{ len .Params.tags }} 条精选</span>
+        {{ end }}
+      </div>
+
+      <h1 class="daily-article-title">{{ .Title }}</h1>
+
+      {{ if .Description }}
+        <p class="daily-article-excerpt">{{ .Description }}</p>
+      {{ end }}
+    </header>
+
+    <div class="daily-article-content">
+      {{ .Content | emojify }}
+    </div>
+
+    {{ if or .PrevInSection .NextInSection }}
+      <nav class="daily-nav">
+        {{ if .PrevInSection }}
+          <a href="{{ .PrevInSection.Permalink }}" class="daily-nav-link prev">
+            ← {{ .PrevInSection.Date.Format "01月02日" }}
+          </a>
+        {{ end }}
+        {{ if .NextInSection }}
+          <a href="{{ .NextInSection.Permalink }}" class="daily-nav-link next">
+            {{ .NextInSection.Date.Format "01月02日" }} →
+          </a>
+        {{ end }}
+      </nav>
+    {{ end }}
+  </article>
+
+  {{ partial "footer.html" . }}
+</body>
+
+</html>

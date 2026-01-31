@@ -264,11 +264,11 @@
       <h1>{{ .Site.Title }}</h1>
       <p>{{ .Site.Params.description | default "系统化的 AI 技术学习资源，从基础到前沿，构建完整知识体系" }}</p>
       <div class="hero-actions">
-        <a href="{{ "series/" | relURL }}" class="btn btn-primary">
-          📚 开始学习
-        </a>
         <a href="{{ "daily/" | relURL }}" class="btn btn-secondary">
           📰 每日简报
+        </a>
+        <a href="{{ "series/" | relURL }}" class="btn btn-secondary">
+          📚 开始学习
         </a>
       </div>
     </div>

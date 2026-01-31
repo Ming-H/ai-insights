@@ -2,26 +2,29 @@ name: Sync Content from ContentForge AI
 
 on:
   schedule:
-    # 每天早上 8 点（北京时间）同步内容
+    # 每天 UTC 0:00（北京时间 8:00）同步内容
     - cron: '0 0 * * *'
   workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
     steps:
       - name: Checkout ai-insights
         uses: actions/checkout@v4
         with:
           path: ai-insights
 
-      # 假设 content-forge-ai 在同一账号下，或者使用 public API 获取内容
-      # 这里需要根据实际情况调整
+      # 检出 content-forge-ai 仓库
+      # 注意：如果 content-forge-ai 是私有仓库，需要配置 PAT Token
       - name: Checkout content-forge-ai
         uses: actions/checkout@v4
         with:
-          repository: Ming-H/content-forge-ai
+          repository: devfoxaicn/content-forge-ai
           path: content-forge-ai
+          # 如果是私有仓库，使用 PAT: ${{ secrets.CONTENT_FORGE_AI_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
@@ -29,19 +32,61 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Verify content sources
+        run: |
+          echo "========================================"
+          echo "验证数据源..."
+          echo "========================================"
+          echo "ContentForge AI 路径: $GITHUB_WORKSPACE/content-forge-ai"
+          echo "AI Insights 路径: $GITHUB_WORKSPACE/ai-insights"
+          ls -la $GITHUB_WORKSPACE/content-forge-ai/data/ || echo "⚠️ content-forge-ai/data 目录不存在"
+          ls -la $GITHUB_WORKSPACE/ai-insights/content/ || echo "⚠️ ai-insights/content 目录不存在"
+
       - name: Sync content
         run: |
           cd ai-insights
+          echo "========================================"
+          echo "开始同步内容..."
+          echo "========================================"
           # 更新脚本中的路径为 GitHub Actions 环境路径
           sed -i 's|/Users/z/Documents/work/content-forge-ai|$GITHUB_WORKSPACE/content-forge-ai|g' scripts/sync_content.py
           sed -i 's|/Users/z/Documents/work/ai-insights|$GITHUB_WORKSPACE/ai-insights|g' scripts/sync_content.py
           python scripts/sync_content.py --all
+          echo "========================================"
+          echo "内容同步完成"
+          echo "========================================"
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          cd ai-insights
+          if git diff --quiet && git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "没有检测到新的内容变更"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "检测到新的内容变更，准备提交"
+            git status
+          fi
 
       - name: Commit and push
+        if: steps.check-changes.outputs.has_changes == 'true'
         run: |
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add content/
-          git diff --quiet && git diff --staged --quiet || git commit -m "chore: sync content from content-forge-ai [skip ci]"
+          git commit -m "chore: sync content from content-forge-ai [skip ci]" -m "自动同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
           git push
+          echo "✅ 内容已成功同步并推送到仓库"
+
+      - name: Summary report
+        if: always()
+        run: |
+          echo "========================================"
+          echo "📊 内容同步报告"
+          echo "========================================"
+          echo "执行时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+          echo "执行状态: ${{ job.status }}"
+          echo "有变更: ${{ steps.check-changes.outputs.has_changes }}"
+          echo "========================================"

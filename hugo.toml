@@ -1,58 +1,121 @@
+# -- Site Configuration --
+# Congo theme for Hugo
+
 baseURL = 'https://Ming-H.github.io/ai-insights/'
-languageCode = 'zh-cn'
+defaultContentLanguage = "zh-cn"
 title = 'AI Insights'
-theme = 'paper'
+theme = 'congo'
 
-# Paper 主题配置
-[params]
-  # 配色方案 - 使用白色背景
-  color = 'white'
-  # 可选: white, linen, wheat, gray, light
+enableRobotsTXT = true
+summaryLength = 0
+ignoreLogs = ['warning-goldmark-raw-html']
 
-  # 首页配置
-  avatar = 'https://www.devfoxai.cn/favicon.ico'
-  name = 'AI Insights'
-  bio = 'AI驱动的多平台内容自动化生产工厂'
-
-  # 社交图标
-  github = 'Ming-H/content-forge-ai'
-  # rss = ''
-
-  # 功能开关
-  disableHLJS = true
-  disablePostBuild = true
-
-# 主菜单
-[[menu.main]]
-  url = "/"
-  name = "首页"
-  weight = 1
-
-[[menu.main]]
-  url = "/daily/"
-  name = "每日简报"
-  weight = 2
-
-[[menu.main]]
-  url = "/series/"
-  name = "系列文章"
-  weight = 3
-
-[[menu.main]]
-  url = "/about/"
-  name = "关于"
-  weight = 4
-
-# Markdown 配置
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
-  [markup.highlight]
-    lineNos = false
-    noClasses = false
 
-# 分类
-[taxonomies]
-  tag = "tags"
-  category = "categories"
+[pagination]
+  pagerSize = 10
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[privacy]
+  [privacy.vimeo]
+    enableDNT = true
+  [privacy.x]
+    enableDNT = true
+  [privacy.youTube]
+    privacyEnhanced = true
+
+[services]
+  [services.x]
+    disableInlineCSS = true
+
+# -- Theme Options --
+
+[colorScheme]
+  name = "congo"
+
+[defaultAppearance]
+  colorScheme = "congo"
+  defaultAppearance = "light"
+  autoSwitchAppearance = true
+
+defaultThemeColor = "#FFFFFF"
+
+enableSearch = false
+enableCodeCopy = false
+enableImageLazyLoading = true
+enableImageWebp = true
+
+fingerprintAlgorithm = "sha256"
+
+[header]
+  layout = "basic"
+  showTitle = true
+
+[footer]
+  showCopyright = true
+  showThemeAttribution = true
+  showAppearanceSwitcher = false
+  showScrollToTop = true
+
+[homepage]
+  layout = "page"
+  showRecent = false
+  recentLimit = 5
+
+[article]
+  showDate = true
+  showDateUpdated = false
+  showAuthor = false
+  showBreadcrumbs = false
+  showDraftLabel = true
+  showEdit = false
+  editAppendPath = true
+  showHeadingAnchors = true
+  showPagination = true
+  invertPagination = false
+  showReadingTime = true
+  showTableOfContents = false
+  showTaxonomies = false
+  showWordCount = false
+  showComments = false
+
+[list]
+  showBreadcrumbs = false
+  showSummary = false
+  showTableOfContents = false
+  showTaxonomies = false
+  groupByYear = true
+  paginationWidth = 1
+
+[sitemap]
+  excludedKinds = ["taxonomy", "term"]
+
+[taxonomy]
+  showTermCount = true
+
+# -- Menus --
+
+[[menu.main]]
+  name = "首页"
+  weight = 1
+  url = "/"
+
+[[menu.main]]
+  name = "每日简报"
+  weight = 2
+  url = "/daily/"
+
+[[menu.main]]
+  name = "系列文章"
+  weight = 3
+  url = "/series/"
+
+[[menu.main]]
+  name = "关于"
+  weight = 4
+  url = "/about/"

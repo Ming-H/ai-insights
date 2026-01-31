@@ -65,7 +65,10 @@ TAVILY_API_KEY: xxx   # Tavily 搜索密钥
 **GitHub Actions**: `.github/workflows/sync-content.yml`
 
 **触发条件**:
-- 每天 1 次: 8:00 (北京时间，UTC 0:00)
+- 每天 3 次 (对应 content-forge-ai 更新时间):
+  - 07:30 (北京时间) - 同步早间内容
+  - 13:00 (北京时间) - 同步中午内容
+  - 19:00 (北京时间) - 同步晚间内容
 - 手动触发
 
 **功能**:
@@ -162,12 +165,15 @@ git submodule update --init --recursive
 
 | 时间 (北京时间) | 事件 |
 |----------------|------|
-| 06:00 | content-forge-ai 开始生成简报 |
-| 08:00 | ai-insights 同步内容 |
-| 08:05 | ai-insights 构建部署 |
-| 12:00 | content-forge-ai 更新简报 |
-| 18:00 | content-forge-ai 更新简报 |
-| 次日 08:00 | ai-insights 同步最新内容 |
+| 06:00 | content-forge-ai 生成早间简报 |
+| 07:30 | ai-insights 同步早间内容 |
+| 07:35 | ai-insights 构建部署 |
+| 12:00 | content-forge-ai 生成午间简报 |
+| 13:00 | ai-insights 同步午间内容 |
+| 13:05 | ai-insights 构建部署 |
+| 18:00 | content-forge-ai 生成晚间简报 |
+| 19:00 | ai-insights 同步晚间内容 |
+| 19:05 | ai-insights 构建部署 |
 
 ## 需要确保的配置
 

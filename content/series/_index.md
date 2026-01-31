@@ -187,11 +187,3 @@ SVM · 决策树 · 随机森林 · XGBoost
 </div>
 
 </div>
-
----
-
-<div style="text-align: center; padding: 3rem 0; margin-top: 3rem; color: #6b7280; font-size: 0.875rem;">
-
-持续更新中 · 敬请期待更多内容
-
-</div>

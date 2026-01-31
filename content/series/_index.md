@@ -3,56 +3,210 @@ title: "系列文章"
 date: 2024-01-01
 ---
 
-# 系列文章
+<div style="text-align: center; padding: 2rem 0; margin-bottom: 3rem;">
 
-系统化的 AI 技术学习资源，涵盖大语言模型与机器学习两大核心领域。每个系列包含多篇深度文章，从基础原理到前沿应用，助你构建完整的知识体系。
+# AI 技术系列
 
----
-
-## LLM 系列
-
-**大语言模型原理与应用** · 85 篇文章
-
-从 Transformers 架构到 Agent 开发，系统学习 LLM 核心技术。
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-| 系列 | 描述 |
-|:---:|:---|
-| **01. [LLM 基础](/series/series_1_llm_foundation/)** | Transformers、Tokenizer、Pre-training |
-| **02. [RAG 实战](/series/series_2_rag_technique/)** | 检索增强生成技术 |
-| **03. [Agent 开发](/series/series_3_agent_development/)** | AI 智能体开发 |
-| **04. [Prompt 工程](/series/series_4_prompt_engineering/)** | 提示词工程 |
-| **05. [模型部署](/series/series_5_model_deployment/)** | 推理与量化 |
-| **06. [多模态前沿](/series/series_6_multimodal_frontier/)** | 视觉、音频理解 |
-| **07. [AI 编程工具](/series/series_7_ai_coding_tools/)** | 辅助编程工具 |
-| **08. [AI 数据工程](/series/series_8_ai_data_engineering/)** | 数据处理与管理 |
-| **09. [AI 应用场景](/series/series_9_ai_applications/)** | 行业落地案例 |
-| **10. [AI 基础设施](/series/series_10_ai_infrastructure/)** | 大规模部署 |
+系统化的 AI 学习资源，从基础到前沿，构建完整知识体系。
 
 </div>
 
 ---
 
-## ML 系列
+## 大语言模型系列
 
-**机器学习与深度学习** · 31 篇文章
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
 
-从基础算法到前沿研究，全面掌握机器学习核心技术。
+### LLM 系列概览
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+**85 篇深度文章** · 从架构到应用
 
-| 系列 | 描述 |
-|:---:|:---|
-| **01. [ML 基础](/series/ml_series_1_ml_foundation/)** | 学习范式、模型评估 |
-| **02. [深度学习](/series/ml_series_2_deep_learning_foundation/)** | 神经网络原理 |
-| **03. [计算机视觉](/series/ml_series_3_computer_vision/)** | CNNs、图像处理 |
-| **04. [自然语言处理](/series/ml_series_4_natural_language_processing/)** | NLP 基础 |
-| **05. [强化学习](/series/ml_series_5_reinforcement_learning/)** | RL agents、策略 |
-| **06. [推荐系统](/series/ml_series_6_recommender_systems/)** | 协同过滤、深度学习 |
-| **07. [模型优化](/series/ml_series_7_model_optimization/)** | 超参数调优 |
-| **08. [传统 ML](/series/ml_series_8_traditional_ml/)** | SVM、树模型 |
-| **09. [特征工程](/series/ml_series_9_feature_engineering/)** | 特征选择与提取 |
-| **10. [高级主题](/series/ml_series_10_advanced_topics/)** | 集成学习、可解释性 |
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 3rem;">
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[01. LLM 基础](/series/series_1_llm_foundation/)**
+
+Transformers · Tokenizer · Pre-training
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[02. RAG 实战](/series/series_2_rag_technique/)**
+
+检索增强生成 · 向量数据库 · Knowledge Graph
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[03. Agent 开发](/series/series_3_agent_development/)**
+
+AI 智能体 · 多Agent协作 · AutoGPT
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[04. Prompt 工程](/series/series_4_prompt_engineering/)**
+
+提示词优化 · CoT · Few-shot Learning
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[05. 模型部署](/series/series_5_model_deployment/)**
+
+推理优化 · 量化 · vLLM · TensorRT
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[06. 多模态前沿](/series/series_6_multimodal_frontier/)**
+
+视觉理解 · CLIP · DALL-E · Stable Diffusion
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[07. AI 编程工具](/series/series_7_ai_coding_tools/)**
+
+Cursor · Copilot · Code Interpreter
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[08. AI 数据工程](/series/series_8_ai_data_engineering/)**
+
+数据处理 · RAG数据构建 · 质量控制
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[09. AI 应用场景](/series/series_9_ai_applications/)**
+
+行业落地 · 最佳实践 · Case Study
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[10. AI 基础设施](/series/series_10_ai_infrastructure/)**
+
+大规模部署 · GPU集群 · 监控运维
+
+</div>
+
+</div>
+
+---
+
+## 机器学习系列
+
+<div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+
+### ML 系列概览
+
+**31 篇系统教程** · 从理论到实践
+
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[01. ML 基础](/series/ml_series_1_ml_foundation/)**
+
+学习范式 · 模型评估 · 交叉验证
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[02. 深度学习](/series/ml_series_2_deep_learning_foundation/)**
+
+神经网络 · 反向传播 · 激活函数
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[03. 计算机视觉](/series/ml_series_3_computer_vision/)**
+
+CNNs · ResNet · YOLO · 图像分割
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[04. 自然语言处理](/series/ml_series_4_natural_language_processing/)**
+
+Word2Vec · Seq2Seq · Attention机制
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[05. 强化学习](/series/ml_series_5_reinforcement_learning/)**
+
+RL agents · Q-Learning · Policy Gradient
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[06. 推荐系统](/series/ml_series_6_recommender_systems/)**
+
+协同过滤 · 矩阵分解 · 深度推荐
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[07. 模型优化](/series/ml_series_7_model_optimization/)**
+
+超参数调优 · 贝叶斯优化 · AutoML
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[08. 传统 ML](/series/ml_series_8_traditional_ml/)**
+
+SVM · 决策树 · 随机森林 · XGBoost
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[09. 特征工程](/series/ml_series_9_feature_engineering/)**
+
+特征选择 · 降维 · 特征交叉
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[10. 高级主题](/series/ml_series_10_advanced_topics/)**
+
+集成学习 · 模型可解释性 · 迁移学习
+
+</div>
+
+</div>
+
+---
+
+<div style="text-align: center; padding: 3rem 0; margin-top: 3rem; color: #6b7280; font-size: 0.875rem;">
+
+持续更新中 · 敬请期待更多内容
 
 </div>

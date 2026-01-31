@@ -16,7 +16,7 @@ ignoreLogs = ['warning-goldmark-raw-html']
       unsafe = true
 
 [pagination]
-  pagerSize = 10
+  pagerSize = 50
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
@@ -86,10 +86,10 @@ fingerprintAlgorithm = "sha256"
 
 [list]
   showBreadcrumbs = false
-  showSummary = false
+  showSummary = true
   showTableOfContents = false
   showTaxonomies = false
-  groupByYear = true
+  groupByYear = false
   paginationWidth = 1
 
 [sitemap]

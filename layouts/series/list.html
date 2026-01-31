@@ -1,53 +1,201 @@
-{{ define "main" }}
-  {{ $toc := and (.Params.showTableOfContents | default (.Site.Params.list.showTableOfContents | default false)) (in .TableOfContents "<ul>") }}
-  <header>
-    {{ if .Params.showBreadcrumbs | default (.Site.Params.list.showBreadcrumbs | default false) }}
-      {{ partial "breadcrumbs.html" . }}
-    {{ end }}
-    <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">{{ .Title }}</h1>
-  </header>
-  <section
-    class="{{ if $toc -}}
-      mt-12
-    {{- else -}}
-      mt-0
-    {{- end }} prose flex max-w-full flex-col dark:prose-invert lg:flex-row"
-  >
-    {{ if $toc }}
-      <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
-        <div class="toc ps-5 lg:sticky lg:top-10">
-          {{ partial "toc.html" . }}
-        </div>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ .Title }}</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      color: #202124;
+    }
+    .docs-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .docs-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      border-right: 1px solid #e8eaed;
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      background: #f8f9fa;
+    }
+    .docs-sidebar-title {
+      padding: 0 20px 15px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #5f6368;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .docs-nav-item {
+      padding: 8px 20px;
+      display: block;
+      color: #1967d2;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .docs-nav-item:hover {
+      background: #e8f0fe;
+    }
+    .docs-nav-item.active {
+      background: #e8f0fe;
+      font-weight: 500;
+    }
+    .docs-nav-section {
+      margin-bottom: 30px;
+    }
+    .docs-main {
+      flex: 1;
+      padding: 40px 60px;
+      max-width: 900px;
+    }
+    .docs-breadcrumb {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #5f6368;
+    }
+    .docs-breadcrumb a {
+      color: #1967d2;
+      text-decoration: none;
+    }
+    .docs-title {
+      font-size: 36px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      color: #202124;
+    }
+    .docs-content {
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .docs-content h2 {
+      font-size: 24px;
+      font-weight: 400;
+      margin: 40px 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e8eaed;
+      color: #202124;
+    }
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .series-card {
+      border: 1px solid #e8eaed;
+      border-radius: 8px;
+      padding: 1.25rem;
+      transition: all 0.2s;
+      background: white;
+    }
+    .series-card:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+    .series-card a {
+      color: #1967d2;
+      text-decoration: none;
+    }
+    .series-card-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .series-card-desc {
+      font-size: 14px;
+      color: #5f6368;
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .docs-container {
+        flex-direction: column;
+      }
+      .docs-sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid #e8eaed;
+      }
+      .docs-main {
+        padding: 24px;
+      }
+      .docs-title {
+        font-size: 28px;
+      }
+      .series-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="docs-container">
+    <aside class="docs-sidebar">
+      <div class="docs-sidebar-title">LLM 系列</div>
+      <div class="docs-nav-section">
+        <a href="/series/series_1_llm_foundation/" class="docs-nav-item">LLM 基础</a>
+        <a href="/series/series_2_rag_technique/" class="docs-nav-item">RAG 实战</a>
+        <a href="/series/series_3_agent_development/" class="docs-nav-item">Agent 开发</a>
+        <a href="/series/series_4_prompt_engineering/" class="docs-nav-item">Prompt 工程</a>
+        <a href="/series/series_5_model_deployment/" class="docs-nav-item">模型部署</a>
+        <a href="/series/series_6_multimodal_frontier/" class="docs-nav-item">多模态前沿</a>
+        <a href="/series/series_7_ai_coding_tools/" class="docs-nav-item">AI 编程工具</a>
+        <a href="/series/series_8_ai_data_engineering/" class="docs-nav-item">AI 数据工程</a>
+        <a href="/series/series_9_ai_applications/" class="docs-nav-item">AI 应用场景</a>
+        <a href="/series/series_10_ai_infrastructure/" class="docs-nav-item">AI 基础设施</a>
       </div>
-    {{ end }}
-    <div class="min-h-0 min-w-0 max-w-prose grow">
-      {{ .Content | emojify }}
-    </div>
-  </section>
-  {{ if .Data.Pages }}
-    <section>
-      {{ if $.Params.groupByYear | default ($.Site.Params.list.groupByYear | default true) }}
-        {{ range (.Paginate (.Pages.GroupByDate "2006")).PageGroups }}
-          <h2 class="mt-12 text-2xl font-bold text-neutral-700 first:mt-8 dark:text-neutral-300">
-            {{ .Key }}
-          </h2>
-          <hr class="w-36 border-dotted border-neutral-400" />
+      <div class="docs-sidebar-title" style="margin-top: 30px;">ML 系列</div>
+      <div class="docs-nav-section">
+        <a href="/series/ml_series_1_ml_foundation/" class="docs-nav-item">ML 基础</a>
+        <a href="/series/ml_series_2_deep_learning_foundation/" class="docs-nav-item">深度学习</a>
+        <a href="/series/ml_series_3_computer_vision/" class="docs-nav-item">计算机视觉</a>
+        <a href="/series/ml_series_4_natural_language_processing/" class="docs-nav-item">自然语言处理</a>
+        <a href="/series/ml_series_5_reinforcement_learning/" class="docs-nav-item">强化学习</a>
+        <a href="/series/ml_series_6_recommender_systems/" class="docs-nav-item">推荐系统</a>
+        <a href="/series/ml_series_7_model_optimization/" class="docs-nav-item">模型优化</a>
+        <a href="/series/ml_series_8_traditional_ml/" class="docs-nav-item">传统 ML</a>
+        <a href="/series/ml_series_9_feature_engineering/" class="docs-nav-item">特征工程</a>
+        <a href="/series/ml_series_10_advanced_topics/" class="docs-nav-item">高级主题</a>
+      </div>
+    </aside>
+    <main class="docs-main">
+      <nav class="docs-breadcrumb">
+        <a href="/">首页</a> › <a href="/series/">系列文章</a>
+      </nav>
+      <h1 class="docs-title">{{ .Title }}</h1>
+      <div class="docs-content">
+        {{ .Content | emojify }}
+      </div>
+      {{ if .Data.Pages }}
+        <h2>所有系列</h2>
+        <div class="series-grid">
           {{ range .Pages }}
-            {{ partial "article-link.html" . }}
+            <div class="series-card">
+              <div class="series-card-title">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+              </div>
+              {{ if .Params.description }}
+                <div class="series-card-desc">{{ .Params.description }}</div>
+              {{ end }}
+            </div>
           {{ end }}
-        {{ end }}
-      {{ else }}
-        {{ range (.Paginate .Pages).Pages }}
-          {{ partial "article-link.html" . }}
-        {{ end }}
+        </div>
       {{ end }}
-    </section>
-    {{ partial "pagination.html" . }}
-  {{ else }}
-    <section class="prose mt-10 dark:prose-invert">
-      <p class="border-t py-8">
-        <em>{{ i18n "list.no_articles" | emojify }}</em>
-      </p>
-    </section>
-  {{ end }}
-{{ end }}
+    </main>
+  </div>
+</body>
+</html>

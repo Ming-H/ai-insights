@@ -1,6 +1,5 @@
 ---
 title: "传统 ML"
 date: 2024-01-01
+description: "传统 ML"
 ---
-# 传统 ML
-**SVM、树模型**

@@ -128,37 +128,37 @@
     <aside class="docs-sidebar">
       <div class="docs-sidebar-section">
         <div class="docs-sidebar-title">LLM 系列</div>
-        <a href="/series/series_1_llm_foundation/" class="docs-nav-link">LLM 基础</a>
-        <a href="/series/series_2_rag_technique/" class="docs-nav-link">RAG 实战</a>
-        <a href="/series/series_3_agent_development/" class="docs-nav-link">Agent 开发</a>
-        <a href="/series/series_4_prompt_engineering/" class="docs-nav-link">Prompt 工程</a>
-        <a href="/series/series_5_model_deployment/" class="docs-nav-link">模型部署</a>
-        <a href="/series/series_6_multimodal_frontier/" class="docs-nav-link">多模态前沿</a>
-        <a href="/series/series_7_ai_coding_tools/" class="docs-nav-link">AI 编程工具</a>
-        <a href="/series/series_8_ai_data_engineering/" class="docs-nav-link">AI 数据工程</a>
-        <a href="/series/series_9_ai_applications/" class="docs-nav-link">AI 应用场景</a>
-        <a href="/series/series_10_ai_infrastructure/" class="docs-nav-link">AI 基础设施</a>
+        <a href="{{ "series/series_1_llm_foundation/" | relURL }}" class="docs-nav-link">LLM 基础</a>
+        <a href="{{ "series/series_2_rag_technique/" | relURL }}" class="docs-nav-link">RAG 实战</a>
+        <a href="{{ "series/series_3_agent_development/" | relURL }}" class="docs-nav-link">Agent 开发</a>
+        <a href="{{ "series/series_4_prompt_engineering/" | relURL }}" class="docs-nav-link">Prompt 工程</a>
+        <a href="{{ "series/series_5_model_deployment/" | relURL }}" class="docs-nav-link">模型部署</a>
+        <a href="{{ "series/series_6_multimodal_frontier/" | relURL }}" class="docs-nav-link">多模态前沿</a>
+        <a href="{{ "series/series_7_ai_coding_tools/" | relURL }}" class="docs-nav-link">AI 编程工具</a>
+        <a href="{{ "series/series_8_ai_data_engineering/" | relURL }}" class="docs-nav-link">AI 数据工程</a>
+        <a href="{{ "series/series_9_ai_applications/" | relURL }}" class="docs-nav-link">AI 应用场景</a>
+        <a href="{{ "series/series_10_ai_infrastructure/" | relURL }}" class="docs-nav-link">AI 基础设施</a>
       </div>
       <div class="docs-sidebar-section">
         <div class="docs-sidebar-title">ML 系列</div>
-        <a href="/series/ml_series_1_ml_foundation/" class="docs-nav-link">ML 基础</a>
-        <a href="/series/ml_series_2_deep_learning_foundation/" class="docs-nav-link">深度学习</a>
-        <a href="/series/ml_series_3_computer_vision/" class="docs-nav-link">计算机视觉</a>
-        <a href="/series/ml_series_4_natural_language_processing/" class="docs-nav-link">自然语言处理</a>
-        <a href="/series/ml_series_5_reinforcement_learning/" class="docs-nav-link">强化学习</a>
-        <a href="/series/ml_series_6_recommender_systems/" class="docs-nav-link">推荐系统</a>
-        <a href="/series/ml_series_7_model_optimization/" class="docs-nav-link">模型优化</a>
-        <a href="/series/ml_series_8_traditional_ml/" class="docs-nav-link">传统 ML</a>
-        <a href="/series/ml_series_9_feature_engineering/" class="docs-nav-link">特征工程</a>
-        <a href="/series/ml_series_10_advanced_topics/" class="docs-nav-link">高级主题</a>
+        <a href="{{ "series/ml_series_1_ml_foundation/" | relURL }}" class="docs-nav-link">ML 基础</a>
+        <a href="{{ "series/ml_series_2_deep_learning_foundation/" | relURL }}" class="docs-nav-link">深度学习</a>
+        <a href="{{ "series/ml_series_3_computer_vision/" | relURL }}" class="docs-nav-link">计算机视觉</a>
+        <a href="{{ "series/ml_series_4_natural_language_processing/" | relURL }}" class="docs-nav-link">自然语言处理</a>
+        <a href="{{ "series/ml_series_5_reinforcement_learning/" | relURL }}" class="docs-nav-link">强化学习</a>
+        <a href="{{ "series/ml_series_6_recommender_systems/" | relURL }}" class="docs-nav-link">推荐系统</a>
+        <a href="{{ "series/ml_series_7_model_optimization/" | relURL }}" class="docs-nav-link">模型优化</a>
+        <a href="{{ "series/ml_series_8_traditional_ml/" | relURL }}" class="docs-nav-link">传统 ML</a>
+        <a href="{{ "series/ml_series_9_feature_engineering/" | relURL }}" class="docs-nav-link">特征工程</a>
+        <a href="{{ "series/ml_series_10_advanced_topics/" | relURL }}" class="docs-nav-link">高级主题</a>
       </div>
     </aside>
 
     <main class="docs-main">
       <nav class="breadcrumb">
-        <a href="/">首页</a>
+        <a href="{{ "/" | relURL }}">首页</a>
         <span class="breadcrumb-separator">›</span>
-        <a href="/series/">系列文章</a>
+        <a href="{{ "series/" | relURL }}">系列文章</a>
         <span class="breadcrumb-separator">›</span>
         <span>{{ .Title }}</span>
       </nav>
@@ -170,14 +170,14 @@
         {{ end }}
       </div>
 
-      <div style="margin-bottom: var(--space-12); color: var(--color-text-secondary);">
-        {{ .Content | emojify }}
-      </div>
-
       {{ if .Pages }}
         <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-8);">文章列表</h2>
         <ul class="article-list">
-          {{ range .Pages }}
+          {{ $pages := .Pages }}
+          {{ if eq .Kind "section" }}
+            {{ $pages = .RegularPages }}
+          {{ end }}
+          {{ range $pages.ByParam "episode" }}
             <li class="article-item">
               {{ if .Params.episode }}
                 <div class="article-number">{{ .Params.episode }}</div>

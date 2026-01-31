@@ -1,49 +1,46 @@
 baseURL = 'https://Ming-H.github.io/ai-insights/'
 languageCode = 'zh-cn'
 title = 'AI Insights'
-theme = 'terminal'
-canonifyURLs = true
+theme = 'paper'
 
-[pagination]
-  pagerSize = 10
-
+# Paper 主题配置
 [params]
-  # 终端主题颜色 - 简洁配色
-  themeColor = "green"
-  # 可选: orange, blue, red, green, pink, cyan
+  # 配色方案 - 使用白色背景
+  color = 'white'
+  # 可选: white, linen, wheat, gray, light
 
-  # 全宽内容
-  fullWidth = true
+  # 首页配置
+  avatar = 'https://www.devfoxai.cn/favicon.ico'
+  name = 'AI Insights'
+  bio = 'AI驱动的多平台内容自动化生产工厂'
 
-  # 目录显示
-  toc = true
+  # 社交图标
+  github = 'Ming-H/content-forge-ai'
+  # rss = ''
 
-  # 版权信息
-  copyright = "© 2024 AI Insights"
+  # 功能开关
+  disableHLJS = true
+  disablePostBuild = true
 
-# 菜单
+# 主菜单
 [[menu.main]]
-  identifier = "home"
-  name = "首页"
   url = "/"
+  name = "首页"
   weight = 1
 
 [[menu.main]]
-  identifier = "daily"
-  name = "每日简报"
   url = "/daily/"
+  name = "每日简报"
   weight = 2
 
 [[menu.main]]
-  identifier = "series"
-  name = "系列文章"
   url = "/series/"
+  name = "系列文章"
   weight = 3
 
 [[menu.main]]
-  identifier = "about"
-  name = "关于"
   url = "/about/"
+  name = "关于"
   weight = 4
 
 # Markdown 配置
@@ -52,8 +49,7 @@ canonifyURLs = true
     [markup.goldmark.renderer]
       unsafe = true
   [markup.highlight]
-    lineNos = true
-    lineNumbersInTable = true
+    lineNos = false
     noClasses = false
 
 # 分类

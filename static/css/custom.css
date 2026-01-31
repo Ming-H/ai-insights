@@ -1,0 +1,161 @@
+/* AI Insights - 自定义样式 */
+
+/* 全局样式优化 */
+:root {
+  --primary-color: #2563eb;
+  --text-color: #1f2937;
+  --text-light: #6b7280;
+  --bg-color: #ffffff;
+  --border-color: #e5e7eb;
+  --hover-color: #1d4ed8;
+}
+
+/* 改善中文字体渲染 */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+               "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+               "WenQuanYi Micro Hei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.8;
+}
+
+/* 文章标题样式 */
+.post-title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* 导航菜单样式优化 */
+nav a {
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--primary-color) !important;
+}
+
+/* 首页简介区域优化 */
+.profile {
+  text-align: center;
+  padding: 3rem 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 3rem;
+}
+
+.profile .avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.profile .name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.profile .bio {
+  color: var(--text-light);
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* 文章列表样式 */
+.posts-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.posts-list-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.posts-list-item:last-child {
+  border-bottom: none;
+}
+
+.posts-list-item-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.posts-list-item-title:hover {
+  color: var(--primary-color);
+}
+
+/* 分页样式 */
+.pagination {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .profile {
+    padding: 2rem 0;
+  }
+
+  .profile .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profile .name {
+    font-size: 1.25rem;
+  }
+}
+
+/* 改善阅读体验 */
+article {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+article h1,
+article h2,
+article h3 {
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+article p {
+  margin-bottom: 1.5rem;
+}
+
+article code {
+  background-color: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+article pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+/* 优化系列页面 */
+.series-section {
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background-color: #f9fafb;
+  border-radius: 12px;
+}
+
+.series-section h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}

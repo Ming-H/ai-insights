@@ -1,66 +1,78 @@
 baseURL = 'https://Ming-H.github.io/ai-insights/'
 languageCode = 'zh-cn'
 title = 'AI Insights'
-
-# 用于本地开发
-# baseURL = 'http://localhost:1313/'
+theme = 'm10c'
 canonifyURLs = true
 
-theme = 'paper'
+[pagination]
+  pagerSize = 10
 
-# Paper theme configuration
 [params]
-  # color style
-  color = 'linen'  # linen, wheat, gray, light
+  author = 'AI Insights'
+  description = 'AI驱动的多平台内容自动化生产工厂 - 每日AI新闻简报与技术文章'
+  menu_item_separator = " / "
 
-  # header social icons
-  twitter = 'Ming_H_dev'
-  github = 'Ming-H/content-forge-ai'
-  # instagram = 'your_instagram_id'
-  # rss = ''  # link to RSS file
+  # 背景和主题色
+  bgcolor = 'linen'
+  # 可选: white, snow, linen, honey, peach, wine, terra, gold, pine, foam, jade, teal, moss, sky, indigo, violet, grape, dune, cherry
 
-  # home page profile
-  avatar = 'https://www.devfoxai.cn/favicon.ico'
-  name = 'AI Insights'
-  bio = 'AI驱动的多平台内容自动化生产工厂 - 每日AI新闻简报与技术文章'
+  # 代码高亮样式
+  highlightjs = true
+  highlightjslanguages = ["python", "javascript", "java", "go", "bash"]
+  highlightjsStyle = "github"
+  # 可选: github, monokai, tomorrow, atom-one-light, atom-one-dark etc.
 
-  # misc
-  disableHLJS = true  # disable highlight.js
-  disablePostBuild = true
-  monoDarkIcon = false
+  # Favicon 和头像
+  favicon = 'https://www.devfoxai.cn/favicon.ico'
+  logo = 'https://www.devfoxai.cn/favicon.ico'
 
-# menu
+# 社交媒体链接
+[[params.social]]
+  icon = "github"
+  name = "GitHub"
+  url = "https://github.com/Ming-H/content-forge-ai"
+
+[[params.social]]
+  icon = "twitter"
+  name = "Twitter"
+  url = "https://twitter.com/Ming_H_dev"
+
+# 主菜单
 [[menu.main]]
-  url = "/"
+  identifier = "home"
   name = "首页"
+  url = "/"
   weight = 1
 
 [[menu.main]]
-  url = "/daily/"
+  identifier = "daily"
   name = "每日简报"
+  url = "/daily/"
   weight = 2
 
 [[menu.main]]
-  url = "/series/"
+  identifier = "series"
   name = "系列文章"
+  url = "/series/"
   weight = 3
 
 [[menu.main]]
-  url = "/about/"
+  identifier = "about"
   name = "关于"
+  url = "/about/"
   weight = 4
 
-# markdown config
+# Markdown 配置
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
-      unsafe = true  # enable raw HTML
+      unsafe = true
   [markup.highlight]
     lineNos = true
     lineNumbersInTable = true
     noClasses = false
 
-# Taxonomies
+# 分类
 [taxonomies]
   tag = "tags"
   category = "categories"

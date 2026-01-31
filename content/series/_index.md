@@ -8,12 +8,9 @@ description: "系统化的 AI 学习资源，从基础到前沿，构建完整�
 
 ---
 
-<div style="background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-
-### LLM 系列概览
-
-**85 篇深度文章** · 从架构到应用
-
+<div style="background: var(--color-bg-secondary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 3px solid var(--color-border);">
+  <span style="font-size: 0.875rem; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">LLM 系列概览</span>
+  <div style="font-size: 1rem; color: var(--color-text-primary); margin-top: 0.25rem;">85 篇深度文章 · 从架构到应用</div>
 </div>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 3rem;">
@@ -102,14 +99,9 @@ Cursor · Copilot · Code Interpreter
 
 ---
 
-### 机器学习系列
-
-<div style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
-
-### ML 系列概览
-
-**31 篇系统教程** · 从理论到实践
-
+<div style="background: var(--color-bg-secondary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 3px solid var(--color-border);">
+  <span style="font-size: 0.875rem; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">ML 系列概览</span>
+  <div style="font-size: 1rem; color: var(--color-text-primary); margin-top: 0.25rem;">31 篇系统教程 · 从理论到实践</div>
 </div>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">

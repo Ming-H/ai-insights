@@ -5,27 +5,28 @@
 <style>
   /* Daily-specific styles */
   .daily-hero {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-    color: white;
-    padding: var(--space-16) var(--space-6);
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    padding: var(--space-8) var(--space-6);
     text-align: center;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .daily-hero h1 {
-    color: white;
-    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
   }
 
   .daily-hero p {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
   }
 
   .daily-stats {
     display: flex;
     justify-content: center;
-    gap: var(--space-8);
-    margin-top: var(--space-8);
+    gap: var(--space-6);
+    margin-top: var(--space-6);
   }
 
   .daily-stat {
@@ -33,13 +34,14 @@
   }
 
   .daily-stat-value {
-    font-size: var(--text-3xl);
-    font-weight: var(--font-bold);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
   }
 
   .daily-stat-label {
     font-size: var(--text-sm);
-    opacity: 0.9;
+    color: var(--color-text-tertiary);
   }
 
   .daily-grid {

@@ -160,24 +160,6 @@
         <div style="margin-bottom: var(--space-12); color: var(--color-text-secondary);">
           {{ .Content | emojify }}
         </div>
-
-        {{ if .Data.Pages }}
-          <h2 style="font-size: var(--text-2xl); margin-bottom: var(--space-6);">所有系列</h2>
-          <div class="series-grid">
-            {{ range .Pages }}
-              <div class="card" style="cursor: pointer;" onclick="window.location.href = '{{ .Permalink }}'">
-                <div style="font-size: var(--text-base); font-weight: var(--font-medium); margin-bottom: var(--space-2);">
-                  <a href="{{ .Permalink }}" style="color: var(--color-text-primary);">{{ .Title }}</a>
-                </div>
-                {{ if .Params.description }}
-                  <div style="font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.5;">
-                    {{ .Params.description }}
-                  </div>
-                {{ end }}
-              </div>
-            {{ end }}
-          </div>
-        {{ end }}
       {{ else }}
         <div class="series-hero">
           <h1 class="series-hero-title" style="font-size: var(--text-4xl); font-weight: var(--font-bold); margin-bottom: var(--space-4);">{{ .Title }}</h1>

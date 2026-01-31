@@ -1,0 +1,217 @@
+{{ partial "header.html" . }}
+
+{{ partial "shared-css.html" . }}
+
+<style>
+  /* Article specific styles */
+  .article-page {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: var(--space-20) var(--space-6);
+  }
+
+  .article-header {
+    margin-bottom: var(--space-12);
+  }
+
+  .article-title {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-bold);
+    line-height: 1.2;
+    margin-bottom: var(--space-6);
+    color: var(--color-text-primary);
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-8);
+  }
+
+  .article-meta-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .article-content {
+    font-size: var(--text-lg);
+    line-height: 1.8;
+    color: var(--color-text-primary);
+  }
+
+  .article-content h2 {
+    font-size: var(--text-3xl);
+    font-weight: var(--font-semibold);
+    margin-top: var(--space-16);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 2px solid var(--color-border-light);
+  }
+
+  .article-content h3 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+  }
+
+  .article-content h4 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-4);
+  }
+
+  .article-content p {
+    margin-bottom: var(--space-6);
+  }
+
+  .article-content ul,
+  .article-content ol {
+    margin-bottom: var(--space-6);
+    padding-left: var(--space-8);
+  }
+
+  .article-content li {
+    margin-bottom: var(--space-3);
+  }
+
+  .article-content code {
+    background: var(--color-bg-tertiary);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  }
+
+  .article-content pre {
+    background: var(--color-bg-tertiary);
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    margin-bottom: var(--space-8);
+  }
+
+  .article-content pre code {
+    background: transparent;
+    padding: 0;
+  }
+
+  .article-content blockquote {
+    border-left: 4px solid var(--color-primary);
+    padding-left: var(--space-6);
+    margin: var(--space-8) 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+  }
+
+  .article-content a {
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition-fast);
+  }
+
+  .article-content a:hover {
+    border-bottom-color: var(--color-primary);
+  }
+
+  .article-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    margin: var(--space-10) 0;
+  }
+
+  .article-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-10) 0;
+  }
+
+  .article-content th,
+  .article-content td {
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    text-align: left;
+  }
+
+  .article-content th {
+    background: var(--color-bg-secondary);
+    font-weight: var(--font-semibold);
+  }
+
+  @media (max-width: 768px) {
+    .article-page {
+      padding: var(--space-16) var(--space-4);
+    }
+
+    .article-title {
+      font-size: var(--text-4xl);
+    }
+  }
+</style>
+
+<body>
+  <div class="article-page">
+    <nav class="breadcrumb">
+      <a href="{{ .Site.BaseURL }}">首页</a>
+      <span class="breadcrumb-separator">›</span>
+      <a href="{{ "series/" | relURL }}">系列文章</a>
+      <span class="breadcrumb-separator">›</span>
+      <a href="{{ .CurrentSection.Permalink }}">{{ .CurrentSection.Title }}</a>
+    </nav>
+
+    <header class="article-header">
+      <h1 class="article-title">{{ .Title }}</h1>
+
+      {{ if or .Date .Params.author }}
+        <div class="article-meta">
+          {{ if .Date }}
+            <div class="article-meta-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>{{ .Date.Format "2006-01-02" }}</span>
+            </div>
+          {{ end }}
+          {{ if .ReadingTime }}
+            <div class="article-meta-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>{{ .ReadingTime }} 分钟阅读</span>
+            </div>
+          {{ end }}
+          {{ if .Params.difficulty }}
+            <div class="article-meta-item">
+              <span style="padding: var(--space-1) var(--space-3); background: var(--color-primary-light); color: var(--color-primary); border-radius: var(--radius-full); font-size: var(--text-sm);">
+                {{ .Params.difficulty }}
+              </span>
+            </div>
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ if .Params.description }}
+        <p style="font-size: var(--text-xl); color: var(--color-text-secondary); line-height: 1.6;">
+          {{ .Params.description }}
+        </p>
+      {{ end }}
+    </header>
+
+    <article class="article-content">
+      {{ .Content }}
+    </article>
+  </div>
+
+  {{ partial "footer.html" . }}
+</body>

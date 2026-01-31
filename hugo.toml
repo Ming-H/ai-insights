@@ -1,0 +1,66 @@
+baseURL = 'https://Ming-H.github.io/ai-insights/'
+languageCode = 'zh-cn'
+title = 'AI Insights'
+
+# 用于本地开发
+# baseURL = 'http://localhost:1313/'
+canonifyURLs = true
+
+theme = 'paper'
+
+# Paper theme configuration
+[params]
+  # color style
+  color = 'linen'  # linen, wheat, gray, light
+
+  # header social icons
+  twitter = 'Ming_H_dev'
+  github = 'Ming-H/content-forge-ai'
+  # instagram = 'your_instagram_id'
+  # rss = ''  # link to RSS file
+
+  # home page profile
+  avatar = 'https://www.devfoxai.cn/favicon.ico'
+  name = 'AI Insights'
+  bio = 'AI驱动的多平台内容自动化生产工厂 - 每日AI新闻简报与技术文章'
+
+  # misc
+  disableHLJS = true  # disable highlight.js
+  disablePostBuild = true
+  monoDarkIcon = false
+
+# menu
+[[menu.main]]
+  url = "/"
+  name = "首页"
+  weight = 1
+
+[[menu.main]]
+  url = "/daily/"
+  name = "每日简报"
+  weight = 2
+
+[[menu.main]]
+  url = "/series/"
+  name = "系列文章"
+  weight = 3
+
+[[menu.main]]
+  url = "/about/"
+  name = "关于"
+  weight = 4
+
+# markdown config
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # enable raw HTML
+  [markup.highlight]
+    lineNos = true
+    lineNumbersInTable = true
+    noClasses = false
+
+# Taxonomies
+[taxonomies]
+  tag = "tags"
+  category = "categories"

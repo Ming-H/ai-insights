@@ -264,10 +264,10 @@
       <h1>{{ .Site.Title }}</h1>
       <p>{{ .Site.Params.description | default "系统化的 AI 技术学习资源，从基础到前沿，构建完整知识体系" }}</p>
       <div class="hero-actions">
-        <a href="/series/" class="btn btn-primary">
+        <a href="{{ "series/" | relURL }}" class="btn btn-primary">
           📚 开始学习
         </a>
-        <a href="/daily/" class="btn btn-secondary">
+        <a href="{{ "daily/" | relURL }}" class="btn btn-secondary">
           📰 每日简报
         </a>
       </div>
@@ -382,8 +382,8 @@
           加入我们，探索 AI 技术的无限可能
         </p>
         <div style="display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
-          <a href="/series/" class="btn btn-primary">浏览系列文章</a>
-          <a href="/about/" class="btn btn-secondary">了解更多</a>
+          <a href="{{ "series/" | relURL }}" class="btn btn-primary">浏览系列文章</a>
+          <a href="{{ "about/" | relURL }}" class="btn btn-secondary">了解更多</a>
         </div>
       </div>
     </div>

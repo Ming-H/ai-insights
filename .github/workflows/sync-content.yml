@@ -10,6 +10,9 @@ on:
     # 19:00 (北京时间) = UTC 11:00 - 同步晚间内容
     - cron: '0 11 * * *'
   workflow_dispatch:
+  # 允许从 content-forge-ai 仓库触发同步
+  repository_dispatch:
+    types: [content-updated]
 
 jobs:
   sync:

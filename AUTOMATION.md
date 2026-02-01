@@ -70,6 +70,7 @@ TAVILY_API_KEY: xxx   # Tavily 搜索密钥
   - 13:00 (北京时间) - 同步中午内容
   - 19:00 (北京时间) - 同步晚间内容
 - 手动触发
+- 仓库事件触发 (repository_dispatch): 当 content-forge-ai 发送 `content-updated` 事件时立即同步
 
 **功能**:
 - 从 content-forge-ai 拉取最新内容
@@ -78,9 +79,24 @@ TAVILY_API_KEY: xxx   # Tavily 搜索密钥
 - 触发构建流程
 
 **需要配置**:
-- 确保 `devfoxaicn/content-forge-ai` 仓库可访问
+- 确保 `Ming-H/content-forge-ai` 仓库可访问
   - 如果是公开仓库: 使用默认 GITHUB_TOKEN
   - 如果是私有仓库: 需要配置 PAT Token
+
+**跨仓库触发 (可选)**:
+如果需要在 content-forge-ai 更新后立即触发同步，可以在 content-forge-ai 的工作流中添加:
+
+```yaml
+- name: Trigger ai-insights sync
+  run: |
+    curl -X POST \
+      -H "Accept: application/vnd.github.v3+json" \
+      -H "Authorization: token ${{ secrets.AI_INSIGHTS_PAT }}" \
+      https://api.github.com/repos/Ming-H/ai-insights/dispatches \
+      -d '{"event_type":"content-updated"}'
+```
+
+需要配置 `AI_INSIGHTS_PAT` secret (Personal Access Token with repo scope).
 
 ### 3. 网站构建部署 (ai-insights)
 
@@ -134,7 +150,7 @@ hugo --minify
 **检查点**:
 ```bash
 # 检查 content-forge-ai 仓库是否可访问
-curl -I https://api.github.com/repos/devfoxaicn/content-forge-ai
+curl -I https://api.github.com/repos/Ming-H/content-forge-ai
 
 # 检查数据目录是否存在
 ls -la /path/to/content-forge-ai/data/daily/

@@ -27,7 +27,7 @@ jobs:
       - name: Checkout content-forge-ai
         uses: actions/checkout@v4
         with:
-          repository: devfoxaicn/content-forge-ai
+          repository: Ming-H/content-forge-ai
           path: content-forge-ai
           # 如果是私有仓库，使用 PAT: ${{ secrets.CONTENT_FORGE_AI_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}

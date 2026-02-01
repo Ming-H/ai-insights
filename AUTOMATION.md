@@ -38,7 +38,7 @@
 
 ### 1. 内容生成 (content-forge-ai)
 
-**仓库**: `devfoxaicn/content-forge-ai`
+**仓库**: `Ming-H/content-forge-ai`
 
 **GitHub Actions**: `.github/workflows/daily-digest.yml`
 

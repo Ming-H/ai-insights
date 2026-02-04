@@ -57,8 +57,8 @@ jobs:
           echo "开始同步内容..."
           echo "========================================"
           # 更新脚本中的路径为 GitHub Actions 环境路径
-          sed -i 's|/Users/z/Documents/work/content-forge-ai|$GITHUB_WORKSPACE/content-forge-ai|g' scripts/sync_content.py
-          sed -i 's|/Users/z/Documents/work/ai-insights|$GITHUB_WORKSPACE/ai-insights|g' scripts/sync_content.py
+          sed -i "s|/Users/z/Documents/work/content-forge-ai|$GITHUB_WORKSPACE/content-forge-ai|g" scripts/sync_content.py
+          sed -i "s|/Users/z/Documents/work/ai-insights|$GITHUB_WORKSPACE/ai-insights|g" scripts/sync_content.py
           python scripts/sync_content.py --all
           echo "========================================"
           echo "内容同步完成"

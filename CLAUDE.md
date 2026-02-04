@@ -54,9 +54,10 @@ content-forge-ai (source)          ai-insights (this repo)
 │ GitHub Actions      │           │ GitHub Actions      │
 │ daily-digest.yml    │──────────▶│ sync-content.yml    │
 │ Runs: 6/12/18 Beijing│  sync    │ Runs: 7:30/13/19    │
+│ repository_dispatch │──(instant)│ or on push          │
 │ Generates:          │──────────▶│ Converts + commits  │
 │ - Daily digests     │           │ - Hugo front matter │
-│ - Series articles   │           │ - Triggers build    │
+│ - Series articles   │           │ - Triggers hugo.yml │
 └─────────────────────┘           └─────────────────────┘
                                           │
                                           ▼
@@ -140,5 +141,6 @@ estimatedWords: 2000
 
 - **Congo theme is a git submodule** - run `git submodule update --init --recursive` if missing
 - **Content paths in sync script** are hardcoded for local development; GitHub Actions patches them via sed
+  - **Critical**: When editing `.github/workflows/sync-content.yml`, sed commands MUST use double quotes for variable expansion: `sed -i "s|...|$GITHUB_WORKSPACE/...|g"` (single quotes will not expand the variable)
 - **No automated tests** - manual verification via `hugo server --buildDrafts`
 - **Content language** is Chinese (zh-cn); preserve technical terms in English

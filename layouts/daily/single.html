@@ -4,306 +4,484 @@
 
 <style>
   /* ============================================
-     AI INSIGHTS DAILY DIGEST
-     TechCrunch-inspired clean, modern design
+     AI INSIGHTS - MODERN CARD GRID LAYOUT
+     Inspired by Product Hunt, Hacker News, Dribbble
      ============================================ */
 
   :root {
-    --digest-accent: #0a8ea3;
-    --digest-accent-hover: #087385;
-    --card-gap: 8px;
+    --accent-primary: #6366f1;
+    --accent-secondary: #8b5cf6;
+    --accent-tertiary: #ec4899;
+    --card-hover: rgba(99, 102, 241, 0.08);
+    --border-subtle: #f1f5f9;
+    --text-muted: #64748b;
   }
 
-  /* Base */
-  .daily-article {
-    max-width: 1200px;
+  [data-theme="dark"] {
+    --accent-primary: #818cf8;
+    --accent-secondary: #a78bfa;
+    --accent-tertiary: #f472b6;
+    --card-hover: rgba(129, 140, 248, 0.15);
+    --border-subtle: #1e293b;
+    --text-muted: #94a3b8;
+  }
+
+  /* Container */
+  .daily-digest {
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 24px 20px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   }
 
   /* Header */
-  .daily-header {
+  .digest-header {
     text-align: center;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--color-border);
+    padding: 40px 20px;
+    margin-bottom: 20px;
   }
 
-  .daily-meta {
+  .digest-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .digest-title {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .digest-meta {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 16px;
     font-size: 13px;
-    color: var(--color-text-tertiary);
+    color: var(--text-muted);
   }
 
-  .daily-title {
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 1.2;
+  .digest-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Quick Stats - 核心洞察 */
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    padding: 20px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .stat-card:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 20px var(--card-hover);
+  }
+
+  .stat-icon {
+    font-size: 20px;
     margin-bottom: 8px;
-    letter-spacing: -0.02em;
   }
 
-  .daily-excerpt {
-    font-size: 15px;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  /* Content */
-  .daily-content {
+  .stat-content {
     font-size: 14px;
     line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Section - 深度观察 */
+  .deep-dive {
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    margin-bottom: 32px;
+  }
+
+  [data-theme="dark"] .deep-dive {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  }
+
+  .deep-dive-content {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
   }
 
   /* Section Headers */
-  .daily-content h2 {
-    font-size: 18px;
-    font-weight: 700;
-    margin: 32px 0 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--color-border);
-    letter-spacing: -0.01em;
-  }
-
-  .daily-content h3 {
-    font-size: 15px;
-    font-weight: 600;
-    margin: 24px 0 12px;
-    letter-spacing: -0.01em;
-  }
-
-  /* Hide anchors */
-  .daily-content h2 .not-prose,
-  .daily-content h3 .not-prose,
-  .daily-content h2 .not-prose a,
-  .daily-content h3 .not-prose a {
-    display: none !important;
-  }
-
-  /* Paragraphs */
-  .daily-content p {
-    margin-bottom: 12px;
-  }
-
-  /* Lists */
-  .daily-content ul,
-  .daily-content ol {
-    margin-bottom: 12px;
-    padding-left: 20px;
-  }
-
-  .daily-content li {
-    margin-bottom: 4px;
-  }
-
-  /* Blockquotes */
-  .daily-content blockquote {
-    margin: 16px 0;
-    padding: 12px 16px;
-    background: var(--color-bg-secondary);
-    border-left: 3px solid var(--digest-accent);
-    border-radius: 4px;
-  }
-
-  .daily-content blockquote p {
-    margin-bottom: 0;
-  }
-
-  /* Tables */
-  .daily-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 13px;
-  }
-
-  .daily-content table th {
-    padding: 8px 12px;
-    text-align: left;
-    font-weight: 600;
-    color: var(--color-text-secondary);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .daily-content table td {
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-
-  .daily-content table tr:last-child td {
-    border-bottom: none;
-  }
-
-  /* ============================================
-     NEWS CARDS - TechCrunch Style
-     ============================================ */
-  .daily-content > hr {
-    border: none;
-    margin: 24px 0;
-  }
-
-  /* News Item Card */
-  .news-item {
-    padding: 12px 0;
-    border-bottom: 1px solid var(--color-border-light);
-  }
-
-  .news-item:last-child {
-    border-bottom: none;
-  }
-
-  .news-header {
+  .section-header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 12px;
-    margin-bottom: 6px;
+    margin: 40px 0 20px;
   }
 
-  .news-title {
-    font-size: 15px;
-    font-weight: 500;
+  .section-icon {
+    font-size: 24px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-count {
+    margin-left: auto;
+    padding: 4px 12px;
+    background: var(--color-bg-tertiary);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  /* Featured Grid - 编辑精选 */
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .featured-card {
+    padding: 20px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .featured-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .featured-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--card-hover);
+    border-color: var(--accent-primary);
+  }
+
+  .featured-card:hover::before {
+    opacity: 1;
+  }
+
+  .featured-number {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .featured-title {
+    font-size: 16px;
+    font-weight: 600;
     line-height: 1.4;
-    flex: 1;
+    margin-bottom: 12px;
+    padding-right: 40px;
   }
 
-  .news-title a {
+  .featured-title a {
     color: var(--color-text-primary);
     text-decoration: none;
   }
 
-  .news-title a:hover {
-    color: var(--digest-accent);
+  .featured-title a:hover {
+    color: var(--accent-primary);
   }
 
-  .news-meta {
+  .featured-meta {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-shrink: 0;
-    font-size: 11px;
-    color: var(--color-text-tertiary);
+    margin-bottom: 12px;
+    font-size: 12px;
+    color: var(--text-muted);
   }
 
-  .news-source {
+  .featured-source {
+    padding: 3px 8px;
+    background: var(--color-bg-tertiary);
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .featured-summary {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* Table - 热门话题 */
+  .trending-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-bottom: 32px;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+  }
+
+  .trending-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: var(--color-bg-secondary);
+  }
+
+  .trending-table td {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 14px;
+  }
+
+  .trending-table tr:hover td {
+    background: var(--card-hover);
+  }
+
+  /* Category Grid - 分类热点 */
+  .category-section {
+    margin-bottom: 32px;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .category-icon {
+    font-size: 20px;
+  }
+
+  .category-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+
+  .article-card {
+    padding: 16px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .article-card:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 20px var(--card-hover);
+  }
+
+  .article-number {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .article-title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .article-title a {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .article-title a:hover {
+    color: var(--accent-primary);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 11px;
+    flex-wrap: wrap;
+  }
+
+  .article-source {
     padding: 2px 6px;
     background: var(--color-bg-tertiary);
     border-radius: 3px;
+    font-weight: 500;
   }
 
-  .news-summary {
-    font-size: 13px;
-    color: var(--color-text-secondary);
+  .article-score {
+    color: var(--text-muted);
+  }
+
+  .article-summary {
+    font-size: 12px;
     line-height: 1.5;
-    margin-top: 4px;
+    color: var(--color-text-secondary);
+  }
+
+  /* Sources - 数据来源 */
+  .sources-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .source-tag {
+    padding: 6px 12px;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* Hide default elements */
+  .daily-content h2,
+  .daily-content h3,
+  .daily-content h4,
+  .daily-content > hr,
+  .daily-content blockquote strong {
+    display: none;
   }
 
   /* Navigation */
-  .daily-nav {
+  .digest-nav {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: center;
+    gap: 16px;
     margin-top: 40px;
     padding-top: 24px;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--border-subtle);
   }
 
-  .daily-nav-link {
-    flex: 1;
-    padding: 10px 16px;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    text-align: center;
+  .digest-nav a {
+    padding: 12px 24px;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
     font-size: 14px;
-    font-weight: 500;
-    color: var(--color-text-primary);
+    font-weight: 600;
     text-decoration: none;
-    transition: all 0.15s ease;
+    color: var(--color-text-primary);
+    transition: all 0.2s ease;
   }
 
-  .daily-nav-link:hover {
-    background: var(--digest-accent);
+  .digest-nav a:hover {
+    background: var(--accent-primary);
     color: white;
-    border-color: var(--digest-accent);
+    border-color: var(--accent-primary);
   }
 
   /* Mobile */
   @media (max-width: 768px) {
-    .daily-article {
-      padding: 16px;
+    .daily-digest {
+      padding: 12px;
     }
 
-    .daily-title {
+    .digest-title {
       font-size: 24px;
     }
 
-    .daily-excerpt {
-      font-size: 14px;
+    .quick-stats {
+      grid-template-columns: 1fr;
     }
 
-    .daily-content {
-      font-size: 13px;
+    .featured-grid {
+      grid-template-columns: 1fr;
     }
 
-    .daily-content h2 {
-      font-size: 16px;
-      margin: 24px 0 12px;
+    .category-grid {
+      grid-template-columns: 1fr;
     }
 
-    .daily-content h3 {
-      font-size: 14px;
-      margin: 20px 0 10px;
+    .section-header {
+      flex-wrap: wrap;
     }
 
-    .news-header {
+    .section-count {
+      margin-left: 0;
+    }
+
+    .digest-nav {
       flex-direction: column;
-      gap: 6px;
-    }
-
-    .news-meta {
-      align-self: flex-start;
-    }
-
-    .daily-nav {
-      flex-direction: column;
-      gap: 8px;
     }
   }
 </style>
 
 <body>
-  <article class="daily-article">
-    <header class="daily-header">
-      <nav class="breadcrumb">
-        <a href="{{ .Site.BaseURL }}" style="color: var(--color-text-secondary); text-decoration: none;">首页</a>
-        <span style="color: var(--color-text-tertiary);">›</span>
-        <a href="{{ "daily/" | relURL }}" style="color: var(--color-text-secondary); text-decoration: none;">每日热点</a>
-        <span style="color: var(--color-text-tertiary);">›</span>
-        <span style="color: var(--color-text-tertiary);">{{ .Date.Format "2006-01-02" }}</span>
-      </nav>
-
-      <div class="daily-meta">
-        <span>{{ .Date.Format "2006年01月02日" }}</span>
-        <span>·</span>
-        <span>{{ .ReadingTime }} 分钟阅读</span>
-        {{ if .Params.tags }}
-          <span>·</span>
-          <span>{{ len .Params.tags }} 条精选</span>
-        {{ end }}
+  <article class="daily-digest">
+    <header class="digest-header">
+      <div class="digest-badge">
+        <span>📰</span>
+        <span>AI每日热点</span>
       </div>
-
-      <h1 class="daily-title">{{ .Title }}</h1>
-
-      {{ if .Description }}
-        <p class="daily-excerpt">{{ .Description }}</p>
-      {{ end }}
+      <h1 class="digest-title">{{ .Title }}</h1>
+      <div class="digest-meta">
+        <span>📅 {{ .Date.Format "2006年01月02日" }}</span>
+        <span>·</span>
+        <span>⏱️ {{ .ReadingTime }} 分钟阅读</span>
+        <span>·</span>
+        <span>📝 {{ if .Params.tags }}{{ len .Params.tags }}{{ end }} 条精选</span>
+      </div>
     </header>
 
     <div class="daily-content">
@@ -311,20 +489,273 @@
     </div>
 
     {{ if or .PrevInSection .NextInSection }}
-      <nav class="daily-nav">
+      <nav class="digest-nav">
         {{ if .PrevInSection }}
-          <a href="{{ .PrevInSection.Permalink }}" class="daily-nav-link">
-            ← {{ .PrevInSection.Date.Format "01月02日" }}
-          </a>
+          <a href="{{ .PrevInSection.Permalink }}">← {{ .PrevInSection.Date.Format "01月02日" }}</a>
         {{ end }}
         {{ if .NextInSection }}
-          <a href="{{ .NextInSection.Permalink }}" class="daily-nav-link">
-            {{ .NextInSection.Date.Format "01月02日" }} →
-          </a>
+          <a href="{{ .NextInSection.Permalink }}">{{ .NextInSection.Date.Format "01月02日" }} →</a>
         {{ end }}
       </nav>
     {{ end }}
   </article>
+
+  <script>
+    // Transform content into modern card layout
+    document.addEventListener('DOMContentLoaded', function() {
+      const content = document.querySelector('.daily-content');
+      if (!content) return;
+
+      // Store extracted data BEFORE clearing content
+      const extractedData = {
+        insights: null,
+        deepDive: null,
+        table: null,
+        sources: null,
+        sections: {}
+      };
+
+      // Get all H4 headers (article titles) and group them
+      const articles = content.querySelectorAll('h4');
+
+      // Organize content by sections
+      articles.forEach((article, index) => {
+        // Find the section this article belongs to
+        let section = article.previousElementSibling;
+        while (section && section.tagName !== 'H3') {
+          section = section.previousElementSibling;
+        }
+
+        const sectionName = section ? section.textContent.trim() : 'other';
+        if (!extractedData.sections[sectionName]) {
+          extractedData.sections[sectionName] = [];
+        }
+
+        // Get article content until next H4 or H3
+        const articleData = {
+          title: article.textContent.trim(),
+          number: (index + 1) + '.',
+          meta: '',
+          summary: '',
+          link: ''
+        };
+
+        // Get content between this H4 and the next header
+        let nextEl = article.nextElementSibling;
+        while (nextEl && nextEl.tagName !== 'H4' && nextEl.tagName !== 'H3' && nextEl.tagName !== 'H2') {
+          if (nextEl.tagName === 'BLOCKQUOTE') {
+            articleData.meta = nextEl.textContent;
+          } else if (nextEl.tagName === 'P') {
+            articleData.summary = nextEl.textContent.replace(/\*\*摘要\*\*:/, '').trim();
+          } else if (nextEl.tagName === 'A' && nextEl.href) {
+            articleData.link = nextEl.href;
+          }
+          nextEl = nextEl.nextElementSibling;
+        }
+
+        extractedData.sections[sectionName].push(articleData);
+      });
+
+      // Extract quick stats (核心洞察) before clearing
+      const allH2s = content.querySelectorAll('h2');
+      allH2s.forEach(h2 => {
+        if (h2.textContent.includes('核心洞察')) {
+          const ul = h2.nextElementSibling;
+          if (ul && ul.tagName === 'UL') {
+            extractedData.insights = [];
+            ul.querySelectorAll('li').forEach(li => {
+              extractedData.insights.push(li.textContent);
+            });
+          }
+        }
+      });
+
+      // Extract deep dive (深度观察)
+      const allPs = content.querySelectorAll('p');
+      allPs.forEach(p => {
+        if (p.textContent.length > 100 && !extractedData.deepDive) {
+          extractedData.deepDive = p.textContent;
+        }
+      });
+
+      // Extract table
+      const table = content.querySelector('table');
+      if (table) {
+        extractedData.table = table.cloneNode(true);
+      }
+
+      // Extract sources
+      const allULs = content.querySelectorAll('ul');
+      allULs.forEach(ul => {
+        const parentText = ul.parentElement?.textContent || '';
+        if (parentText.includes('数据来源')) {
+          extractedData.sources = [];
+          ul.querySelectorAll('li').forEach(li => {
+            extractedData.sources.push(li.textContent.trim());
+          });
+        }
+      });
+
+      // Now rebuild the content
+      content.innerHTML = '';
+
+      // Add quick stats (核心洞察)
+      if (extractedData.insights && extractedData.insights.length > 0) {
+        const statsSection = document.createElement('div');
+        statsSection.className = 'quick-stats';
+
+        extractedData.insights.forEach((text, i) => {
+          const card = document.createElement('div');
+          card.className = 'stat-card';
+          card.innerHTML = `
+            <div class="stat-icon">${['💡', '🚀', '🎯'][i] || '📌'}</div>
+            <div class="stat-content">${text}</div>
+          `;
+          statsSection.appendChild(card);
+        });
+
+        content.appendChild(statsSection);
+      }
+
+      // Add deep dive section (深度观察)
+      if (extractedData.deepDive) {
+        const section = document.createElement('div');
+        section.className = 'deep-dive';
+        section.innerHTML = `<div class="deep-dive-content">${extractedData.deepDive}</div>`;
+        content.appendChild(section);
+      }
+
+      // Add featured section (编辑精选)
+      const featuredArticles = extractedData.sections['编辑精选 (Editor\'s Picks)'] || [];
+      if (featuredArticles.length > 0) {
+        const featuredSection = document.createElement('div');
+        featuredSection.innerHTML = `
+          <div class="section-header">
+            <span class="section-icon">⭐</span>
+            <span class="section-title">编辑精选</span>
+          </div>
+        `;
+
+        const featuredGrid = document.createElement('div');
+        featuredGrid.className = 'featured-grid';
+
+        featuredArticles.slice(0, 5).forEach((article, i) => {
+          const card = document.createElement('div');
+          card.className = 'featured-card';
+
+          // Parse meta info
+          const sourceMatch = article.meta.match(/📰\s*\*\*([^*]+)\*\*/);
+          const scoreMatch = article.meta.match(/⭐\s*\*\*重要性[^:]*:\s*(\d+)/);
+          const source = sourceMatch ? sourceMatch[1] : '';
+          const score = scoreMatch ? scoreMatch[1] : '';
+
+          card.innerHTML = `
+            <div class="featured-number">${i + 1}</div>
+            <div class="featured-title">
+              <a href="${article.link || '#'}">${article.title.replace(/^\d+\.\s*/, '')}</a>
+            </div>
+            <div class="featured-meta">
+              <span class="featured-source">${source}</span>
+              ${score ? `<span>⭐ ${score}/100</span>` : ''}
+            </div>
+            <div class="featured-summary">${article.summary}</div>
+          `;
+          featuredGrid.appendChild(card);
+        });
+
+        featuredSection.appendChild(featuredGrid);
+        content.appendChild(featuredSection);
+      }
+
+      // Add trending table (热门话题)
+      if (extractedData.table) {
+        const tableSection = document.createElement('div');
+        tableSection.innerHTML = `
+          <div class="section-header">
+            <span class="section-icon">📊</span>
+            <span class="section-title">热门话题</span>
+          </div>
+        `;
+        extractedData.table.className = 'trending-table';
+        tableSection.appendChild(extractedData.table);
+        content.appendChild(tableSection);
+      }
+
+      // Add category sections
+      const categories = ['📚 学术前沿', '🛠️ 开发工具', '🦾 AI Agent', '💼 企业应用', '🌐 消费产品', '📰 行业资讯'];
+
+      categories.forEach(cat => {
+        const articles = extractedData.sections[cat];
+        if (!articles || articles.length === 0) return;
+
+        const catSection = document.createElement('div');
+        catSection.className = 'category-section';
+
+        const catName = cat.split(' ').slice(1).join(' ');
+        catSection.innerHTML = `
+          <div class="category-header">
+            <span class="category-icon">${cat.split(' ')[0]}</span>
+            <span class="category-name">${catName}</span>
+            <span class="section-count">${articles.length}条</span>
+          </div>
+        `;
+
+        const grid = document.createElement('div');
+        grid.className = 'category-grid';
+
+        articles.forEach(article => {
+          const card = document.createElement('div');
+          card.className = 'article-card';
+
+          // Parse meta info
+          const sourceMatch = article.meta.match(/📰\s*\*\*([^*]+)\*\*/);
+          const scoreMatch = article.meta.match(/⭐\s*\*\*重要性[^:]*:\s*(\d+)/);
+          const source = sourceMatch ? sourceMatch[1] : '';
+          const score = scoreMatch ? scoreMatch[1] : '';
+
+          card.innerHTML = `
+            <div class="article-number">${article.number}</div>
+            <div class="article-title">
+              <a href="${article.link || '#'}">${article.title.replace(/^\d+\.\s*/, '')}</a>
+            </div>
+            <div class="article-meta">
+              <span class="article-source">${source}</span>
+              ${score ? `<span class="article-score">⭐ ${score}</span>` : ''}
+            </div>
+            <div class="article-summary">${article.summary}</div>
+          `;
+          grid.appendChild(card);
+        });
+
+        catSection.appendChild(grid);
+        content.appendChild(catSection);
+      });
+
+      // Add sources section (数据来源)
+      if (extractedData.sources && extractedData.sources.length > 0) {
+        const sourcesDiv = document.createElement('div');
+        sourcesDiv.innerHTML = `
+          <div class="section-header">
+            <span class="section-icon">📚</span>
+            <span class="section-title">数据来源</span>
+          </div>
+        `;
+
+        const sourcesList = document.createElement('div');
+        sourcesList.className = 'sources-list';
+
+        extractedData.sources.forEach(sourceText => {
+          const tag = document.createElement('span');
+          tag.className = 'source-tag';
+          tag.textContent = sourceText;
+          sourcesList.appendChild(tag);
+        });
+
+        sourcesDiv.appendChild(sourcesList);
+        content.appendChild(sourcesDiv);
+      }
+    });
+  </script>
 
   {{ partial "footer.html" . }}
 </body>

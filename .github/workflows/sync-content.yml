@@ -88,6 +88,8 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add content/
           git commit -m "chore: sync content from content-forge-ai [skip ci]" -m "自动同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+          # 先拉取远程更改，避免冲突
+          git pull --rebase origin main
           git push
           echo "✅ 内容已成功同步并推送到仓库"
 

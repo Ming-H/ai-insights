@@ -580,7 +580,11 @@
           section = section.previousElementSibling;
         }
 
-        const sectionName = section ? section.textContent.trim() : 'other';
+        // Extract section name and clean it (remove count in parentheses)
+        let sectionName = section ? section.textContent.trim() : 'other';
+        // Remove content in parentheses like " (5条)"
+        sectionName = sectionName.replace(/\s*\([^)]*\)\s*$/g, '').trim();
+
         if (!data.sections[sectionName]) {
           data.sections[sectionName] = [];
         }

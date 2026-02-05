@@ -4,7 +4,7 @@
 
 <style>
   /* ============================================
-     AI INSIGHTS - COMPACT GRID LAYOUT
+     AI INSIGHTS - FULL CONTENT LIST
      ============================================ */
 
   body {
@@ -12,16 +12,16 @@
   }
 
   .daily-digest {
-    max-width: 1400px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 32px 20px 60px;
+    padding: 40px 24px 80px;
   }
 
   /* Header */
   .digest-header {
     text-align: center;
-    margin-bottom: 40px;
-    padding-bottom: 24px;
+    margin-bottom: 48px;
+    padding-bottom: 32px;
     border-bottom: 1px solid var(--color-border);
   }
 
@@ -54,50 +54,52 @@
 
   /* Section */
   .section {
-    margin-bottom: 40px;
+    margin-bottom: 48px;
   }
 
   .section-header {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--color-border);
   }
 
   .section-icon {
-    font-size: 22px;
+    font-size: 24px;
   }
 
   .section-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--color-text-primary);
   }
 
   .section-count {
     margin-left: auto;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--color-text-tertiary);
     background: var(--color-bg-secondary);
-    padding: 4px 10px;
-    border-radius: 12px;
+    padding: 5px 12px;
+    border-radius: 16px;
   }
 
   /* Quick Stats */
   .quick-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 32px;
+    gap: 16px;
+    margin-bottom: 40px;
   }
 
   .stat-card {
-    padding: 16px;
+    padding: 18px;
     background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
     color: var(--color-text-secondary);
   }
 
@@ -107,62 +109,70 @@
 
   /* Deep Dive */
   .deep-dive {
-    padding: 20px;
+    padding: 24px;
     background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
     border-radius: 12px;
     font-size: 15px;
-    line-height: 1.7;
+    line-height: 1.8;
     color: var(--color-text-primary);
-    margin-bottom: 32px;
+    margin-bottom: 40px;
   }
 
   [data-theme="dark"] .deep-dive {
     background: linear-gradient(135deg, #422006 0%, #78350f 100%);
   }
 
-  /* Article Grid - 3 columns for compact view */
-  .article-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+  /* Article List - Full content, no truncation */
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .article-card {
-    padding: 16px;
+    padding: 24px;
     background: var(--color-bg-primary);
     border: 1px solid var(--color-border);
-    border-radius: 10px;
-    transition: all 0.15s ease;
-    display: flex;
-    flex-direction: column;
+    border-radius: 12px;
+    transition: all 0.2s ease;
   }
 
   .article-card:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  .article-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
   }
 
   .article-number {
-    font-size: 11px;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-primary);
+    color: white;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 700;
-    color: var(--color-primary);
-    margin-bottom: 8px;
   }
 
   .article-title {
-    font-size: 15px;
+    flex: 1;
+    font-size: 18px;
     font-weight: 600;
     line-height: 1.4;
-    margin-bottom: 10px;
   }
 
   .article-title a {
     color: var(--color-text-primary);
     text-decoration: none;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   .article-title a:hover {
@@ -172,16 +182,15 @@
   .article-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
-    font-size: 11px;
-    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-size: 13px;
   }
 
   .article-source {
-    padding: 3px 8px;
+    padding: 4px 10px;
     background: var(--color-bg-secondary);
-    border-radius: 4px;
+    border-radius: 6px;
     color: var(--color-text-secondary);
     font-weight: 600;
   }
@@ -192,54 +201,54 @@
   }
 
   .article-summary {
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.7;
     color: var(--color-text-secondary);
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    flex: 1;
+    /* No truncation - show full content */
   }
 
-  /* Featured Section - 2 columns */
+  /* Featured Section */
   .featured-section {
-    margin-bottom: 32px;
+    margin-bottom: 48px;
   }
 
-  .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+  .featured-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .featured-card {
-    padding: 18px;
-    background: var(--color-bg-primary);
+    padding: 24px;
+    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
     border: 2px solid var(--color-border);
-    border-radius: 12px;
+    border-radius: 14px;
     position: relative;
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
+  }
+
+  [data-theme="dark"] .featured-card {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d1f4e 100%);
   }
 
   .featured-card:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
   }
 
   .featured-badge {
     position: absolute;
-    top: 14px;
-    right: 14px;
-    width: 28px;
-    height: 28px;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--color-primary);
     color: white;
     border-radius: 8px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
   }
 
@@ -249,15 +258,15 @@
     border-collapse: separate;
     border-spacing: 0;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid var(--color-border);
     font-size: 14px;
   }
 
   .trending-table th {
-    padding: 12px 16px;
+    padding: 14px 18px;
     text-align: left;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.6px;
@@ -266,7 +275,7 @@
   }
 
   .trending-table td {
-    padding: 12px 16px;
+    padding: 14px 18px;
     border-top: 1px solid var(--color-border);
     color: var(--color-text-secondary);
   }
@@ -279,14 +288,14 @@
   .sources {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
   }
 
   .source-tag {
-    padding: 6px 12px;
+    padding: 8px 14px;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
-    border-radius: 16px;
+    border-radius: 20px;
     font-size: 13px;
     color: var(--color-text-secondary);
   }
@@ -295,21 +304,21 @@
   .digest-nav {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    padding-top: 40px;
+    gap: 14px;
+    padding-top: 48px;
     border-top: 1px solid var(--color-border);
   }
 
   .digest-nav a {
-    padding: 12px 24px;
+    padding: 13px 26px;
     background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
+    border: 2px solid var(--color-border);
+    border-radius: 10px;
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     color: var(--color-text-primary);
-    transition: all 0.15s ease;
+    transition: all 0.2s ease;
   }
 
   .digest-nav a:hover {
@@ -327,28 +336,21 @@
   }
 
   /* Mobile */
-  @media (max-width: 1024px) {
-    .article-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
   @media (max-width: 768px) {
     .daily-digest {
-      padding: 20px 16px 40px;
+      padding: 24px 16px 48px;
     }
 
     .digest-title {
-      font-size: 26px;
+      font-size: 28px;
     }
 
     .quick-stats {
       grid-template-columns: 1fr;
     }
 
-    .article-grid,
-    .featured-grid {
-      grid-template-columns: 1fr;
+    .article-title {
+      font-size: 16px;
     }
 
     .section-header {
@@ -518,7 +520,7 @@
         content.appendChild(section);
       }
 
-      // Featured - 2 columns
+      // Featured - Single column list
       const featured = data.sections['编辑精选 (Editor\'s Picks)'] || [];
       if (featured.length > 0) {
         const section = document.createElement('div');
@@ -531,8 +533,8 @@
           </div>
         `;
 
-        const grid = document.createElement('div');
-        grid.className = 'featured-grid';
+        const list = document.createElement('div');
+        list.className = 'featured-list';
 
         featured.forEach((item, i) => {
           const sourceMatch = item.meta.match(/📰\s*\*\*([^*]+)\*\*/);
@@ -544,8 +546,10 @@
           div.className = 'featured-card';
           div.innerHTML = `
             <div class="featured-badge">${i + 1}</div>
-            <div class="article-title">
-              <a href="${item.link || '#'}">${item.title.replace(/^\d+\.\s*/, '')}</a>
+            <div class="article-header">
+              <div class="article-title">
+                <a href="${item.link || '#'}">${item.title.replace(/^\d+\.\s*/, '')}</a>
+              </div>
             </div>
             <div class="article-meta">
               ${source ? `<span class="article-source">${source}</span>` : ''}
@@ -553,10 +557,10 @@
             </div>
             ${item.summary ? `<div class="article-summary">${item.summary}</div>` : ''}
           `;
-          grid.appendChild(div);
+          list.appendChild(div);
         });
 
-        section.appendChild(grid);
+        section.appendChild(list);
         content.appendChild(section);
       }
 
@@ -575,7 +579,7 @@
         content.appendChild(section);
       }
 
-      // Categories - 3 columns
+      // Categories - Single column, full content
       const categories = ['📚 学术前沿', '🛠️ 开发工具', '🦾 AI Agent', '💼 企业应用', '🌐 消费产品', '📰 行业资讯'];
 
       categories.forEach(cat => {
@@ -592,8 +596,8 @@
           </div>
         `;
 
-        const grid = document.createElement('div');
-        grid.className = 'article-grid';
+        const list = document.createElement('div');
+        list.className = 'article-list';
 
         items.forEach(item => {
           const sourceMatch = item.meta.match(/📰\s*\*\*([^*]+)\*\*/);
@@ -604,9 +608,11 @@
           const div = document.createElement('div');
           div.className = 'article-card';
           div.innerHTML = `
-            <div class="article-number">${item.number}. ${cat.split(' ')[0]}</div>
-            <div class="article-title">
-              <a href="${item.link || '#'}">${item.title.replace(/^\d+\.\s*/, '')}</a>
+            <div class="article-header">
+              <div class="article-number">${item.number}</div>
+              <div class="article-title">
+                <a href="${item.link || '#'}">${item.title.replace(/^\d+\.\s*/, '')}</a>
+              </div>
             </div>
             <div class="article-meta">
               ${source ? `<span class="article-source">${source}</span>` : ''}
@@ -614,10 +620,10 @@
             </div>
             ${item.summary ? `<div class="article-summary">${item.summary}</div>` : ''}
           `;
-          grid.appendChild(div);
+          list.appendChild(div);
         });
 
-        section.appendChild(grid);
+        section.appendChild(list);
         content.appendChild(section);
       });
 

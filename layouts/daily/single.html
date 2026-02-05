@@ -3,655 +3,294 @@
 {{ partial "shared-css.html" . }}
 
 <style>
-  /* ============================================
-     AI INSIGHTS - FULL CONTENT LIST
-     ============================================ */
-
-  body {
-    background: var(--color-bg-primary);
-  }
-
-  .daily-digest {
-    max-width: 900px;
+  /* Daily single page styles */
+  .daily-article {
+    max-width: 800px;
     margin: 0 auto;
-    padding: 40px 24px 80px;
+    padding: var(--space-16) var(--space-6);
   }
 
-  /* Header */
-  .digest-header {
+  .daily-article-header {
     text-align: center;
-    margin-bottom: 48px;
-    padding-bottom: 32px;
+    margin-bottom: var(--space-16);
+    padding-bottom: var(--space-12);
     border-bottom: 1px solid var(--color-border);
   }
 
-  .digest-date {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-primary);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 12px;
-  }
-
-  .digest-title {
-    font-size: 36px;
-    font-weight: 800;
-    color: var(--color-text-primary);
-    margin-bottom: 12px;
-    letter-spacing: -0.8px;
-    line-height: 1.2;
-  }
-
-  .digest-meta {
+  .daily-article-meta {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
-    font-size: 14px;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
     color: var(--color-text-tertiary);
   }
 
-  /* Section */
-  .section {
-    margin-bottom: 48px;
+  .daily-article-title {
+    font-size: var(--text-5xl);
+    font-weight: var(--font-bold);
+    line-height: 1.2;
+    margin-bottom: var(--space-6);
   }
 
-  .section-header {
+  .daily-article-excerpt {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+
+  .daily-article-content {
+    font-size: var(--text-lg);
+    line-height: 1.8;
+  }
+
+  .daily-article-content h2 {
+    font-size: var(--text-2xl);
+    margin-top: var(--space-12);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--color-border-light);
+  }
+
+  .daily-article-content h3 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-10);
+    margin-bottom: var(--space-3);
+  }
+
+  /* Hide the anchor link # symbol from Congo theme */
+  .daily-article-content h2 .not-prose,
+  .daily-article-content h3 .not-prose,
+  .daily-article-content h4 .not-prose,
+  .daily-article-content h2 .not-prose a,
+  .daily-article-content h3 .not-prose a,
+  .daily-article-content h4 .not-prose a {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+
+  .daily-article-content p {
+    margin-bottom: var(--space-6);
+  }
+
+  .daily-article-content ul,
+  .daily-article-content ol {
+    margin-bottom: var(--space-6);
+    padding-left: var(--space-6);
+  }
+
+  .daily-article-content li {
+    margin-bottom: var(--space-2);
+  }
+
+  .daily-article-content blockquote {
+    margin: var(--space-6) 0;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg-secondary);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-md);
+  }
+
+  .daily-article-content blockquote p {
+    margin-bottom: 0;
+  }
+
+  .daily-article-content code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-sm);
+  }
+
+  .daily-article-content pre {
+    margin: var(--space-6) 0;
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+  }
+
+  .daily-article-content pre code {
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Category sections */
+  .daily-category {
+    margin: var(--space-12) 0;
+    padding: var(--space-8);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-xl);
+  }
+
+  .daily-category-title {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--color-border);
+    gap: var(--space-3);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .section-icon {
-    font-size: 24px;
+  .daily-category-icon {
+    font-size: var(--text-3xl);
   }
 
-  .section-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--color-text-primary);
+  .daily-item {
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--color-border-light);
   }
 
-  .section-count {
-    margin-left: auto;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--color-text-tertiary);
-    background: var(--color-bg-secondary);
-    padding: 5px 12px;
-    border-radius: 16px;
+  .daily-item:last-child {
+    border-bottom: none;
   }
 
-  /* Quick Stats */
-  .quick-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-
-  .stat-card {
-    padding: 18px;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border-radius: 12px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-  }
-
-  [data-theme="dark"] .stat-card {
-    background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 100%);
-  }
-
-  /* Deep Dive */
-  .deep-dive {
-    padding: 24px;
-    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-    border-radius: 12px;
-    font-size: 15px;
-    line-height: 1.8;
-    color: var(--color-text-primary);
-    margin-bottom: 40px;
-  }
-
-  [data-theme="dark"] .deep-dive {
-    background: linear-gradient(135deg, #422006 0%, #78350f 100%);
-  }
-
-  /* Article List - Full content, no truncation */
-  .article-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .article-card {
-    padding: 24px;
-    background: var(--color-bg-primary);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    transition: all 0.2s ease;
-  }
-
-  .article-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-
-  .article-header {
+  .daily-item-header {
     display: flex;
     align-items: flex-start;
-    gap: 14px;
-    margin-bottom: 14px;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-3);
   }
 
-  .article-number {
-    flex-shrink: 0;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-primary);
-    color: white;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-  }
-
-  .article-title {
+  .daily-item-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-medium);
     flex: 1;
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 1.4;
   }
 
-  .article-title a {
+  .daily-item-title a {
     color: var(--color-text-primary);
-    text-decoration: none;
   }
 
-  .article-title a:hover {
-    color: var(--color-primary);
-  }
-
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 14px;
-    font-size: 13px;
-  }
-
-  .article-source {
-    padding: 4px 10px;
-    background: var(--color-bg-secondary);
-    border-radius: 6px;
-    color: var(--color-text-secondary);
-    font-weight: 600;
-  }
-
-  .article-score {
-    color: #f59e0b;
-    font-weight: 600;
-  }
-
-  .article-summary {
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--color-text-secondary);
-    /* No truncation - show full content */
-  }
-
-  /* Featured Section */
-  .featured-section {
-    margin-bottom: 48px;
-  }
-
-  .featured-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .featured-card {
-    padding: 24px;
-    background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
-    border: 2px solid var(--color-border);
-    border-radius: 14px;
-    position: relative;
-    transition: all 0.2s ease;
-  }
-
-  [data-theme="dark"] .featured-card {
-    background: linear-gradient(135deg, #1e3a5f 0%, #2d1f4e 100%);
-  }
-
-  .featured-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-  }
-
-  .featured-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-primary);
-    color: white;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  /* Table */
-  .trending-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    overflow: hidden;
-    border-radius: 12px;
-    border: 1px solid var(--color-border);
-    font-size: 14px;
-  }
-
-  .trending-table th {
-    padding: 14px 18px;
-    text-align: left;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
+  .daily-item-source {
+    font-size: var(--text-xs);
     color: var(--color-text-tertiary);
-    background: var(--color-bg-secondary);
+    white-space: nowrap;
   }
 
-  .trending-table td {
-    padding: 14px 18px;
-    border-top: 1px solid var(--color-border);
+  .daily-item-summary {
+    font-size: var(--text-base);
     color: var(--color-text-secondary);
-  }
-
-  .trending-table tr:hover td {
-    background: var(--color-bg-secondary);
-  }
-
-  /* Sources */
-  .sources {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .source-tag {
-    padding: 8px 14px;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: 20px;
-    font-size: 13px;
-    color: var(--color-text-secondary);
+    line-height: 1.6;
   }
 
   /* Navigation */
-  .digest-nav {
+  .daily-nav {
     display: flex;
-    justify-content: center;
-    gap: 14px;
-    padding-top: 48px;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-top: var(--space-20);
+    padding-top: var(--space-8);
     border-top: 1px solid var(--color-border);
   }
 
-  .digest-nav a {
-    padding: 13px 26px;
-    background: var(--color-bg-primary);
-    border: 2px solid var(--color-border);
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    color: var(--color-text-primary);
-    transition: all 0.2s ease;
+  .daily-nav-link {
+    flex: 1;
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    transition: all var(--transition-base);
   }
 
-  .digest-nav a:hover {
-    background: var(--color-primary);
-    color: white;
-    border-color: var(--color-primary);
+  .daily-nav-link:hover {
+    background: var(--color-bg-tertiary);
   }
 
-  /* Hide original */
-  .daily-content h2,
-  .daily-content h3,
-  .daily-content h4,
-  .daily-content blockquote {
-    display: none;
+  .daily-nav-link.prev {
+    text-align: left;
   }
 
-  /* Mobile */
+  .daily-nav-link.next {
+    text-align: right;
+  }
+
   @media (max-width: 768px) {
-    .daily-digest {
-      padding: 24px 16px 48px;
+    .daily-article {
+      padding: var(--space-10) var(--space-6);
     }
 
-    .digest-title {
-      font-size: 28px;
+    .daily-article-title {
+      font-size: var(--text-3xl);
     }
 
-    .quick-stats {
-      grid-template-columns: 1fr;
+    .daily-article-excerpt {
+      font-size: var(--text-lg);
     }
 
-    .article-title {
-      font-size: 16px;
+    .daily-article-content {
+      font-size: var(--text-base);
     }
 
-    .section-header {
-      flex-wrap: wrap;
+    .daily-nav {
+      flex-direction: column;
     }
 
-    .section-count {
-      margin-left: 0;
+    .daily-item-header {
+      flex-direction: column;
+    }
+
+    .daily-item-source {
+      white-space: normal;
     }
   }
 </style>
 
 <body>
-  <article class="daily-digest">
-    <header class="digest-header">
-      <div class="digest-date">{{ .Date.Format "2006年01月02日" }}</div>
-      <h1 class="digest-title">{{ .Title }}</h1>
-      <div class="digest-meta">
-        <span>⏱️ {{ .ReadingTime }} 分钟</span>
+  <article class="daily-article">
+    <header class="daily-article-header">
+      <nav class="breadcrumb">
+        <a href="{{ .Site.BaseURL }}">首页</a>
+        <span class="breadcrumb-separator">›</span>
+        <a href="{{ "daily/" | relURL }}">每日热点</a>
+        <span class="breadcrumb-separator">›</span>
+        <span>{{ .Date.Format "2006-01-02" }}</span>
+      </nav>
+
+      <div class="daily-article-meta">
+        <span>{{ .Date.Format "2006年01月02日" }}</span>
         <span>·</span>
-        <span>📝 {{ if .Params.tags }}{{ len .Params.tags }}{{ end }} 条精选</span>
+        <span>{{ .ReadingTime }} 分钟阅读</span>
+        {{ if .Params.tags }}
+          <span>·</span>
+          <span>{{ len .Params.tags }} 条精选</span>
+        {{ end }}
       </div>
+
+      <h1 class="daily-article-title">{{ .Title }}</h1>
+
+      {{ if .Description }}
+        <p class="daily-article-excerpt">{{ .Description }}</p>
+      {{ end }}
     </header>
 
-    <div class="daily-content">
+    <div class="daily-article-content">
       {{ .Content | emojify }}
     </div>
 
     {{ if or .PrevInSection .NextInSection }}
-      <nav class="digest-nav">
+      <nav class="daily-nav">
         {{ if .PrevInSection }}
-          <a href="{{ .PrevInSection.Permalink }}">← {{ .PrevInSection.Date.Format "01月02日" }}</a>
+          <a href="{{ .PrevInSection.Permalink }}" class="daily-nav-link prev">
+            ← {{ .PrevInSection.Date.Format "01月02日" }}
+          </a>
         {{ end }}
         {{ if .NextInSection }}
-          <a href="{{ .NextInSection.Permalink }}">{{ .NextInSection.Date.Format "01月02日" }} →</a>
+          <a href="{{ .NextInSection.Permalink }}" class="daily-nav-link next">
+            {{ .NextInSection.Date.Format "01月02日" }} →
+          </a>
         {{ end }}
       </nav>
     {{ end }}
   </article>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const content = document.querySelector('.daily-content');
-      if (!content) return;
-
-      const data = {
-        insights: [],
-        deepDive: null,
-        sections: {},
-        table: null,
-        sources: []
-      };
-
-      // Extract insights
-      const h2s = content.querySelectorAll('h2');
-      h2s.forEach(h2 => {
-        if (h2.textContent.includes('核心洞察')) {
-          const ul = h2.nextElementSibling;
-          if (ul && ul.tagName === 'UL') {
-            ul.querySelectorAll('li').forEach(li => {
-              data.insights.push(li.textContent);
-            });
-          }
-        }
-      });
-
-      // Extract deep dive
-      const ps = content.querySelectorAll('p');
-      ps.forEach(p => {
-        if (p.textContent.length > 100 && !data.deepDive) {
-          data.deepDive = p.textContent;
-        }
-      });
-
-      // Extract articles
-      const articles = content.querySelectorAll('h4');
-      articles.forEach((article, index) => {
-        let section = article.previousElementSibling;
-        while (section && section.tagName !== 'H3') {
-          section = section.previousElementSibling;
-        }
-
-        const sectionName = section ? section.textContent.trim() : 'other';
-        if (!data.sections[sectionName]) {
-          data.sections[sectionName] = [];
-        }
-
-        const articleData = {
-          title: article.textContent.trim(),
-          number: index + 1,
-          meta: '',
-          summary: '',
-          link: ''
-        };
-
-        let nextEl = article.nextElementSibling;
-        while (nextEl && nextEl.tagName !== 'H4' && nextEl.tagName !== 'H3' && nextEl.tagName !== 'H2') {
-          if (nextEl.tagName === 'BLOCKQUOTE') {
-            articleData.meta = nextEl.textContent;
-          } else if (nextEl.tagName === 'P') {
-            articleData.summary = nextEl.textContent.replace(/\*\*摘要\*\*:/, '').trim();
-          } else if (nextEl.tagName === 'A' && nextEl.href) {
-            articleData.link = nextEl.href;
-          }
-          nextEl = nextEl.nextElementSibling;
-        }
-
-        data.sections[sectionName].push(articleData);
-      });
-
-      // Extract table
-      const table = content.querySelector('table');
-      if (table) {
-        data.table = table.cloneNode(true);
-      }
-
-      // Extract sources
-      const uls = content.querySelectorAll('ul');
-      uls.forEach(ul => {
-        const parent = ul.parentElement;
-        if (parent && parent.textContent.includes('数据来源')) {
-          ul.querySelectorAll('li').forEach(li => {
-            data.sources.push(li.textContent.trim());
-          });
-        }
-      });
-
-      // Build layout
-      content.innerHTML = '';
-
-      // Quick stats
-      if (data.insights.length > 0) {
-        const section = document.createElement('div');
-        section.className = 'section';
-        section.innerHTML = `
-          <div class="section-header">
-            <span class="section-icon">💡</span>
-            <span class="section-title">核心洞察</span>
-          </div>
-        `;
-        const statsDiv = document.createElement('div');
-        statsDiv.className = 'quick-stats';
-        data.insights.forEach(text => {
-          const div = document.createElement('div');
-          div.className = 'stat-card';
-          div.textContent = text;
-          statsDiv.appendChild(div);
-        });
-        section.appendChild(statsDiv);
-        content.appendChild(section);
-      }
-
-      // Deep dive
-      if (data.deepDive) {
-        const section = document.createElement('div');
-        section.className = 'section';
-        section.innerHTML = `
-          <div class="section-header">
-            <span class="section-icon">📖</span>
-            <span class="section-title">深度观察</span>
-          </div>
-        `;
-        const div = document.createElement('div');
-        div.className = 'deep-dive';
-        div.textContent = data.deepDive;
-        section.appendChild(div);
-        content.appendChild(section);
-      }
-
-      // Featured - Single column list
-      const featured = data.sections['编辑精选 (Editor\'s Picks)'] || [];
-      if (featured.length > 0) {
-        const section = document.createElement('div');
-        section.className = 'featured-section';
-        section.innerHTML = `
-          <div class="section-header">
-            <span class="section-icon">⭐</span>
-            <span class="section-title">编辑精选</span>
-            <span class="section-count">${featured.length}条</span>
-          </div>
-        `;
-
-        const list = document.createElement('div');
-        list.className = 'featured-list';
-
-        featured.forEach((item, i) => {
-          const sourceMatch = item.meta.match(/📰\s*\*\*([^*]+)\*\*/);
-          const scoreMatch = item.meta.match(/⭐\s*\*\*重要性[^:]*:\s*(\d+)/);
-          const source = sourceMatch ? sourceMatch[1] : '';
-          const score = scoreMatch ? scoreMatch[1] : '';
-
-          const div = document.createElement('div');
-          div.className = 'featured-card';
-          div.innerHTML = `
-            <div class="featured-badge">${i + 1}</div>
-            <div class="article-header">
-              <div class="article-title">
-                <a href="${item.link || '#'}">${item.title.replace(/^\d+\.\s*/, '')}</a>
-              </div>
-            </div>
-            <div class="article-meta">
-              ${source ? `<span class="article-source">${source}</span>` : ''}
-              ${score ? `<span class="article-score">⭐ ${score}</span>` : ''}
-            </div>
-            ${item.summary ? `<div class="article-summary">${item.summary}</div>` : ''}
-          `;
-          list.appendChild(div);
-        });
-
-        section.appendChild(list);
-        content.appendChild(section);
-      }
-
-      // Trending table
-      if (data.table) {
-        const section = document.createElement('div');
-        section.className = 'section';
-        section.innerHTML = `
-          <div class="section-header">
-            <span class="section-icon">📊</span>
-            <span class="section-title">热门话题</span>
-          </div>
-        `;
-        data.table.className = 'trending-table';
-        section.appendChild(data.table);
-        content.appendChild(section);
-      }
-
-      // Categories - Single column, full content
-      const categories = ['📚 学术前沿', '🛠️ 开发工具', '🦾 AI Agent', '💼 企业应用', '🌐 消费产品', '📰 行业资讯'];
-
-      categories.forEach(cat => {
-        const items = data.sections[cat];
-        if (!items || items.length === 0) return;
-
-        const section = document.createElement('div');
-        section.className = 'section';
-        section.innerHTML = `
-          <div class="section-header">
-            <span class="section-icon">${cat.split(' ')[0]}</span>
-            <span class="section-title">${cat.split(' ').slice(1).join(' ')}</span>
-            <span class="section-count">${items.length}条</span>
-          </div>
-        `;
-
-        const list = document.createElement('div');
-        list.className = 'article-list';
-
-        items.forEach(item => {
-          const sourceMatch = item.meta.match(/📰\s*\*\*([^*]+)\*\*/);
-          const scoreMatch = item.meta.match(/⭐\s*\*\*重要性[^:]*:\s*(\d+)/);
-          const source = sourceMatch ? sourceMatch[1] : '';
-          const score = scoreMatch ? scoreMatch[1] : '';
-
-          const div = document.createElement('div');
-          div.className = 'article-card';
-          div.innerHTML = `
-            <div class="article-header">
-              <div class="article-number">${item.number}</div>
-              <div class="article-title">
-                <a href="${item.link || '#'}">${item.title.replace(/^\d+\.\s*/, '')}</a>
-              </div>
-            </div>
-            <div class="article-meta">
-              ${source ? `<span class="article-source">${source}</span>` : ''}
-              ${score ? `<span class="article-score">⭐ ${score}</span>` : ''}
-            </div>
-            ${item.summary ? `<div class="article-summary">${item.summary}</div>` : ''}
-          `;
-          list.appendChild(div);
-        });
-
-        section.appendChild(list);
-        content.appendChild(section);
-      });
-
-      // Sources
-      if (data.sources.length > 0) {
-        const section = document.createElement('div');
-        section.className = 'section';
-        section.innerHTML = `
-          <div class="section-header">
-            <span class="section-icon">📚</span>
-            <span class="section-title">数据来源</span>
-          </div>
-        `;
-
-        const sourcesDiv = document.createElement('div');
-        sourcesDiv.className = 'sources';
-        data.sources.forEach(src => {
-          const span = document.createElement('span');
-          span.className = 'source-tag';
-          span.textContent = src;
-          sourcesDiv.appendChild(span);
-        });
-
-        section.appendChild(sourcesDiv);
-        content.appendChild(section);
-      }
-    });
-  </script>
 
   {{ partial "footer.html" . }}
 </body>

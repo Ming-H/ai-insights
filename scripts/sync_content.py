@@ -92,7 +92,13 @@ def sync_daily_digest():
 
             # 提取分类
             if 'categories' in digest_data:
-                categories.extend(digest_data['categories'])
+                def _cat_to_str(cat):
+                    if isinstance(cat, dict):
+                        # 优先 name，其次 id，最后转字符串
+                        return cat.get('name') or cat.get('id') or str(cat)
+                    return str(cat)
+
+                categories.extend([_cat_to_str(c) for c in digest_data['categories']])
 
         # 生成 Hugo front matter
         front_matter = f"""---

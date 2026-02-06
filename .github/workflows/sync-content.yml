@@ -3,12 +3,12 @@ name: Sync Content from ContentForge AI
 on:
   schedule:
     # 每天多次同步，对应 content-forge-ai 的更新时间
-    # 7:30 (北京时间) = UTC 23:30 (前一天) - 同步早间内容
-    - cron: '30 23 * * *'
-    # 13:00 (北京时间) = UTC 5:00 - 同步中午内容
-    - cron: '0 5 * * *'
-    # 19:00 (北京时间) = UTC 11:00 - 同步晚间内容
-    - cron: '0 11 * * *'
+    # 06:00 生成 => 06:15 同步（北京时间），即 UTC 22:15
+    - cron: '15 22 * * *'
+    # 12:00 生成 => 12:15 同步（北京时间），即 UTC 04:15
+    - cron: '15 4 * * *'
+    # 18:00 生成 => 18:15 同步（北京时间），即 UTC 10:15
+    - cron: '15 10 * * *'
   workflow_dispatch:
   # 允许从 content-forge-ai 仓库触发同步
   repository_dispatch:
@@ -59,9 +59,8 @@ jobs:
           echo "========================================"
           echo "开始同步内容..."
           echo "========================================"
-          # 更新脚本中的路径为 GitHub Actions 环境路径
-          sed -i "s|/Users/z/Documents/work/content-forge-ai|$GITHUB_WORKSPACE/content-forge-ai|g" scripts/sync_content.py
-          sed -i "s|/Users/z/Documents/work/ai-insights|$GITHUB_WORKSPACE/ai-insights|g" scripts/sync_content.py
+          export CONTENT_FORGE_AI_PATH="$GITHUB_WORKSPACE/content-forge-ai"
+          export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
           python scripts/sync_content.py --all
           echo "========================================"
           echo "内容同步完成"
@@ -86,10 +85,10 @@ jobs:
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          # 先拉取远程更改，避免冲突
+          git pull --rebase origin main || { echo "⚠️ pull --rebase 失败，尝试自动恢复"; git rebase --abort || true; git reset --hard HEAD; git pull --rebase origin main; }
           git add content/
           git commit -m "chore: sync content from content-forge-ai [skip ci]" -m "自动同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
-          # 先拉取远程更改，避免冲突
-          git pull --rebase origin main
           git push
           echo "✅ 内容已成功同步并推送到仓库"
 

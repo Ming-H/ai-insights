@@ -13,13 +13,17 @@ import sys
 import json
 import shutil
 import argparse
+import re
 from datetime import datetime
 from pathlib import Path
-import re
 
-# 配置路径
-CONTENT_FORGE_AI_PATH = Path("/Users/z/Documents/work/content-forge-ai")
-HUGO_CONTENT_PATH = Path("/Users/z/Documents/work/ai-insights/content")
+# 配置路径（支持通过环境变量覆盖，方便 GitHub Actions / 不同环境）
+CONTENT_FORGE_AI_PATH = Path(
+    os.getenv("CONTENT_FORGE_AI_PATH", "/Users/z/Documents/work/content-forge-ai")
+)
+HUGO_CONTENT_PATH = Path(
+    os.getenv("HUGO_CONTENT_PATH", "/Users/z/Documents/work/ai-insights/content")
+)
 
 
 def parse_date_from_digest_filename(filename):

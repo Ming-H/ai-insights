@@ -79,6 +79,7 @@ jobs:
           exit 0
 
       - name: Sync content
+        if: env.has_digest != 'false'
         run: |
           cd ai-insights
           echo "========================================"
@@ -93,6 +94,7 @@ jobs:
 
       - name: Check for changes
         id: check-changes
+        if: env.has_digest != 'false'
         run: |
           cd ai-insights
           if git diff --quiet && git diff --staged --quiet; then
@@ -105,7 +107,7 @@ jobs:
           fi
 
       - name: Commit and push
-        if: steps.check-changes.outputs.has_changes == 'true'
+        if: env.has_digest != 'false' && steps.check-changes.outputs.has_changes == 'true'
         run: |
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"

@@ -3,12 +3,13 @@ name: Sync Content from ContentForge AI
 on:
   schedule:
     # 每天多次同步，对应 content-forge-ai 的更新时间
-    # 06:00 生成 => 06:15 同步（北京时间），即 UTC 22:15
-    - cron: '15 22 * * *'
-    # 12:00 生成 => 12:15 同步（北京时间），即 UTC 04:15
-    - cron: '15 4 * * *'
-    # 18:00 生成 => 18:15 同步（北京时间），即 UTC 10:15
-    - cron: '15 10 * * *'
+    # 为了避免生成未完成，延后 45 分钟同步
+    # 06:00 生成 => 06:45 同步（北京时间），即 UTC 22:45
+    - cron: '45 22 * * *'
+    # 12:00 生成 => 12:45 同步（北京时间），即 UTC 04:45
+    - cron: '45 4 * * *'
+    # 18:00 生成 => 18:45 同步（北京时间），即 UTC 10:45
+    - cron: '45 10 * * *'
   workflow_dispatch:
   # 允许从 content-forge-ai 仓库触发同步
   repository_dispatch:
@@ -52,6 +53,27 @@ jobs:
           echo "AI Insights 路径: $GITHUB_WORKSPACE/ai-insights"
           ls -la $GITHUB_WORKSPACE/content-forge-ai/data/ || echo "⚠️ content-forge-ai/data 目录不存在"
           ls -la $GITHUB_WORKSPACE/ai-insights/content/ || echo "⚠️ ai-insights/content 目录不存在"
+
+      - name: Guard: wait for daily digest to exist
+        env:
+          TZ: Asia/Shanghai
+        run: |
+          # 计算“今天”在北京时区的日期
+          today=$(TZ=$TZ date +%Y%m%d)
+          digest_dir="$GITHUB_WORKSPACE/content-forge-ai/data/daily/$today/digest"
+
+          echo "期望的数据目录: $digest_dir"
+
+          # 若目录不存在则直接跳过，不报错
+          if [ ! -d "$digest_dir" ]; then
+            echo "⚠️ 今日($today) digest 目录不存在，可能生成任务尚未完成，跳过本次同步。"
+            echo "has_digest=false" >> $GITHUB_ENV
+            exit 0
+          fi
+
+          # 目录存在则继续
+          echo "✅ 找到今日 digest 目录，继续同步。"
+          echo "has_digest=true" >> $GITHUB_ENV
 
       - name: Sync content
         run: |

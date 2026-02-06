@@ -54,7 +54,7 @@ jobs:
           ls -la $GITHUB_WORKSPACE/content-forge-ai/data/ || echo "⚠️ content-forge-ai/data 目录不存在"
           ls -la $GITHUB_WORKSPACE/ai-insights/content/ || echo "⚠️ ai-insights/content 目录不存在"
 
-      - name: Guard: wait for daily digest to exist
+      - name: Guard: wait for daily digest to exist (10m max)
         env:
           TZ: Asia/Shanghai
         run: |
@@ -64,16 +64,19 @@ jobs:
 
           echo "期望的数据目录: $digest_dir"
 
-          # 若目录不存在则直接跳过，不报错
-          if [ ! -d "$digest_dir" ]; then
-            echo "⚠️ 今日($today) digest 目录不存在，可能生成任务尚未完成，跳过本次同步。"
-            echo "has_digest=false" >> $GITHUB_ENV
-            exit 0
-          fi
+          for i in $(seq 1 5); do
+            if [ -d "$digest_dir" ]; then
+              echo "✅ 找到今日 digest 目录，继续同步。"
+              echo "has_digest=true" >> $GITHUB_ENV
+              exit 0
+            fi
+            echo "⏳ 未找到今日 digest，等待中... (${i}/5)"
+            sleep 120
+          done
 
-          # 目录存在则继续
-          echo "✅ 找到今日 digest 目录，继续同步。"
-          echo "has_digest=true" >> $GITHUB_ENV
+          echo "⚠️ 等待 10 分钟后仍未找到今日 digest，跳过本次同步。"
+          echo "has_digest=false" >> $GITHUB_ENV
+          exit 0
 
       - name: Sync content
         run: |

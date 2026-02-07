@@ -50,15 +50,14 @@ jobs:
           echo "触发方式: ${{ github.event_name }}"
           echo "ContentForge AI 路径: $GITHUB_WORKSPACE/content-forge-ai"
           echo "AI Insights 路径: $GITHUB_WORKSPACE/ai-insights"
-          echo "执行时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
           echo "执行时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
           echo "========================================"
 
           ls -la $GITHUB_WORKSPACE/content-forge-ai/data/daily/ | head -20 || echo "⚠️ content-forge-ai/data/daily 目录不存在"
-          ls -la $GITHUB_WORKSPACE/ai-insights/content/ | head -10 || echo "⚠️ ai-insights/content 目录不存在"
 
       # 对于 schedule 触发，等待今天的 digest
       - name: Guard: wait for daily digest (scheduled only)
+        id: wait-digest
         if: github.event_name == 'schedule'
         env:
           TZ: Asia/Shanghai
@@ -76,7 +75,7 @@ jobs:
             if [ -d "$digest_dir" ]; then
               echo "✅ 找到今日 digest 目录 ($today)"
               ls -la "$digest_dir"
-              echo "has_digest=true" >> $GITHUB_ENV
+              echo "should_sync=true" >> $GITHUB_OUTPUT
               exit 0
             fi
             echo "⏳ 未找到今日 digest ($today)，等待中... (${i}/5)"
@@ -84,44 +83,21 @@ jobs:
           done
 
           echo "⚠️ 等待 10 分钟后仍未找到今日 digest ($today)，跳过本次同步"
-          echo "has_digest=false" >> $GITHUB_ENV
+          echo "should_sync=false" >> $GITHUB_OUTPUT
           exit 0
 
-      # 对于 repository_dispatch 触发，直接同步所有内容
-      - name: Check for digest (repository_dispatch)
-        if: github.event_name == 'repository_dispatch'
+      # 对于非 schedule 触发，直接设置 should_sync=true
+      - name: Set sync flag (non-scheduled)
+        id: set-sync-flag
+        if: github.event_name != 'schedule'
         run: |
           echo "========================================"
-          echo "🚀 Repository Dispatch 模式：立即同步"
+          echo "🚀 ${{ github.event_name }} 模式：立即同步"
           echo "========================================"
-          echo "触发来源: ${{ github.repository }}"
-          echo "触发事件: ${{ github.event.event_type }}"
-          echo "跳过等待，直接同步所有可用内容..."
-          echo "has_digest=true" >> $GITHUB_ENV
-
-      # 对于 workflow_dispatch 触发，直接同步所有内容
-      - name: Check for digest (manual)
-        if: github.event_name == 'workflow_dispatch'
-        run: |
-          echo "========================================"
-          echo "👤 手动触发模式：立即同步"
-          echo "========================================"
-          echo "跳过等待，直接同步所有可用内容..."
-          echo "has_digest=true" >> $GITHUB_ENV
-
-      # 对于 push 事件，也直接同步所有内容
-      - name: Check for digest (push event)
-        if: github.event_name == 'push'
-        run: |
-          echo "========================================"
-          echo "📝 Push 事件触发：立即同步"
-          echo "========================================"
-          echo "提交信息: ${{ github.event.head_commit.message }}"
-          echo "跳过等待，直接同步所有可用内容..."
-          echo "has_digest=true" >> $GITHUB_ENV
+          echo "should_sync=true" >> $GITHUB_OUTPUT
 
       - name: Sync content
-        if: env.has_digest != 'false'
+        if: (steps.wait-digest.outputs.should_sync == 'true') || (steps.set-sync-flag.outputs.should_sync == 'true')
         run: |
           cd ai-insights
           echo "========================================"
@@ -140,13 +116,10 @@ jobs:
           # 显示生成的文件
           echo "最新生成的 daily 文件:"
           ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "无新 daily 文件"
-          echo ""
-          echo "最新的 series 目录:"
-          ls -dt content/series/*/ 2>/dev/null | head -5 || echo "无 series 目录"
 
       - name: Check for changes
         id: check-changes
-        if: env.has_digest != 'false'
+        if: (steps.wait-digest.outputs.should_sync == 'true') || (steps.set-sync-flag.outputs.should_sync == 'true')
         run: |
           cd ai-insights
           if git diff --quiet && git diff --staged --quiet; then
@@ -159,7 +132,7 @@ jobs:
           fi
 
       - name: Commit and push
-        if: env.has_digest != 'false' && steps.check-changes.outputs.has_changes == 'true'
+        if: (steps.wait-digest.outputs.should_sync == 'true' || steps.set-sync-flag.outputs.should_sync == 'true') && steps.check-changes.outputs.has_changes == 'true'
         run: |
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -202,15 +175,24 @@ jobs:
           echo "触发方式: ${{ github.event_name }}"
           echo "执行时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
           echo "执行状态: ${{ job.status }}"
-          echo "有 digest: ${{ env.has_digest }}"
-          echo "有变更: ${{ steps.check-changes.outputs.has_changes }}"
+
+          # 判断是否应该同步
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Should sync: ${{ steps.wait-digest.outputs.should_sync }}"
+            HAS_CHANGES="${{ steps.check-changes.outputs.has_changes }}"
+          else
+            echo "Should sync: ${{ steps.set-sync-flag.outputs.should_sync }}"
+            HAS_CHANGES="${{ steps.check-changes.outputs.has_changes }}"
+          fi
+
+          echo "有变更: $HAS_CHANGES"
           echo "========================================"
 
-          if [ "${{ env.has_digest }}" = "false" ]; then
-            echo "⚠️ 本次同步跳过（未找到 digest）"
-          elif [ "${{ steps.check-changes.outputs.has_changes }}" = "true" ]; then
+          if [ "$HAS_CHANGES" = "true" ]; then
             echo "✅ 同步成功，内容已更新"
-          else
+          elif [ "$HAS_CHANGES" = "false" ]; then
             echo "ℹ️  同步完成，但无新内容"
+          else
+            echo "⚠️ 本次同步跳过"
           fi
           echo "========================================"

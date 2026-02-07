@@ -45,44 +45,44 @@ jobs:
       - name: Verify content sources
         run: |
           echo "========================================"
-          echo "📋 同步工作流启动"
+          echo "Sync workflow starting"
           echo "========================================"
-          echo "触发方式: ${{ github.event_name }}"
-          echo "ContentForge AI 路径: $GITHUB_WORKSPACE/content-forge-ai"
-          echo "AI Insights 路径: $GITHUB_WORKSPACE/ai-insights"
-          echo "执行时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
+          echo "Trigger: ${{ github.event_name }}"
+          echo "ContentForge AI path: $GITHUB_WORKSPACE/content-forge-ai"
+          echo "AI Insights path: $GITHUB_WORKSPACE/ai-insights"
+          echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
           echo "========================================"
 
-          ls -la $GITHUB_WORKSPACE/content-forge-ai/data/daily/ | head -20 || echo "⚠️ content-forge-ai/data/daily 目录不存在"
+          ls -la $GITHUB_WORKSPACE/content-forge-ai/data/daily/ | head -20 || echo "content-forge-ai/data/daily not found"
 
-      # 对于 schedule 触发，等待今天的 digest
-      - name: Guard: wait for daily digest (scheduled only)
+      # For schedule triggers, wait for today's digest
+      - name: "Guard: wait for daily digest (scheduled only)"
         id: wait-digest
         if: github.event_name == 'schedule'
         env:
           TZ: Asia/Shanghai
         run: |
           echo "========================================"
-          echo "🕐 Scheduled 模式：等待今日 digest"
+          echo "Scheduled mode: waiting for today's digest"
           echo "========================================"
 
           today=$(TZ=$TZ date +%Y%m%d)
           digest_dir="$GITHUB_WORKSPACE/content-forge-ai/data/daily/$today/digest"
 
-          echo "期望的数据目录: $digest_dir"
+          echo "Expected digest directory: $digest_dir"
 
           for i in $(seq 1 5); do
             if [ -d "$digest_dir" ]; then
-              echo "✅ 找到今日 digest 目录 ($today)"
+              echo "Found today's digest directory ($today)"
               ls -la "$digest_dir"
               echo "should_sync=true" >> $GITHUB_OUTPUT
               exit 0
             fi
-            echo "⏳ 未找到今日 digest ($today)，等待中... (${i}/5)"
+            echo "Today's digest not found ($today), waiting... (${i}/5)"
             sleep 120
           done
 
-          echo "⚠️ 等待 10 分钟后仍未找到今日 digest ($today)，跳过本次同步"
+          echo "Today's digest not found after 10 minutes ($today), skipping sync"
           echo "should_sync=false" >> $GITHUB_OUTPUT
 
       - name: Sync content (scheduled)
@@ -90,42 +90,38 @@ jobs:
         run: |
           cd ai-insights
           echo "========================================"
-          echo "🔄 开始同步内容..."
+          echo "Starting content sync..."
           echo "========================================"
           export CONTENT_FORGE_AI_PATH="$GITHUB_WORKSPACE/content-forge-ai"
           export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
 
-          # 运行同步脚本
           python scripts/sync_content.py --all
 
           echo "========================================"
-          echo "内容同步完成"
+          echo "Content sync complete"
           echo "========================================"
 
-          # 显示生成的文件
-          echo "最新生成的 daily 文件:"
-          ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "无新 daily 文件"
+          echo "Latest daily files:"
+          ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "No new daily files"
 
       - name: Sync content (non-scheduled)
         if: github.event_name != 'schedule'
         run: |
           cd ai-insights
           echo "========================================"
-          echo "🔄 开始同步内容..."
+          echo "Starting content sync..."
           echo "========================================"
           export CONTENT_FORGE_AI_PATH="$GITHUB_WORKSPACE/content-forge-ai"
           export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
 
-          # 运行同步脚本
           python scripts/sync_content.py --all
 
           echo "========================================"
-          echo "内容同步完成"
+          echo "Content sync complete"
           echo "========================================"
 
-          # 显示生成的文件
-          echo "最新生成的 daily 文件:"
-          ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "无新 daily 文件"
+          echo "Latest daily files:"
+          ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "No new daily files"
 
       - name: Check for changes (scheduled)
         id: check-changes-scheduled
@@ -134,10 +130,10 @@ jobs:
           cd ai-insights
           if git diff --quiet && git diff --staged --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "ℹ️  没有检测到新的内容变更"
+            echo "No new content changes detected"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "✅ 检测到新的内容变更"
+            echo "New content changes detected"
             git status --short
           fi
 
@@ -148,10 +144,10 @@ jobs:
           cd ai-insights
           if git diff --quiet && git diff --staged --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "ℹ️  没有检测到新的内容变更"
+            echo "No new content changes detected"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "✅ 检测到新的内容变更"
+            echo "New content changes detected"
             git status --short
           fi
 
@@ -163,12 +159,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           echo "========================================"
-          echo "📤 提交更改到仓库..."
+          echo "Committing changes to repository..."
           echo "========================================"
 
-          # 先拉取远程更改，避免冲突
           git pull --rebase origin main || {
-            echo "⚠️ pull --rebase 失败，尝试恢复..."
+            echo "pull --rebase failed, attempting recovery..."
             git rebase --abort 2>/dev/null || true
             git reset --hard HEAD
             git pull --rebase origin main
@@ -176,18 +171,17 @@ jobs:
 
           git add content/
 
-          # 显示即将提交的内容
-          echo "即将提交的文件:"
+          echo "Files to commit:"
           git diff --cached --name-status
 
           git commit -m "chore: sync content from content-forge-ai [skip ci]" \
-                     -m "触发方式: ${{ github.event_name }}" \
-                     -m "同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+                     -m "Trigger: ${{ github.event_name }}" \
+                     -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
           git push
 
           echo "========================================"
-          echo "✅ 内容已成功同步并推送到仓库"
+          echo "Content successfully synced and pushed to repository"
           echo "========================================"
 
       - name: Commit and push (non-scheduled)
@@ -198,12 +192,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
           echo "========================================"
-          echo "📤 提交更改到仓库..."
+          echo "Committing changes to repository..."
           echo "========================================"
 
-          # 先拉取远程更改，避免冲突
           git pull --rebase origin main || {
-            echo "⚠️ pull --rebase 失败，尝试恢复..."
+            echo "pull --rebase failed, attempting recovery..."
             git rebase --abort 2>/dev/null || true
             git reset --hard HEAD
             git pull --rebase origin main
@@ -211,29 +204,28 @@ jobs:
 
           git add content/
 
-          # 显示即将提交的内容
-          echo "即将提交的文件:"
+          echo "Files to commit:"
           git diff --cached --name-status
 
           git commit -m "chore: sync content from content-forge-ai [skip ci]" \
-                     -m "触发方式: ${{ github.event_name }}" \
-                     -m "同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+                     -m "Trigger: ${{ github.event_name }}" \
+                     -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
           git push
 
           echo "========================================"
-          echo "✅ 内容已成功同步并推送到仓库"
+          echo "Content successfully synced and pushed to repository"
           echo "========================================"
 
       - name: Summary report
         if: always()
         run: |
           echo "========================================"
-          echo "📊 内容同步报告"
+          echo "Content Sync Report"
           echo "========================================"
-          echo "触发方式: ${{ github.event_name }}"
-          echo "执行时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
-          echo "执行状态: ${{ job.status }}"
+          echo "Trigger: ${{ github.event_name }}"
+          echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
+          echo "Status: ${{ job.status }}"
           echo "========================================"
 
           if [ "${{ github.event_name }}" = "schedule" ]; then

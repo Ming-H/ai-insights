@@ -30,13 +30,11 @@ jobs:
           path: ai-insights
 
       # 检出 content-forge-ai 仓库
-      # 注意：如果 content-forge-ai 是私有仓库，需要配置 PAT Token
       - name: Checkout content-forge-ai
         uses: actions/checkout@v4
         with:
           repository: Ming-H/content-forge-ai
           path: content-forge-ai
-          # 如果是私有仓库，使用 PAT: ${{ secrets.CONTENT_FORGE_AI_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
@@ -47,18 +45,28 @@ jobs:
       - name: Verify content sources
         run: |
           echo "========================================"
-          echo "验证数据源..."
+          echo "📋 同步工作流启动"
           echo "========================================"
+          echo "触发方式: ${{ github.event_name }}"
           echo "ContentForge AI 路径: $GITHUB_WORKSPACE/content-forge-ai"
           echo "AI Insights 路径: $GITHUB_WORKSPACE/ai-insights"
-          ls -la $GITHUB_WORKSPACE/content-forge-ai/data/ || echo "⚠️ content-forge-ai/data 目录不存在"
-          ls -la $GITHUB_WORKSPACE/ai-insights/content/ || echo "⚠️ ai-insights/content 目录不存在"
+          echo "执行时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+          echo "执行时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
+          echo "========================================"
 
-      - name: Guard: wait for daily digest to exist (10m max)
+          ls -la $GITHUB_WORKSPACE/content-forge-ai/data/daily/ | head -20 || echo "⚠️ content-forge-ai/data/daily 目录不存在"
+          ls -la $GITHUB_WORKSPACE/ai-insights/content/ | head -10 || echo "⚠️ ai-insights/content 目录不存在"
+
+      # 对于 schedule 触发，等待今天的 digest
+      - name: Guard: wait for daily digest (scheduled only)
+        if: github.event_name == 'schedule'
         env:
           TZ: Asia/Shanghai
         run: |
-          # 计算“今天”在北京时区的日期
+          echo "========================================"
+          echo "🕐 Scheduled 模式：等待今日 digest"
+          echo "========================================"
+
           today=$(TZ=$TZ date +%Y%m%d)
           digest_dir="$GITHUB_WORKSPACE/content-forge-ai/data/daily/$today/digest"
 
@@ -66,31 +74,64 @@ jobs:
 
           for i in $(seq 1 5); do
             if [ -d "$digest_dir" ]; then
-              echo "✅ 找到今日 digest 目录，继续同步。"
+              echo "✅ 找到今日 digest 目录 ($today)"
+              ls -la "$digest_dir"
               echo "has_digest=true" >> $GITHUB_ENV
               exit 0
             fi
-            echo "⏳ 未找到今日 digest，等待中... (${i}/5)"
+            echo "⏳ 未找到今日 digest ($today)，等待中... (${i}/5)"
             sleep 120
           done
 
-          echo "⚠️ 等待 10 分钟后仍未找到今日 digest，跳过本次同步。"
+          echo "⚠️ 等待 10 分钟后仍未找到今日 digest ($today)，跳过本次同步"
           echo "has_digest=false" >> $GITHUB_ENV
           exit 0
+
+      # 对于 repository_dispatch 触发，直接同步所有内容
+      - name: Check for digest (repository_dispatch)
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          echo "========================================"
+          echo "🚀 Repository Dispatch 模式：立即同步"
+          echo "========================================"
+          echo "触发来源: ${{ github.repository }}"
+          echo "触发事件: ${{ github.event.event_type }}"
+          echo "跳过等待，直接同步所有可用内容..."
+          echo "has_digest=true" >> $GITHUB_ENV
+
+      # 对于 workflow_dispatch 触发，直接同步所有内容
+      - name: Check for digest (manual)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "========================================"
+          echo "👤 手动触发模式：立即同步"
+          echo "========================================"
+          echo "跳过等待，直接同步所有可用内容..."
+          echo "has_digest=true" >> $GITHUB_ENV
 
       - name: Sync content
         if: env.has_digest != 'false'
         run: |
           cd ai-insights
           echo "========================================"
-          echo "开始同步内容..."
+          echo "🔄 开始同步内容..."
           echo "========================================"
           export CONTENT_FORGE_AI_PATH="$GITHUB_WORKSPACE/content-forge-ai"
           export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
+
+          # 运行同步脚本
           python scripts/sync_content.py --all
+
           echo "========================================"
           echo "内容同步完成"
           echo "========================================"
+
+          # 显示生成的文件
+          echo "最新生成的 daily 文件:"
+          ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "无新 daily 文件"
+          echo ""
+          echo "最新的 series 目录:"
+          ls -dt content/series/*/ 2>/dev/null | head -5 || echo "无 series 目录"
 
       - name: Check for changes
         id: check-changes
@@ -99,11 +140,11 @@ jobs:
           cd ai-insights
           if git diff --quiet && git diff --staged --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "没有检测到新的内容变更"
+            echo "ℹ️  没有检测到新的内容变更"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "检测到新的内容变更，准备提交"
-            git status
+            echo "✅ 检测到新的内容变更"
+            git status --short
           fi
 
       - name: Commit and push
@@ -112,12 +153,34 @@ jobs:
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+
+          echo "========================================"
+          echo "📤 提交更改到仓库..."
+          echo "========================================"
+
           # 先拉取远程更改，避免冲突
-          git pull --rebase origin main || { echo "⚠️ pull --rebase 失败，尝试自动恢复"; git rebase --abort || true; git reset --hard HEAD; git pull --rebase origin main; }
+          git pull --rebase origin main || {
+            echo "⚠️ pull --rebase 失败，尝试恢复..."
+            git rebase --abort 2>/dev/null || true
+            git reset --hard HEAD
+            git pull --rebase origin main
+          }
+
           git add content/
-          git commit -m "chore: sync content from content-forge-ai [skip ci]" -m "自动同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+
+          # 显示即将提交的内容
+          echo "即将提交的文件:"
+          git diff --cached --name-status
+
+          git commit -m "chore: sync content from content-forge-ai [skip ci]" \
+                     -m "触发方式: ${{ github.event_name }}" \
+                     -m "同步时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+
           git push
+
+          echo "========================================"
           echo "✅ 内容已成功同步并推送到仓库"
+          echo "========================================"
 
       - name: Summary report
         if: always()
@@ -125,7 +188,18 @@ jobs:
           echo "========================================"
           echo "📊 内容同步报告"
           echo "========================================"
-          echo "执行时间: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+          echo "触发方式: ${{ github.event_name }}"
+          echo "执行时间: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
           echo "执行状态: ${{ job.status }}"
+          echo "有 digest: ${{ env.has_digest }}"
           echo "有变更: ${{ steps.check-changes.outputs.has_changes }}"
+          echo "========================================"
+
+          if [ "${{ env.has_digest }}" = "false" ]; then
+            echo "⚠️ 本次同步跳过（未找到 digest）"
+          elif [ "${{ steps.check-changes.outputs.has_changes }}" = "true" ]; then
+            echo "✅ 同步成功，内容已更新"
+          else
+            echo "ℹ️  同步完成，但无新内容"
+          fi
           echo "========================================"

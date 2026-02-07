@@ -109,6 +109,17 @@ jobs:
           echo "跳过等待，直接同步所有可用内容..."
           echo "has_digest=true" >> $GITHUB_ENV
 
+      # 对于 push 事件，也直接同步所有内容
+      - name: Check for digest (push event)
+        if: github.event_name == 'push'
+        run: |
+          echo "========================================"
+          echo "📝 Push 事件触发：立即同步"
+          echo "========================================"
+          echo "提交信息: ${{ github.event.head_commit.message }}"
+          echo "跳过等待，直接同步所有可用内容..."
+          echo "has_digest=true" >> $GITHUB_ENV
+
       - name: Sync content
         if: env.has_digest != 'false'
         run: |

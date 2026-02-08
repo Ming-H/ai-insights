@@ -162,22 +162,27 @@ jobs:
           echo "Committing changes to repository..."
           echo "========================================"
 
-          git pull --rebase origin main || {
-            echo "pull --rebase failed, attempting recovery..."
-            git rebase --abort 2>/dev/null || true
-            git reset --hard HEAD
-            git pull --rebase origin main
-          }
-
+          # Add changes first, then pull to avoid conflicts
           git add content/
 
           echo "Files to commit:"
           git diff --cached --name-status
 
+          # Commit local changes first
           git commit -m "chore: sync content from content-forge-ai [skip ci]" \
                      -m "Trigger: ${{ github.event_name }}" \
                      -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
+          # Then pull with rebase to integrate remote changes
+          git pull --rebase origin main || {
+            echo "pull --rebase failed, attempting recovery..."
+            git rebase --abort 2>/dev/null || true
+            # Reset to origin/main and try again
+            git reset --hard origin/main
+            git pull origin main
+          }
+
+          # Push the rebased commit
           git push
 
           echo "========================================"
@@ -195,22 +200,27 @@ jobs:
           echo "Committing changes to repository..."
           echo "========================================"
 
-          git pull --rebase origin main || {
-            echo "pull --rebase failed, attempting recovery..."
-            git rebase --abort 2>/dev/null || true
-            git reset --hard HEAD
-            git pull --rebase origin main
-          }
-
+          # Add changes first, then pull to avoid conflicts
           git add content/
 
           echo "Files to commit:"
           git diff --cached --name-status
 
+          # Commit local changes first
           git commit -m "chore: sync content from content-forge-ai [skip ci]" \
                      -m "Trigger: ${{ github.event_name }}" \
                      -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
+          # Then pull with rebase to integrate remote changes
+          git pull --rebase origin main || {
+            echo "pull --rebase failed, attempting recovery..."
+            git rebase --abort 2>/dev/null || true
+            # Reset to origin/main and try again
+            git reset --hard origin/main
+            git pull origin main
+          }
+
+          # Push the rebased commit
           git push
 
           echo "========================================"

@@ -36,6 +36,7 @@ jobs:
           repository: Ming-H/content-forge-ai
           path: content-forge-ai
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Get full history to ensure we get the latest commit
 
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -84,8 +85,8 @@ jobs:
 
             # For non-scheduled triggers, wait a bit and check again
             if [ "${{ github.event_name }}" != "schedule" ]; then
-              echo "Waiting 30 seconds for digest to appear..."
-              sleep 30
+              echo "Waiting 60 seconds for digest to appear..."
+              sleep 60
 
               if [ -d "$digest_dir" ]; then
                 echo "Found today's digest after wait ($today)"

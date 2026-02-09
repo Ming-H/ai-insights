@@ -38,6 +38,15 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0  # Get full history to ensure we get the latest commit
 
+      # 确保获取最新的提交（解决跨仓库同步延迟问题）
+      - name: Fetch latest content-forge-ai commits
+        run: |
+          cd content-forge-ai
+          git fetch origin main
+          git checkout origin/main
+          echo "Latest commit in content-forge-ai:"
+          git log -1 --format="%H %s %ci"
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:

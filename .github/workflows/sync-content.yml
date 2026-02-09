@@ -55,38 +55,55 @@ jobs:
 
           ls -la $GITHUB_WORKSPACE/content-forge-ai/data/daily/ | head -20 || echo "content-forge-ai/data/daily not found"
 
-      # For schedule triggers, wait for today's digest
-      - name: "Guard: wait for daily digest (scheduled only)"
-        id: wait-digest
-        if: github.event_name == 'schedule'
+      # For all triggers, check if today's digest exists
+      # If not found, wait up to 2 minutes for it to appear
+      - name: "Check for today's digest"
+        id: check-digest
         env:
           TZ: Asia/Shanghai
         run: |
           echo "========================================"
-          echo "Scheduled mode: waiting for today's digest"
+          echo "Checking for today's digest"
           echo "========================================"
 
           today=$(TZ=$TZ date +%Y%m%d)
           digest_dir="$GITHUB_WORKSPACE/content-forge-ai/data/daily/$today/digest"
 
           echo "Expected digest directory: $digest_dir"
+          echo "Today's date (Beijing): $today"
 
-          for i in $(seq 1 5); do
-            if [ -d "$digest_dir" ]; then
-              echo "Found today's digest directory ($today)"
-              ls -la "$digest_dir"
-              echo "should_sync=true" >> $GITHUB_OUTPUT
-              exit 0
+          # Check if today's digest exists
+          if [ -d "$digest_dir" ]; then
+            echo "Found today's digest directory ($today)"
+            ls -la "$digest_dir"
+            echo "has_today_digest=true" >> $GITHUB_OUTPUT
+            echo "should_sync=true" >> $GITHUB_OUTPUT
+          else
+            echo "Today's digest not found ($today)"
+            echo "has_today_digest=false" >> $GITHUB_OUTPUT
+
+            # For non-scheduled triggers, wait a bit and check again
+            if [ "${{ github.event_name }}" != "schedule" ]; then
+              echo "Waiting 30 seconds for digest to appear..."
+              sleep 30
+
+              if [ -d "$digest_dir" ]; then
+                echo "Found today's digest after wait ($today)"
+                ls -la "$digest_dir"
+                echo "has_today_digest=true" >> $GITHUB_OUTPUT
+                echo "should_sync=true" >> $GITHUB_OUTPUT
+              else
+                echo "Still no digest found, will sync all available content"
+                echo "should_sync=true" >> $GITHUB_OUTPUT
+              fi
+            else
+              # For scheduled triggers, skip sync
+              echo "should_sync=false" >> $GITHUB_OUTPUT
             fi
-            echo "Today's digest not found ($today), waiting... (${i}/5)"
-            sleep 120
-          done
+          fi
 
-          echo "Today's digest not found after 10 minutes ($today), skipping sync"
-          echo "should_sync=false" >> $GITHUB_OUTPUT
-
-      - name: Sync content (scheduled)
-        if: github.event_name == 'schedule' && steps.wait-digest.outputs.should_sync == 'true'
+      - name: Sync content (when digest found or non-scheduled)
+        if: steps.check-digest.outputs.should_sync == 'true'
         run: |
           cd ai-insights
           echo "========================================"
@@ -104,28 +121,9 @@ jobs:
           echo "Latest daily files:"
           ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "No new daily files"
 
-      - name: Sync content (non-scheduled)
-        if: github.event_name != 'schedule'
-        run: |
-          cd ai-insights
-          echo "========================================"
-          echo "Starting content sync..."
-          echo "========================================"
-          export CONTENT_FORGE_AI_PATH="$GITHUB_WORKSPACE/content-forge-ai"
-          export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
-
-          python scripts/sync_content.py --all
-
-          echo "========================================"
-          echo "Content sync complete"
-          echo "========================================"
-
-          echo "Latest daily files:"
-          ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "No new daily files"
-
-      - name: Check for changes (scheduled)
-        id: check-changes-scheduled
-        if: github.event_name == 'schedule' && steps.wait-digest.outputs.should_sync == 'true'
+      - name: Check for changes
+        id: check-changes
+        if: steps.check-digest.outputs.should_sync == 'true'
         run: |
           cd ai-insights
           if git diff --quiet && git diff --staged --quiet; then
@@ -137,60 +135,8 @@ jobs:
             git status --short
           fi
 
-      - name: Check for changes (non-scheduled)
-        id: check-changes-nonscheduled
-        if: github.event_name != 'schedule'
-        run: |
-          cd ai-insights
-          if git diff --quiet && git diff --staged --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No new content changes detected"
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "New content changes detected"
-            git status --short
-          fi
-
-      - name: Commit and push (scheduled)
-        if: github.event_name == 'schedule' && steps.wait-digest.outputs.should_sync == 'true' && steps.check-changes-scheduled.outputs.has_changes == 'true'
-        run: |
-          cd ai-insights
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          echo "========================================"
-          echo "Committing changes to repository..."
-          echo "========================================"
-
-          # Add changes first, then pull to avoid conflicts
-          git add content/
-
-          echo "Files to commit:"
-          git diff --cached --name-status
-
-          # Commit local changes first
-          git commit -m "chore: sync content from content-forge-ai [skip ci]" \
-                     -m "Trigger: ${{ github.event_name }}" \
-                     -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
-
-          # Then pull with rebase to integrate remote changes
-          git pull --rebase origin main || {
-            echo "pull --rebase failed, attempting recovery..."
-            git rebase --abort 2>/dev/null || true
-            # Reset to origin/main and try again
-            git reset --hard origin/main
-            git pull origin main
-          }
-
-          # Push the rebased commit
-          git push
-
-          echo "========================================"
-          echo "Content successfully synced and pushed to repository"
-          echo "========================================"
-
-      - name: Commit and push (non-scheduled)
-        if: github.event_name != 'schedule' && steps.check-changes-nonscheduled.outputs.has_changes == 'true'
+      - name: Commit and push
+        if: steps.check-digest.outputs.should_sync == 'true' && steps.check-changes.outputs.has_changes == 'true'
         run: |
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -236,12 +182,6 @@ jobs:
           echo "Trigger: ${{ github.event_name }}"
           echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
           echo "Status: ${{ job.status }}"
-          echo "========================================"
-
-          if [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "Should sync: ${{ steps.wait-digest.outputs.should_sync }}"
-            echo "Has changes: ${{ steps.check-changes-scheduled.outputs.has_changes }}"
-          else
-            echo "Has changes: ${{ steps.check-changes-nonscheduled.outputs.has_changes }}"
-          fi
+          echo "Should sync: ${{ steps.check-digest.outputs.should_sync }}"
+          echo "Has changes: ${{ steps.check-changes.outputs.has_changes }}"
           echo "========================================"

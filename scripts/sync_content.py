@@ -8,22 +8,21 @@
     python scripts/sync_content.py --all      # 同步全部内容
 """
 
+# 配置路径（支持通过环境变量覆盖，方便 GitHub Actions / 不同环境）
+# 注意：必须在最前面导入并设置环境变量，确保在导入其他模块前生效
 import os
+from pathlib import Path
+
+# 从环境变量获取路径
+CONTENT_FORGE_AI_PATH = Path(os.getenv("CONTENT_FORGE_AI_PATH", "/Users/z/Documents/work/content-forge-ai"))
+HUGO_CONTENT_PATH = Path(os.getenv("HUGO_CONTENT_PATH", "/Users/z/Documents/work/ai-insights/content"))
+
 import sys
 import json
 import shutil
 import argparse
 import re
 from datetime import datetime
-from pathlib import Path
-
-# 配置路径（支持通过环境变量覆盖，方便 GitHub Actions / 不同环境）
-CONTENT_FORGE_AI_PATH = Path(
-    os.getenv("CONTENT_FORGE_AI_PATH", "/Users/z/Documents/work/content-forge-ai")
-)
-HUGO_CONTENT_PATH = Path(
-    os.getenv("HUGO_CONTENT_PATH", "/Users/z/Documents/work/ai-insights/content")
-)
 
 
 def parse_date_from_digest_filename(filename):

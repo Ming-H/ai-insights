@@ -29,11 +29,11 @@ jobs:
         with:
           path: ai-insights
 
-      # 检出 content-forge-ai 仓库
+      # 检出 content-forge-ai 仓库（注意：原始仓库是 devfoxaicn/content-forge-ai）
       - name: Checkout content-forge-ai
         uses: actions/checkout@v4
         with:
-          repository: Ming-H/content-forge-ai
+          repository: devfoxaicn/content-forge-ai
           path: content-forge-ai
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0  # Get full history to ensure we get the latest commit

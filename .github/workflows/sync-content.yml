@@ -107,8 +107,10 @@ jobs:
                 echo "should_sync=true" >> $GITHUB_OUTPUT
               fi
             else
-              # For scheduled triggers, skip sync
-              echo "should_sync=false" >> $GITHUB_OUTPUT
+              # For scheduled triggers, still sync all available content
+              # (digest might be generated late, but we should sync whatever exists)
+              echo "No today's digest found, but will sync all available content"
+              echo "should_sync=true" >> $GITHUB_OUTPUT
             fi
           fi
 

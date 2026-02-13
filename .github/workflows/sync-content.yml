@@ -157,27 +157,28 @@ jobs:
           echo "Committing changes to repository..."
           echo "========================================"
 
-          # Add changes first, then pull to avoid conflicts
+          # Rebase onto latest main first to avoid non-fast-forward push failures.
+          # This avoids destructive fallback and keeps generated content intact.
+          git pull --rebase origin main
+
+          # Stage generated content
           git add content/
+
+          # Re-check in case rebase changed working tree
+          if git diff --cached --quiet; then
+            echo "No content changes to commit after rebase"
+            exit 0
+          fi
 
           echo "Files to commit:"
           git diff --cached --name-status
 
-          # Commit local changes first
+          # Commit synced content
           git commit -m "chore: sync content from content-forge-ai" \
                      -m "Trigger: ${{ github.event_name }}" \
                      -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
-          # Then pull with rebase to integrate remote changes
-          git pull --rebase origin main || {
-            echo "pull --rebase failed, attempting recovery..."
-            git rebase --abort 2>/dev/null || true
-            # Reset to origin/main and try again
-            git reset --hard origin/main
-            git pull origin main
-          }
-
-          # Push the rebased commit
+          # Push synced content
           git push
 
           echo "========================================"

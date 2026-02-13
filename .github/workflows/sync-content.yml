@@ -29,13 +29,12 @@ jobs:
         with:
           path: ai-insights
 
-      # 检出 content-forge-ai 仓库（使用 PAT 跨仓库访问）
+      # 检出 content-forge-ai 仓库（公开仓库，无需 token）
       - name: Checkout content-forge-ai
         uses: actions/checkout@v4
         with:
           repository: Ming-H/content-forge-ai
           path: content-forge-ai
-          token: ${{ secrets.CONTENT_FORGE_AI_PAT }}
           fetch-depth: 0  # Get full history to ensure we get the latest commit
 
       # 确保获取最新的提交（解决跨仓库同步延迟问题）

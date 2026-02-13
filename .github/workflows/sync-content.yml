@@ -164,7 +164,7 @@ jobs:
           git diff --cached --name-status
 
           # Commit local changes first
-          git commit -m "chore: sync content from content-forge-ai [skip ci]" \
+          git commit -m "chore: sync content from content-forge-ai" \
                      -m "Trigger: ${{ github.event_name }}" \
                      -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 

@@ -157,11 +157,8 @@ jobs:
           echo "Committing changes to repository..."
           echo "========================================"
 
-          # Rebase onto latest main first to avoid non-fast-forward push failures.
-          # This avoids destructive fallback and keeps generated content intact.
-          git pull --rebase origin main
-
-          # Stage generated content
+          # Stage generated content first.
+          # The sync step already modified working tree files under content/.
           git add content/
 
           # Re-check in case rebase changed working tree
@@ -178,7 +175,8 @@ jobs:
                      -m "Trigger: ${{ github.event_name }}" \
                      -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
-          # Push synced content
+          # Rebase local sync commit onto latest remote main, then push.
+          git pull --rebase origin main
           git push
 
           echo "========================================"

@@ -1,0 +1,108 @@
+name: Sync Watchdog
+
+on:
+  schedule:
+    # Hourly health-check and self-heal
+    - cron: '15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-watchdog-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout ai-insights
+        uses: actions/checkout@v4
+        with:
+          path: ai-insights
+
+      - name: Checkout content-forge-ai
+        uses: actions/checkout@v4
+        with:
+          repository: Ming-H/content-forge-ai
+          path: content-forge-ai
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Check sync health
+        id: health
+        run: |
+          set -euo pipefail
+
+          latest_digest=$(find "$GITHUB_WORKSPACE/content-forge-ai/data/daily" -type f -path "*/digest/digest_*.md" | sort | tail -1 || true)
+          if [ -z "$latest_digest" ]; then
+            echo "No digest found in source repository"
+            echo "needs_sync=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          digest_name=$(basename "$latest_digest")
+          date_ymd=$(echo "$digest_name" | sed -n 's/^digest_\([0-9]\{8\}\).*/\1/p')
+          if [ -z "$date_ymd" ]; then
+            echo "Unable to parse digest date from $digest_name"
+            exit 1
+          fi
+
+          expected_file="${date_ymd:0:4}-${date_ymd:4:2}-${date_ymd:6:2}-index.md"
+          target="$GITHUB_WORKSPACE/ai-insights/content/daily/$expected_file"
+
+          echo "latest_digest=$latest_digest"
+          echo "expected_target=$target"
+          echo "expected_file=$expected_file" >> $GITHUB_OUTPUT
+
+          if [ -f "$target" ]; then
+            echo "Target already synced"
+            echo "needs_sync=false" >> $GITHUB_OUTPUT
+          else
+            echo "Target file missing, sync required"
+            echo "needs_sync=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run sync when lag is detected
+        if: steps.health.outputs.needs_sync == 'true'
+        run: |
+          cd ai-insights
+          export CONTENT_FORGE_AI_PATH="$GITHUB_WORKSPACE/content-forge-ai"
+          export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
+          python scripts/sync_content.py --all
+
+      - name: Commit and push recovery sync
+        if: steps.health.outputs.needs_sync == 'true'
+        run: |
+          set -euo pipefail
+          cd ai-insights
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add -A content/
+          if git diff --cached --quiet; then
+            echo "No changes after recovery sync"
+            exit 0
+          fi
+
+          git commit -m "chore: watchdog recovery sync from content-forge-ai" \
+                     -m "Recovered missing daily file: ${{ steps.health.outputs.expected_file }}" \
+                     -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
+
+          for attempt in 1 2 3; do
+            echo "Push attempt $attempt/3"
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            sleep 10
+          done
+
+          echo "ERROR: watchdog recovery push failed"
+          exit 1

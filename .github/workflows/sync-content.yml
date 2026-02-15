@@ -248,3 +248,28 @@ jobs:
           echo "Should sync: ${{ steps.check-digest.outputs.should_sync }}"
           echo "Has changes: ${{ steps.check-changes.outputs.has_changes }}"
           echo "========================================"
+
+      - name: Notify Feishu on sync failure
+        if: failure() && secrets.FEISHU_WEBHOOK_URL != ''
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+
+          run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          ts=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
+          msg=$(printf '%s\n' \
+            '[AI-Insights][告警] 内容同步失败' \
+            '仓库: ${{ github.repository }}' \
+            '工作流: ${{ github.workflow }}' \
+            '触发方式: ${{ github.event_name }}' \
+            '分支: ${{ github.ref_name }}' \
+            '提交: ${{ github.sha }}' \
+            "时间(北京): $ts" \
+            "详情: $run_url")
+
+          export MSG="$msg"
+          payload=$(python -c 'import json, os; print(json.dumps({"msg_type":"text","content":{"text":os.environ["MSG"]}}, ensure_ascii=False))')
+          curl -sS -X POST "$FEISHU_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "$payload" >/dev/null

@@ -64,13 +64,14 @@ jobs:
 
           ls -la $GITHUB_WORKSPACE/content-forge-ai/data/daily/ | head -20 || echo "content-forge-ai/data/daily not found"
 
-      # For all triggers, check if today's digest exists
-      # If not found, wait up to 2 minutes for it to appear
+      # For all triggers, check if today's digest exists.
+      # repository_dispatch may race with source push visibility, so we retry with re-fetch.
       - name: "Check for today's digest"
         id: check-digest
         env:
           TZ: Asia/Shanghai
         run: |
+          set -euo pipefail
           echo "========================================"
           echo "Checking for today's digest"
           echo "========================================"
@@ -81,37 +82,39 @@ jobs:
           echo "Expected digest directory: $digest_dir"
           echo "Today's date (Beijing): $today"
 
+          has_today_digest=false
+
           # Check if today's digest exists
           if [ -d "$digest_dir" ]; then
+            has_today_digest=true
+          elif [ "${{ github.event_name }}" != "schedule" ]; then
+            # repository_dispatch may arrive slightly before source checkout sees newest commit.
+            # Re-fetch source repo and retry to avoid missing the newly generated digest.
+            for attempt in 1 2 3 4 5 6 7 8 9 10; do
+              echo "Digest not found, retry $attempt/10 after refreshing source repo..."
+              sleep 30
+              cd "$GITHUB_WORKSPACE/content-forge-ai"
+              git fetch origin main
+              git checkout origin/main
+
+              if [ -d "$digest_dir" ]; then
+                has_today_digest=true
+                break
+              fi
+            done
+          fi
+
+          if [ "$has_today_digest" = "true" ]; then
             echo "Found today's digest directory ($today)"
             ls -la "$digest_dir"
             echo "has_today_digest=true" >> $GITHUB_OUTPUT
-            echo "should_sync=true" >> $GITHUB_OUTPUT
           else
-            echo "Today's digest not found ($today)"
+            echo "Today's digest not found after checks ($today)"
             echo "has_today_digest=false" >> $GITHUB_OUTPUT
-
-            # For non-scheduled triggers, wait a bit and check again
-            if [ "${{ github.event_name }}" != "schedule" ]; then
-              echo "Waiting 60 seconds for digest to appear..."
-              sleep 60
-
-              if [ -d "$digest_dir" ]; then
-                echo "Found today's digest after wait ($today)"
-                ls -la "$digest_dir"
-                echo "has_today_digest=true" >> $GITHUB_OUTPUT
-                echo "should_sync=true" >> $GITHUB_OUTPUT
-              else
-                echo "Still no digest found, will sync all available content"
-                echo "should_sync=true" >> $GITHUB_OUTPUT
-              fi
-            else
-              # For scheduled triggers, still sync all available content
-              # (digest might be generated late, but we should sync whatever exists)
-              echo "No today's digest found, but will sync all available content"
-              echo "should_sync=true" >> $GITHUB_OUTPUT
-            fi
           fi
+
+          # Always sync all available content to avoid missing late data from previous runs.
+          echo "should_sync=true" >> $GITHUB_OUTPUT
 
       - name: Sync content (when digest found or non-scheduled)
         if: steps.check-digest.outputs.should_sync == 'true'
@@ -132,18 +135,50 @@ jobs:
           echo "Latest daily files:"
           ls -lt content/daily/*.md 2>/dev/null | head -5 || echo "No new daily files"
 
+      - name: Verify latest digest is synced
+        if: steps.check-digest.outputs.should_sync == 'true'
+        run: |
+          set -euo pipefail
+
+          source_latest_digest=$(find "$GITHUB_WORKSPACE/content-forge-ai/data/daily" -type f -path "*/digest/digest_*.md" | sort | tail -1 || true)
+          if [ -z "$source_latest_digest" ]; then
+            echo "No digest files found in content-forge-ai; skip strict verification"
+            exit 0
+          fi
+
+          digest_name=$(basename "$source_latest_digest")
+          expected_date=$(echo "$digest_name" | sed -n 's/^digest_\([0-9]\{8\}\).*/\1/p')
+          if [ -z "$expected_date" ]; then
+            echo "Failed to parse date from digest filename: $digest_name"
+            exit 1
+          fi
+
+          expected_file="${expected_date:0:4}-${expected_date:4:2}-${expected_date:6:2}-index.md"
+          target_file="$GITHUB_WORKSPACE/ai-insights/content/daily/$expected_file"
+
+          echo "Latest source digest: $source_latest_digest"
+          echo "Expected target file: $target_file"
+
+          if [ ! -f "$target_file" ]; then
+            echo "ERROR: Latest source digest has not been synced to ai-insights"
+            exit 1
+          fi
+
       - name: Check for changes
         id: check-changes
         if: steps.check-digest.outputs.should_sync == 'true'
         run: |
           cd ai-insights
-          if git diff --quiet && git diff --staged --quiet; then
+          # Stage generated content before checking changes so new files are detected.
+          git add -A content/
+
+          if git diff --cached --quiet; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No new content changes detected"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "New content changes detected"
-            git status --short
+            git diff --cached --name-status
           fi
 
       - name: Commit and push
@@ -157,13 +192,12 @@ jobs:
           echo "Committing changes to repository..."
           echo "========================================"
 
-          # Stage generated content first.
-          # The sync step already modified working tree files under content/.
-          git add content/
+          # Stage generated content to ensure latest workspace state is committed.
+          git add -A content/
 
-          # Re-check in case rebase changed working tree
+          # Re-check staged content before commit.
           if git diff --cached --quiet; then
-            echo "No content changes to commit after rebase"
+            echo "No content changes to commit"
             exit 0
           fi
 

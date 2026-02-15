@@ -18,6 +18,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: sync-content-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -184,6 +188,7 @@ jobs:
       - name: Commit and push
         if: steps.check-digest.outputs.should_sync == 'true' && steps.check-changes.outputs.has_changes == 'true'
         run: |
+          set -euo pipefail
           cd ai-insights
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -209,9 +214,23 @@ jobs:
                      -m "Trigger: ${{ github.event_name }}" \
                      -m "Sync time: $(date '+%Y-%m-%d %H:%M:%S') (UTC)"
 
-          # Rebase local sync commit onto latest remote main, then push.
-          git pull --rebase origin main
-          git push
+          # Rebase local sync commit onto latest remote main, then push with retry.
+          pushed=false
+          for attempt in 1 2 3; do
+            echo "Push attempt $attempt/3"
+            if git pull --rebase origin main && git push; then
+              pushed=true
+              break
+            fi
+
+            echo "Push attempt $attempt failed, retrying in 10 seconds..."
+            sleep 10
+          done
+
+          if [ "$pushed" != "true" ]; then
+            echo "ERROR: Failed to push synced content after retries"
+            exit 1
+          fi
 
           echo "========================================"
           echo "Content successfully synced and pushed to repository"

@@ -233,6 +233,31 @@ jobs:
             exit 1
           fi
 
+          pushed_sha=$(git rev-parse HEAD)
+          remote_synced=false
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            echo "Wait remote main sync attempt $attempt/12"
+            remote_sha=$(curl -sS \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ github.token }}" \
+              https://api.github.com/repos/${{ github.repository }}/commits/main \
+              | python -c 'import sys,json; print(json.load(sys.stdin).get("sha",""))')
+
+            if [ "$remote_sha" = "$pushed_sha" ]; then
+              remote_synced=true
+              break
+            fi
+
+            sleep 5
+          done
+
+          if [ "$remote_synced" != "true" ]; then
+            echo "ERROR: Remote main did not catch up to pushed commit before deploy dispatch"
+            echo "Expected: $pushed_sha"
+            echo "Actual:   $remote_sha"
+            exit 1
+          fi
+
           # Trigger Hugo deployment explicitly.
           # Pushes from GITHUB_TOKEN do not reliably trigger downstream push workflows.
           dispatched=false

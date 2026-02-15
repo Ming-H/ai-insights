@@ -78,29 +78,6 @@ jobs:
           export HUGO_CONTENT_PATH="$GITHUB_WORKSPACE/ai-insights/content"
           python scripts/sync_content.py --all
 
-      - name: Notify Feishu when lag is detected
-        if: steps.health.outputs.needs_sync == 'true' && secrets.FEISHU_WEBHOOK_URL != ''
-        env:
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-        run: |
-          set -euo pipefail
-
-          run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ts=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
-          msg=$(printf '%s\n' \
-            '[AI-Insights][预警] 检测到同步滞后，已启动自愈同步' \
-            '仓库: ${{ github.repository }}' \
-            '工作流: ${{ github.workflow }}' \
-            '缺失文件: ${{ steps.health.outputs.expected_file }}' \
-            "时间(北京): $ts" \
-            "详情: $run_url")
-
-          export MSG="$msg"
-          payload=$(python -c 'import json, os; print(json.dumps({"msg_type":"text","content":{"text":os.environ["MSG"]}}, ensure_ascii=False))')
-          curl -sS -X POST "$FEISHU_WEBHOOK_URL" \
-            -H "Content-Type: application/json" \
-            -d "$payload" >/dev/null
-
       - name: Commit and push recovery sync
         if: steps.health.outputs.needs_sync == 'true'
         run: |
@@ -129,49 +106,3 @@ jobs:
 
           echo "ERROR: watchdog recovery push failed"
           exit 1
-
-      - name: Notify Feishu when recovery succeeded
-        if: steps.health.outputs.needs_sync == 'true' && success() && secrets.FEISHU_WEBHOOK_URL != ''
-        env:
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-        run: |
-          set -euo pipefail
-
-          run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ts=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
-          msg=$(printf '%s\n' \
-            '[AI-Insights][恢复] Watchdog 已自动补齐同步' \
-            '仓库: ${{ github.repository }}' \
-            '工作流: ${{ github.workflow }}' \
-            '恢复文件: ${{ steps.health.outputs.expected_file }}' \
-            "时间(北京): $ts" \
-            "详情: $run_url")
-
-          export MSG="$msg"
-          payload=$(python -c 'import json, os; print(json.dumps({"msg_type":"text","content":{"text":os.environ["MSG"]}}, ensure_ascii=False))')
-          curl -sS -X POST "$FEISHU_WEBHOOK_URL" \
-            -H "Content-Type: application/json" \
-            -d "$payload" >/dev/null
-
-      - name: Notify Feishu on watchdog failure
-        if: failure() && secrets.FEISHU_WEBHOOK_URL != ''
-        env:
-          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-        run: |
-          set -euo pipefail
-
-          run_url="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          ts=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S')
-          msg=$(printf '%s\n' \
-            '[AI-Insights][告警] Watchdog 自愈失败' \
-            '仓库: ${{ github.repository }}' \
-            '工作流: ${{ github.workflow }}' \
-            '缺失文件(若已识别): ${{ steps.health.outputs.expected_file }}' \
-            "时间(北京): $ts" \
-            "详情: $run_url")
-
-          export MSG="$msg"
-          payload=$(python -c 'import json, os; print(json.dumps({"msg_type":"text","content":{"text":os.environ["MSG"]}}, ensure_ascii=False))')
-          curl -sS -X POST "$FEISHU_WEBHOOK_URL" \
-            -H "Content-Type: application/json" \
-            -d "$payload" >/dev/null

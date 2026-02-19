@@ -80,6 +80,7 @@ jobs:
           python scripts/sync_content.py --all
 
       - name: Commit and push recovery sync
+        id: recovery-push
         if: steps.health.outputs.needs_sync == 'true'
         run: |
           set -euo pipefail
@@ -113,6 +114,7 @@ jobs:
           fi
 
           pushed_sha=$(git rev-parse HEAD)
+          echo "pushed_sha=$pushed_sha" >> $GITHUB_OUTPUT
           remote_synced=false
           for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
             echo "Wait remote main sync attempt $attempt/12"
@@ -131,11 +133,90 @@ jobs:
           done
 
           if [ "$remote_synced" != "true" ]; then
-            echo "ERROR: watchdog remote main did not catch up before deploy dispatch"
+            echo "ERROR: watchdog remote main did not catch up before deploy check"
             echo "Expected: $pushed_sha"
             echo "Actual:   $remote_sha"
             exit 1
           fi
+
+      - name: Resolve target deploy SHA
+        id: deploy-target
+        run: |
+          set -euo pipefail
+
+          if [ "${{ steps.health.outputs.needs_sync }}" = "true" ] && [ -n "${{ steps.recovery-push.outputs.pushed_sha }}" ]; then
+            target_sha="${{ steps.recovery-push.outputs.pushed_sha }}"
+            echo "Using pushed SHA as deploy target: $target_sha"
+          else
+            target_sha=$(curl -sS \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer ${{ github.token }}" \
+              https://api.github.com/repos/${{ github.repository }}/commits/main \
+              | python -c 'import sys,json; print(json.load(sys.stdin).get("sha",""))')
+            echo "Using current remote main SHA as deploy target: $target_sha"
+          fi
+
+          if [ -z "$target_sha" ]; then
+            echo "ERROR: Unable to resolve deploy target SHA"
+            exit 1
+          fi
+
+          echo "target_sha=$target_sha" >> $GITHUB_OUTPUT
+
+      - name: Check Hugo deploy health
+        id: deploy-health
+        env:
+          TARGET_SHA: ${{ steps.deploy-target.outputs.target_sha }}
+        run: |
+          set -euo pipefail
+
+          runs_json=$(curl -sS \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ github.token }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/hugo.yml/runs?branch=main&per_page=30")
+
+          deploy_state=$(echo "$runs_json" | python - <<'PY'
+          import json
+          import os
+          import sys
+
+          target_sha = os.environ.get("TARGET_SHA", "")
+          state = "missing"
+
+          if target_sha:
+              data = json.load(sys.stdin)
+              for run in data.get("workflow_runs", []):
+                  if run.get("head_sha") != target_sha:
+                      continue
+                  status = run.get("status")
+                  conclusion = run.get("conclusion")
+                  if status in {"queued", "in_progress", "waiting", "requested", "pending"}:
+                      state = "in_progress"
+                      break
+                  if status == "completed" and conclusion == "success":
+                      state = "success"
+                      break
+                  if status == "completed":
+                      state = "failed"
+                      break
+
+          print(state)
+          PY
+          )
+
+          echo "Deploy state for ${TARGET_SHA}: ${deploy_state}"
+          echo "deploy_state=$deploy_state" >> $GITHUB_OUTPUT
+
+          if [ "$deploy_state" = "success" ] || [ "$deploy_state" = "in_progress" ]; then
+            echo "needs_dispatch=false" >> $GITHUB_OUTPUT
+          else
+            echo "needs_dispatch=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Dispatch Hugo deploy when needed
+        if: steps.deploy-health.outputs.needs_dispatch == 'true'
+        run: |
+          set -euo pipefail
 
           dispatched=false
           for attempt in 1 2 3; do
@@ -161,3 +242,17 @@ jobs:
             echo "ERROR: watchdog failed to dispatch Hugo deploy workflow"
             exit 1
           fi
+
+      - name: Summary report
+        if: always()
+        run: |
+          echo "========================================"
+          echo "Watchdog Report"
+          echo "========================================"
+          echo "Time: $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M:%S') (Beijing)"
+          echo "Status: ${{ job.status }}"
+          echo "Needs sync: ${{ steps.health.outputs.needs_sync }}"
+          echo "Deploy target SHA: ${{ steps.deploy-target.outputs.target_sha }}"
+          echo "Deploy state: ${{ steps.deploy-health.outputs.deploy_state }}"
+          echo "Needs deploy dispatch: ${{ steps.deploy-health.outputs.needs_dispatch }}"
+          echo "========================================"

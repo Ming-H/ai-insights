@@ -27,11 +27,27 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.156.0'
           extended: true
 
       - name: Build with Hugo
-        run: hugo --minify --buildFuture
+        run: |
+          set -euo pipefail
+
+          for attempt in 1 2 3; do
+            echo "Build attempt $attempt/3"
+            if hugo --minify --buildFuture; then
+              exit 0
+            fi
+
+            if [ "$attempt" -lt 3 ]; then
+              echo "Build failed, retrying in 5 seconds..."
+              sleep 5
+            fi
+          done
+
+          echo "ERROR: Hugo build failed after retries"
+          exit 1
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

@@ -302,7 +302,10 @@ jobs:
             -H "Authorization: Bearer ${{ github.token }}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/hugo.yml/runs?branch=main&per_page=30")
 
-          deploy_state=$(echo "$runs_json" | python - <<'PY'
+          runs_json_path=$(mktemp)
+          printf '%s' "$runs_json" > "$runs_json_path"
+
+          deploy_state=$(python - "$runs_json_path" <<'PY'
           import json
           import os
           import sys
@@ -311,7 +314,8 @@ jobs:
           state = "missing"
 
           if target_sha:
-              data = json.load(sys.stdin)
+              with open(sys.argv[1], "r", encoding="utf-8") as fp:
+                  data = json.load(fp)
               for run in data.get("workflow_runs", []):
                   if run.get("head_sha") != target_sha:
                       continue
@@ -330,6 +334,7 @@ jobs:
           print(state)
           PY
           )
+          rm -f "$runs_json_path"
 
           echo "Deploy state for ${TARGET_SHA}: ${deploy_state}"
           echo "deploy_state=$deploy_state" >> $GITHUB_OUTPUT

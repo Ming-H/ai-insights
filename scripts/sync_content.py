@@ -143,7 +143,8 @@ def sync_series_articles():
         for series_dir in sorted(category_dir.iterdir()):
             if not series_dir.is_dir():
                 continue
-            if not (series_dir.name.startswith('series_') or series_dir.name.startswith('ml_series_')):
+            if not (series_dir.name.startswith('series_') or series_dir.name.startswith('ml_series_')
+                    or series_dir.name.startswith('va_series_') or series_dir.name.startswith('ae_series_')):
                 continue
 
             # 获取系列名称

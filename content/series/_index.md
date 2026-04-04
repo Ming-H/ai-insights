@@ -187,3 +187,73 @@ SVM · 决策树 · 随机森林 · XGBoost
 </div>
 
 </div>
+
+---
+
+<div style="background: var(--color-bg-secondary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 3px solid var(--color-border);">
+  <span style="font-size: 0.875rem; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">智能语音助手 系列概览</span>
+  <div style="font-size: 1rem; color: var(--color-text-primary); margin-top: 0.25rem;">2 篇深度文章 · 语音技术全栈指南</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[智能语音助手](va_series_voice_assistant/)**
+
+语音识别 · 语音合成 · 对话系统 · 全栈开发
+
+</div>
+
+</div>
+
+---
+
+<div style="background: var(--color-bg-secondary); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; border-left: 3px solid var(--color-border);">
+  <span style="font-size: 0.875rem; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.05em;">Agent Engineering 系列概览</span>
+  <div style="font-size: 1rem; color: var(--color-text-primary); margin-top: 0.25rem;">50 期全栈指南 · 从基础到生产</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[01. Agent 工程基础](ae_series_1_agent_foundation/)**
+
+ReAct · Prompt Chaining · Routing · 并行与分工
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[02. Agent 架构与工具链](ae_series_2_agent_architecture/)**
+
+记忆系统 · MCP 协议 · 代码 Agent · 浏览器 Agent
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[03. 多 Agent 系统](ae_series_3_multi_agent_systems/)**
+
+LangGraph · CrewAI · AutoGen · OpenAI Agents SDK
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[04. 评估、安全与可观测](ae_series_4_agent_safety_eval/)**
+
+AgentBench · SWE-bench · Prompt Injection 防御 · Guardrails
+
+</div>
+
+<div style="border: 1px solid #e5e7eb; padding: 1.25rem; border-radius: 8px; transition: all 0.2s;">
+
+**[05. 生产化与前沿](ae_series_5_agent_production/)**
+
+部署架构 · CI/CD · 自适应 Agent · 框架对比
+
+</div>
+
+</div>

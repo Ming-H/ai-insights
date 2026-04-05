@@ -169,37 +169,50 @@ def sync_series_articles():
                 with open(metadata_file, 'r', encoding='utf-8') as f:
                     metadata = json.load(f)
 
-                # 跳过未完成的文章
-                if metadata.get('status') != 'completed':
-                    continue
-
                 # 读取文章内容
                 with open(article_file, 'r', encoding='utf-8') as f:
                     article_content = f.read()
+
+                # Skip if article is too short (less than 1000 chars = not real content)
+                if len(article_content.strip()) < 1000:
+                    continue
 
                 # 提取标题
                 lines = article_content.split('\n')
                 title = lines[0].replace('#', '').strip() if lines[0].startswith('#') else metadata['title']
                 content = '\n'.join(lines[1:]).strip() if lines[0].startswith('#') else article_content
 
-                # 解析日期
-                pub_date = datetime.strptime(metadata['completed_at'], "%Y-%m-%d")
+                # 解析日期 - 使用 completed_at 或 created_at 或今天
+                date_str = metadata.get('completed_at') or metadata.get('created_at') or datetime.now().strftime('%Y-%m-%d')
+                pub_date = datetime.strptime(date_str, "%Y-%m-%d")
 
                 # 获取 episode 编号
                 episode_num = metadata['episode']
                 episode_str = f"{episode_num:03d}"
 
                 # 生成 Hugo front matter
+                # Escape special characters in string fields for YAML
+                def yaml_escape(s):
+                    """Escape a string for safe YAML double-quoted value."""
+                    if not s:
+                        return ""
+                    return s.replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ').replace('\r', '')
+
+                title_escaped = yaml_escape(metadata['title'])
+                desc_escaped = yaml_escape(metadata.get('description', metadata['title']))
+                series_escaped = yaml_escape(series_name)
+                diff_escaped = yaml_escape(metadata.get('difficulty', '中级'))
+
                 front_matter = f"""---
-title: "{metadata['title']}"
+title: "{title_escaped}"
 date: {pub_date.strftime('%Y-%m-%d')}
 draft: false
 tags: {metadata['keywords']}
-categories: ["{series_name}", "{metadata.get('difficulty', '中级')}"]
-description: "{metadata.get('description', metadata['title'])}"
-series: "{series_name}"
+categories: ["{series_escaped}", "{diff_escaped}"]
+description: "{desc_escaped}"
+series: "{series_escaped}"
 episode: {episode_num}
-difficulty: "{metadata.get('difficulty', '中级')}"
+difficulty: "{diff_escaped}"
 estimatedWords: {metadata.get('estimated_words', 0)}
 ---
 

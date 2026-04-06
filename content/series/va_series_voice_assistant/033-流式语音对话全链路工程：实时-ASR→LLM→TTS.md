@@ -1,6 +1,6 @@
 ---
 title: "流式语音对话全链路工程：实时 ASR→LLM→TTS"
-date: 2026-04-05
+date: 2026-04-06
 draft: false
 tags: ['流式处理', '全链路', 'ASR→LLM→TTS', '延迟优化', '流式生成', '实时对话', '生产级']
 categories: ["va_series_voice_assistant", "实战"]

@@ -1,6 +1,6 @@
 ---
 title: "Agent 记忆系统（下）：长期记忆与向量检索"
-date: 2026-04-05
+date: 2026-04-06
 draft: false
 tags: ['长期记忆', '向量数据库', 'ChromaDB', 'Pinecone', 'Qdrant', 'RAG for Agents', '嵌入模型', 'Mem0']
 categories: ["ae_series_2_agent_architecture", "进阶"]

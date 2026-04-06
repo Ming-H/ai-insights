@@ -1,6 +1,6 @@
 ---
 title: "AI for Science科学计算前沿"
-date: 2026-04-05
+date: 2026-04-06
 draft: false
 tags: ['AI for Science', 'AlphaFold', '分子预测', '药物发现', '物理模拟', '天气预报']
 categories: ["ml_series_10_advanced_ml_topics", "前沿"]

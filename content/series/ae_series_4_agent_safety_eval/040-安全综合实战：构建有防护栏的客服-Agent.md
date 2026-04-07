@@ -1,6 +1,6 @@
 ---
 title: "安全综合实战：构建有防护栏的客服 Agent"
-date: 2026-04-06
+date: 2026-04-07
 draft: false
 tags: ['综合实战', '客服Agent', 'Guardrails', '审批流程', '可观测性', '审计日志', '安全体系']
 categories: ["ae_series_4_agent_safety_eval", "实战"]

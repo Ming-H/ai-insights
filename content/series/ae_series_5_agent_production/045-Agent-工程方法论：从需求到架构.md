@@ -1,6 +1,6 @@
 ---
 title: "Agent 工程方法论：从需求到架构"
-date: 2026-04-06
+date: 2026-04-07
 draft: false
 tags: ['Agent方法论', '需求分析', '架构选型', '决策树', '工作流vs自主Agent', 'Anthropic建议']
 categories: ["ae_series_5_agent_production", "高级"]

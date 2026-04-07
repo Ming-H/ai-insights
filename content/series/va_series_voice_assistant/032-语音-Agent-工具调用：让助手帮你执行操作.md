@@ -1,6 +1,6 @@
 ---
 title: "语音 Agent 工具调用：让助手帮你执行操作"
-date: 2026-04-06
+date: 2026-04-07
 draft: false
 tags: ['工具调用', 'Function Calling', '语音Agent', '工具使用', 'API调用', '多轮交互', 'tool use']
 categories: ["va_series_voice_assistant", "实战"]

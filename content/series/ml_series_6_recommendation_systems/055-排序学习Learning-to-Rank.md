@@ -1,6 +1,6 @@
 ---
 title: "排序学习Learning to Rank"
-date: 2026-04-06
+date: 2026-04-07
 draft: false
 tags: ['排序学习', 'LTR', 'LambdaMART', 'LambdaRank', 'Pointwise', 'Pairwise', 'Listwise']
 categories: ["ml_series_6_recommendation_systems", "进阶"]

@@ -1,6 +1,6 @@
 ---
 title: "Guardrails 实战：输入输出防护栏"
-date: 2026-04-06
+date: 2026-04-07
 draft: false
 tags: ['Guardrails', 'NeMo Guardrails', 'Guardrails AI', '输入防护', '输出防护', '工具防护', 'OpenAI Guardrails']
 categories: ["ae_series_4_agent_safety_eval", "高级"]

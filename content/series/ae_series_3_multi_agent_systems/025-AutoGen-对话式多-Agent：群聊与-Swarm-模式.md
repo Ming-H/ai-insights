@@ -1,6 +1,6 @@
 ---
 title: "AutoGen 对话式多 Agent：群聊与 Swarm 模式"
-date: 2026-04-07
+date: 2026-04-08
 draft: false
 tags: ['AutoGen', 'AG2', 'ConversableAgent', 'GroupChat', 'Swarm模式', 'Auto RoundRobin', '嵌套对话']
 categories: ["ae_series_3_multi_agent_systems", "高级"]

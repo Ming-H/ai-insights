@@ -1,6 +1,6 @@
 ---
 title: "Prompt Chaining 与 Routing：可预测的工作流"
-date: 2026-04-07
+date: 2026-04-08
 draft: false
 tags: ['Prompt Chaining', 'Routing', '门控检查', '工作流模式', 'Anthropic', '路由分类', '小模型']
 categories: ["ae_series_1_agent_foundation", "进阶"]

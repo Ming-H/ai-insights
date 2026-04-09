@@ -1,6 +1,6 @@
 ---
 title: "Pipecat 与 LiveKit Agents：开源语音 AI 框架实战"
-date: 2026-04-08
+date: 2026-04-09
 draft: false
 tags: ['Pipecat', 'LiveKit', '语音Agent框架', '开源框架', 'Vocode', '实时语音AI', '快速搭建']
 categories: ["va_series_voice_assistant", "实战"]

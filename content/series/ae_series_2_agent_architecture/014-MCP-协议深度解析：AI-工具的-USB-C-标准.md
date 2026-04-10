@@ -1,6 +1,6 @@
 ---
 title: "MCP 协议深度解析：AI 工具的 USB-C 标准"
-date: 2026-04-09
+date: 2026-04-10
 draft: false
 tags: ['MCP', 'Model Context Protocol', 'Host Client Server', 'Tools Resources Prompts', 'Stdio HTTP', 'JSON-RPC', 'Anthropic']
 categories: ["ae_series_2_agent_architecture", "进阶"]

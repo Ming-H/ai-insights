@@ -1,6 +1,6 @@
 ---
 title: "六大 Agent 框架全面对比评测"
-date: 2026-04-09
+date: 2026-04-10
 draft: false
 tags: ['框架对比', 'LangGraph', 'OpenAI SDK', 'CrewAI', 'AG2', 'Google ADK', 'Claude SDK', '选型指南']
 categories: ["ae_series_5_agent_production", "前沿"]

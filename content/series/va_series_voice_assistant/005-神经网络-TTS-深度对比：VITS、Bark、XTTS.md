@@ -1,6 +1,6 @@
 ---
 title: "神经网络 TTS 深度对比：VITS、Bark、XTTS"
-date: 2026-04-10
+date: 2026-04-11
 draft: false
 tags: ['VITS', 'Bark', 'XTTS', '并行TTS', '自回归TTS', '多说话人', '开源TTS对比']
 categories: ["va_series_voice_assistant", "进阶"]

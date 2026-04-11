@@ -1,6 +1,6 @@
 ---
 title: "策略梯度与Actor-Critic算法"
-date: 2026-04-10
+date: 2026-04-11
 draft: false
 tags: ['策略梯度', 'Actor-Critic', 'PPO', 'TRPO', 'SAC', 'REINFORCE', 'GAE']
 categories: ["ml_series_5_reinforcement_learning", "进阶"]

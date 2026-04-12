@@ -1,6 +1,6 @@
 ---
 title: "MCP Server 开发实战：构建自己的工具服务"
-date: 2026-04-11
+date: 2026-04-12
 draft: false
 tags: ['MCP Server', 'FastMCP', '工具注册', '类型安全', '部署', 'Python SDK', 'Resources', 'Prompts']
 categories: ["ae_series_2_agent_architecture", "实战"]

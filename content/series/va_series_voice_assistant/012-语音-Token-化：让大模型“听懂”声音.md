@@ -1,6 +1,6 @@
 ---
 title: "语音 Token 化：让大模型“听懂”声音"
-date: 2026-04-11
+date: 2026-04-12
 draft: false
 tags: ['语音token化', '音频离散化', 'EnCodec', '多码本', '音频tokenizer', 'RVQ', 'speech tokenization']
 categories: ["va_series_voice_assistant", "进阶"]

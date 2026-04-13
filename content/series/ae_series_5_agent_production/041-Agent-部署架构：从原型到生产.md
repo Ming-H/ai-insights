@@ -1,6 +1,6 @@
 ---
 title: "Agent 部署架构：从原型到生产"
-date: 2026-04-12
+date: 2026-04-13
 draft: false
 tags: ['Agent部署', '容器化', 'Docker', '弹性伸缩', '灰度发布', 'Serverless', 'Cloud Run', 'Vertex AI']
 categories: ["ae_series_5_agent_production", "高级"]

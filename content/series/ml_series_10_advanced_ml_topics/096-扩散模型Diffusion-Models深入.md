@@ -1,6 +1,6 @@
 ---
 title: "扩散模型Diffusion Models深入"
-date: 2026-04-13
+date: 2026-04-14
 draft: false
 tags: ['扩散模型', 'DDPM', 'Stable Diffusion', '去噪', '分数匹配', '文生图']
 categories: ["ml_series_10_advanced_ml_topics", "前沿"]

@@ -1,6 +1,6 @@
 ---
 title: "Agent Engineering 全景：从 Chatbot 到自主智能体的范式转变"
-date: 2026-04-13
+date: 2026-04-14
 draft: false
 tags: ['Agent Engineering', 'AI Agent', 'Chatbot vs Agent', '感知推理行动', '自主性等级', 'Anthropic Building Effective Agents']
 categories: ["ae_series_1_agent_foundation", "入门"]

@@ -1,6 +1,6 @@
 ---
 title: "Agent CI/CD：提示词版本管理与自动化"
-date: 2026-04-14
+date: 2026-04-15
 draft: false
 tags: ['Agent CI/CD', 'Prompt版本控制', 'A/B测试', '回归测试', '蓝绿部署', 'LangSmith', '自动化']
 categories: ["ae_series_5_agent_production", "高级"]

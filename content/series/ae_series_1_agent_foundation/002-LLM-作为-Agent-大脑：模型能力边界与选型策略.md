@@ -1,6 +1,6 @@
 ---
 title: "LLM 作为 Agent 大脑：模型能力边界与选型策略"
-date: 2026-04-14
+date: 2026-04-15
 draft: false
 tags: ['GPT-4o', 'Claude', 'Gemini', 'GLM-5', 'Function Calling', '模型选型', '推理能力', '成本优化']
 categories: ["ae_series_1_agent_foundation", "入门"]

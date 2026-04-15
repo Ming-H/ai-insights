@@ -1,6 +1,6 @@
 ---
 title: "专用 Agent：SWE-agent 与 Data Agent"
-date: 2026-04-14
+date: 2026-04-15
 draft: false
 tags: ['SWE-agent', 'Data Agent', 'Text-to-SQL', '代码Agent', '数据分析', '垂类Agent', 'mini-swe-agent']
 categories: ["ae_series_5_agent_production", "前沿"]

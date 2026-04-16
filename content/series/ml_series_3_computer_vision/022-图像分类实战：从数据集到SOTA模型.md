@@ -1,6 +1,6 @@
 ---
 title: "图像分类实战：从数据集到SOTA模型"
-date: 2026-04-15
+date: 2026-04-16
 draft: false
 tags: ['图像分类', 'ImageNet', '数据增强', 'ResNet', 'ViT', 'SOTA']
 categories: ["ml_series_3_computer_vision", "实践"]

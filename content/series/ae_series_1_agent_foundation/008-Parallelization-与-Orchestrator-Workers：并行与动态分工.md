@@ -1,6 +1,6 @@
 ---
 title: "Parallelization 与 Orchestrator-Workers：并行与动态分工"
-date: 2026-04-15
+date: 2026-04-16
 draft: false
 tags: ['Parallelization', 'Orchestrator-Workers', 'Sectioning', 'Voting', '动态子任务', 'Anthropic']
 categories: ["ae_series_1_agent_foundation", "进阶"]

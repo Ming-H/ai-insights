@@ -1,6 +1,6 @@
 ---
 title: "Whisper 深度解析：多语言 ASR 的工程实践"
-date: 2026-04-15
+date: 2026-04-16
 draft: false
 tags: ['Whisper', 'faster-whisper', 'whisper.cpp', 'CTranslate2', '多语言ASR', '领域微调', '语音识别']
 categories: ["va_series_voice_assistant", "进阶"]

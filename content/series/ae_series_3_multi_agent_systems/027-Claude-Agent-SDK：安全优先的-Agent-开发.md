@@ -1,6 +1,6 @@
 ---
 title: "Claude Agent SDK：安全优先的 Agent 开发"
-date: 2026-04-15
+date: 2026-04-16
 draft: false
 tags: ['Claude Agent SDK', 'query', 'ClaudeSDKClient', 'MCP Server', 'Hooks', 'PreToolUse', 'Subagent', 'Anthropic']
 categories: ["ae_series_3_multi_agent_systems", "高级"]

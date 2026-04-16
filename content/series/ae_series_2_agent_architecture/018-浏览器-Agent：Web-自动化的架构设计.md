@@ -1,6 +1,6 @@
 ---
 title: "浏览器 Agent：Web 自动化的架构设计"
-date: 2026-04-15
+date: 2026-04-16
 draft: false
 tags: ['Browser Agent', 'Playwright', 'Browser Use', 'WebArena', 'DOM理解', 'Web自动化', '多标签']
 categories: ["ae_series_2_agent_architecture", "高级"]

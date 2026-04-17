@@ -1,6 +1,6 @@
 ---
 title: "语音助手的未来：Agent化、个性化与情感陪伴"
-date: 2026-04-16
+date: 2026-04-17
 draft: false
 tags: ['未来展望', '多Agent', '长期记忆', '个性化', '情感陪伴', '元宇宙', '空间计算']
 categories: ["va_series_voice_assistant", "前沿"]

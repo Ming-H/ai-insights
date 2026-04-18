@@ -1,6 +1,6 @@
 ---
 title: "多 Agent 系统导论：从单体到群体智能"
-date: 2026-04-17
+date: 2026-04-18
 draft: false
 tags: ['Multi-Agent', '群体智能', '通信协议', '编排拓扑', '协作竞争', '星型网状分层', 'Swarm']
 categories: ["ae_series_3_multi_agent_systems", "进阶"]

@@ -1,6 +1,6 @@
 ---
 title: "深度Q学习DQN与改进算法"
-date: 2026-04-17
+date: 2026-04-18
 draft: false
 tags: ['DQN', 'Q-Learning', 'DDPG', 'TD3', 'A3C', 'A2C', 'Rainbow', 'Atari']
 categories: ["ml_series_5_reinforcement_learning", "进阶"]

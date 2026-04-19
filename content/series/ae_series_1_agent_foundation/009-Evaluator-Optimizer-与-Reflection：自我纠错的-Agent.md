@@ -1,6 +1,6 @@
 ---
 title: "Evaluator-Optimizer 与 Reflection：自我纠错的 Agent"
-date: 2026-04-18
+date: 2026-04-19
 draft: false
 tags: ['Evaluator-Optimizer', 'Reflection', 'Reflexion', '自我纠错', '迭代评估', 'Shinn et al']
 categories: ["ae_series_1_agent_foundation", "进阶"]

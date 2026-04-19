@@ -1,6 +1,6 @@
 ---
 title: "Agent 间通信与共享状态"
-date: 2026-04-18
+date: 2026-04-19
 draft: false
 tags: ['Agent通信', '共享状态', '黑板模式', '事件总线', 'A2A协议', '消息传递', 'Google ADK']
 categories: ["ae_series_3_multi_agent_systems", "高级"]

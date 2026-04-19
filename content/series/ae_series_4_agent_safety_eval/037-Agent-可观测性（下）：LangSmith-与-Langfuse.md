@@ -1,6 +1,6 @@
 ---
 title: "Agent 可观测性（下）：LangSmith 与 Langfuse"
-date: 2026-04-18
+date: 2026-04-19
 draft: false
 tags: ['LangSmith', 'Langfuse', '可观测性平台', 'Dashboard', '延迟分析', '成本追踪', 'tracing']
 categories: ["ae_series_4_agent_safety_eval", "高级"]

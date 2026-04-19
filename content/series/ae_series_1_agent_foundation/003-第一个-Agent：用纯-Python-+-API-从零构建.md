@@ -1,6 +1,6 @@
 ---
 title: "第一个 Agent：用纯 Python + API 从零构建"
-date: 2026-04-18
+date: 2026-04-19
 draft: false
 tags: ['Python', 'OpenAI API', 'Anthropic API', 'Agent Loop', 'tool_use', '工具循环', '从零构建']
 categories: ["ae_series_1_agent_foundation", "入门"]

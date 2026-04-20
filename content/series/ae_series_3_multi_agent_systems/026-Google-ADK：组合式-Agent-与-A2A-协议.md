@@ -1,6 +1,6 @@
 ---
 title: "Google ADK：组合式 Agent 与 A2A 协议"
-date: 2026-04-19
+date: 2026-04-20
 draft: false
 tags: ['Google ADK', 'SequentialAgent', 'ParallelAgent', 'LoopAgent', 'A2A', 'Agent-to-Agent', 'Cloud Run']
 categories: ["ae_series_3_multi_agent_systems", "高级"]

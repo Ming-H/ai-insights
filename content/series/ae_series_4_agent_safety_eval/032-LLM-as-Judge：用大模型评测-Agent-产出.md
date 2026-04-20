@@ -1,6 +1,6 @@
 ---
 title: "LLM-as-Judge：用大模型评测 Agent 产出"
-date: 2026-04-19
+date: 2026-04-20
 draft: false
 tags: ['LLM-as-Judge', '评估提示', '一致性校验', '多维度打分', '自动评测', '评分标准']
 categories: ["ae_series_4_agent_safety_eval", "高级"]

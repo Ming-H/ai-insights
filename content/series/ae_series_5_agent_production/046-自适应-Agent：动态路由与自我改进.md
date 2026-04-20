@@ -1,6 +1,6 @@
 ---
 title: "自适应 Agent：动态路由与自我改进"
-date: 2026-04-19
+date: 2026-04-20
 draft: false
 tags: ['自适应Agent', '动态路由', '元学习', '动态工具发现', 'AutoGPT', 'BabyAGI', '自我改进']
 categories: ["ae_series_5_agent_production", "前沿"]

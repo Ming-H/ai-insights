@@ -1,6 +1,6 @@
 ---
 title: "线性回归：机器学习的Hello World"
-date: 2026-04-20
+date: 2026-04-21
 draft: false
 tags: ['线性回归', '最小二乘法', '梯度下降', 'Lasso', 'Ridge', '正则化']
 categories: ["ml_series_1_ml_foundation", "入门"]

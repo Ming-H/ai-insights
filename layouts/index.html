@@ -331,7 +331,7 @@
         {{ range first 1 (where .Site.RegularPages "Type" "daily") }}
           <div class="latest-card">
             <div class="latest-card-body">
-              <span class="latest-card-tag">每日简报</span>
+              <span class="latest-card-tag">📰 每日简报</span>
               <h3 class="latest-card-title">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
               </h3>
@@ -350,7 +350,7 @@
         {{ range first 1 (where .Site.RegularPages "Type" "series") }}
           <div class="latest-card">
             <div class="latest-card-body">
-              <span class="latest-card-tag">系列文章</span>
+              <span class="latest-card-tag">📚 系列文章</span>
               <h3 class="latest-card-title">
                 <a href="{{ .Permalink }}">{{ .Title }}</a>
               </h3>
@@ -364,6 +364,64 @@
             </div>
           </div>
         {{ end }}
+
+        <!-- Latest Blog -->
+        {{ range first 1 (where .Site.RegularPages "Type" "blog") }}
+          <div class="latest-card">
+            <div class="latest-card-body">
+              <span class="latest-card-tag">📝 博客</span>
+              <h3 class="latest-card-title">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+              </h3>
+              <p class="latest-card-excerpt">
+                {{ if .Description }}{{ .Description }}{{ else }}{{ .Summary }}{{ end }}
+              </p>
+              <div class="latest-card-meta">
+                <span>{{ .Date.Format "2006-01-02" }}</span>
+                <span>{{ .ReadingTime }} 分钟阅读</span>
+              </div>
+            </div>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Books & Gallery Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">书籍与作品</h2>
+        <p class="section-subtitle">深度教程与 AI 创意作品</p>
+      </div>
+
+      <div class="feature-grid" style="max-width: 1000px; margin: 0 auto;">
+        <!-- Books Feature -->
+        <a href="{{ "books/" | relURL }}" style="text-decoration: none; color: inherit;">
+          <div class="feature-card">
+            <div class="feature-icon">📖</div>
+            <h3 class="feature-title">书籍</h3>
+            <p class="feature-description">
+              深度技术教程与实战指南，涵盖 Agent 开发、AI 编程工具、大语言模型原理等。
+              {{ with .Site.GetPage "section" "books" }}
+                共 {{ .Sections | len }} 本书籍
+              {{ end }}
+            </p>
+          </div>
+        </a>
+
+        <!-- Gallery Feature -->
+        <a href="{{ "gallery/" | relURL }}" style="text-decoration: none; color: inherit;">
+          <div class="feature-card">
+            <div class="feature-icon">🎨</div>
+            <h3 class="feature-title">画廊</h3>
+            <p class="feature-description">
+              AI 生成的创意作品展示，包括 3D 城市微缩地图等。
+              {{ $galleryPages := where .Site.RegularPages "Type" "gallery" }}
+              共 {{ len $galleryPages }} 件作品
+            </p>
+          </div>
+        </a>
       </div>
     </div>
   </section>

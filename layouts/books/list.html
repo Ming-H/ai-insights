@@ -1,0 +1,214 @@
+{{ partial "header.html" . }}
+
+{{ partial "shared-css.html" . }}
+
+<style>
+  /* Books list specific styles */
+  .books-hero {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    padding: var(--space-8) var(--space-6);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .books-hero h1 {
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .books-hero p {
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
+  }
+
+  .books-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+
+  .books-stat {
+    text-align: center;
+  }
+
+  .books-stat-value {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .books-stat-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-6);
+    padding: var(--space-16) var(--space-6);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .books-card {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .books-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+
+  .books-card-cover {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: var(--color-bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .books-card-cover-placeholder {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg-secondary) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-5xl);
+  }
+
+  .books-card-header {
+    background: var(--color-bg-secondary);
+    padding: var(--space-5);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .books-card-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-medium);
+    margin-top: var(--space-2);
+  }
+
+  .books-card-title a {
+    color: var(--color-text-primary);
+  }
+
+  .books-card-title a:hover {
+    color: var(--color-primary);
+  }
+
+  .books-card-body {
+    padding: var(--space-5);
+    flex: 1;
+  }
+
+  .books-card-excerpt {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .books-card-footer {
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .books-card-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+  }
+
+  .books-card-link {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 768px) {
+    .books-hero {
+      padding: var(--space-12) var(--space-6);
+    }
+
+    .books-stats {
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .books-grid {
+      grid-template-columns: 1fr;
+      padding: var(--space-10) var(--space-6);
+    }
+  }
+</style>
+
+<body>
+  <header class="books-hero">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <p>{{ .Params.description | default "深度技术教程与实战指南，从入门到精通" }}</p>
+      <div class="books-stats">
+        <div class="books-stat">
+          <div class="books-stat-value">{{ .Sections | len }}</div>
+          <div class="books-stat-label">本书</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="books-grid">
+    {{ range .Sections }}
+      <article class="books-card">
+        {{ if .Params.coverImage }}
+          <img src="{{ .Params.coverImage | relURL }}" alt="{{ .Title }}" class="books-card-cover">
+        {{ else }}
+          <div class="books-card-cover-placeholder">📖</div>
+        {{ end }}
+        <div class="books-card-header">
+          <div class="books-card-title">
+            <a href="{{ .Permalink }}">{{ .Title }}</a>
+          </div>
+        </div>
+        <div class="books-card-body">
+          <div class="books-card-excerpt">
+            {{ if .Params.description }}
+              {{ .Params.description }}
+            {{ else if .Description }}
+              {{ .Description }}
+            {{ else if .Summary }}
+              {{ .Summary }}
+            {{ end }}
+          </div>
+        </div>
+        <div class="books-card-footer">
+          <div class="books-card-meta">
+            {{ if .Params.date }}{{ .Params.date.Format "2006-01-02" }}{{ else }}{{ .Date.Format "2006-01-02" }}{{ end }}
+          </div>
+          <a href="{{ .Permalink }}" class="books-card-link">开始阅读 →</a>
+        </div>
+      </article>
+    {{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+</body>
+
+</html>

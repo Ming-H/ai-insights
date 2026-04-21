@@ -116,6 +116,21 @@ fingerprintAlgorithm = "sha256"
   url = "/series/"
 
 [[menu.main]]
-  name = "关于"
+  name = "博客"
   weight = 4
+  url = "/blog/"
+
+[[menu.main]]
+  name = "书籍"
+  weight = 5
+  url = "/books/"
+
+[[menu.main]]
+  name = "画廊"
+  weight = 6
+  url = "/gallery/"
+
+[[menu.main]]
+  name = "关于"
+  weight = 7
   url = "/about/"

@@ -1,0 +1,338 @@
+{{ partial "header.html" . }}
+
+{{ partial "shared-css.html" . }}
+
+<style>
+  /* Gallery specific styles */
+  .gallery-hero {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    padding: var(--space-8) var(--space-6);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .gallery-hero h1 {
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .gallery-hero p {
+    color: var(--color-text-secondary);
+    font-size: var(--text-base);
+  }
+
+  .gallery-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-6);
+    margin-top: var(--space-6);
+  }
+
+  .gallery-stat {
+    text-align: center;
+  }
+
+  .gallery-stat-value {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .gallery-stat-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-8);
+    padding: var(--space-16) var(--space-6);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .gallery-card {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    cursor: pointer;
+  }
+
+  .gallery-card:hover {
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
+
+  .gallery-card-image-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 75%;
+    overflow: hidden;
+    background: var(--color-bg-tertiary);
+  }
+
+  .gallery-card-image-wrap img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+  }
+
+  .gallery-card:hover .gallery-card-image-wrap img {
+    transform: scale(1.05);
+  }
+
+  .gallery-card-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg-secondary) 100%);
+    font-size: var(--text-5xl);
+  }
+
+  .gallery-card-body {
+    padding: var(--space-5);
+  }
+
+  .gallery-card-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-medium);
+    margin-bottom: var(--space-2);
+    color: var(--color-text-primary);
+  }
+
+  .gallery-card-title a {
+    color: var(--color-text-primary);
+  }
+
+  .gallery-card-title a:hover {
+    color: var(--color-primary);
+  }
+
+  .gallery-card-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-3);
+  }
+
+  .gallery-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .gallery-card-tag {
+    display: inline-flex;
+    padding: var(--space-1) var(--space-2);
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    border-radius: var(--radius-full);
+  }
+
+  .gallery-card-footer {
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--color-border-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .gallery-card-meta {
+    font-size: var(--text-xs);
+    color: var(--color-text-tertiary);
+  }
+
+  .gallery-card-link {
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-primary);
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: var(--space-6);
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: var(--space-6);
+    right: var(--space-6);
+    background: none;
+    border: none;
+    color: white;
+    font-size: var(--text-3xl);
+    cursor: pointer;
+    z-index: 10000;
+    line-height: 1;
+    padding: var(--space-2);
+  }
+
+  .lightbox-close:hover {
+    opacity: 0.7;
+  }
+
+  .lightbox-img {
+    max-width: 90%;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: var(--radius-lg);
+  }
+
+  .lightbox-title {
+    color: white;
+    font-size: var(--text-xl);
+    margin-top: var(--space-6);
+    text-align: center;
+  }
+
+  .lightbox-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: var(--text-sm);
+    margin-top: var(--space-2);
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .gallery-hero {
+      padding: var(--space-12) var(--space-6);
+    }
+
+    .gallery-stats {
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      padding: var(--space-10) var(--space-6);
+    }
+
+    .lightbox-img {
+      max-width: 95%;
+    }
+  }
+</style>
+
+<body>
+  <header class="gallery-hero">
+    <div class="container">
+      <h1>{{ .Title }}</h1>
+      <p>{{ .Params.description | default "AI 生成的创意作品展示" }}</p>
+      <div class="gallery-stats">
+        <div class="gallery-stat">
+          <div class="gallery-stat-value">{{ where .Site.RegularPages "Type" "gallery" | len }}</div>
+          <div class="gallery-stat-label">件作品</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="gallery-grid">
+    {{ range where .Site.RegularPages "Type" "gallery" }}
+      <article class="gallery-card" onclick="openLightbox('{{ .Params.coverImage | relURL }}', '{{ .Title }}', '{{ .Params.description }}')">
+        <div class="gallery-card-image-wrap">
+          {{ if .Params.coverImage }}
+            <img src="{{ .Params.coverImage | relURL }}" alt="{{ .Title }}" loading="lazy">
+          {{ else }}
+            <div class="gallery-card-placeholder">🎨</div>
+          {{ end }}
+        </div>
+        <div class="gallery-card-body">
+          <h3 class="gallery-card-title">
+            <a href="{{ .Permalink }}" onclick="event.stopPropagation();">{{ .Title }}</a>
+          </h3>
+          <p class="gallery-card-desc">{{ .Params.description }}</p>
+          {{ if .Params.tags }}
+            <div class="gallery-card-tags">
+              {{ range first 3 .Params.tags }}
+                <span class="gallery-card-tag">{{ . }}</span>
+              {{ end }}
+            </div>
+          {{ end }}
+        </div>
+        <div class="gallery-card-footer">
+          <div class="gallery-card-meta">
+            {{ if .Params.tool }}工具: {{ .Params.tool }}{{ end }}
+          </div>
+          <a href="{{ .Permalink }}" class="gallery-card-link" onclick="event.stopPropagation();">查看详情 →</a>
+        </div>
+      </article>
+    {{ end }}
+  </main>
+
+  {{/* Lightbox overlay */}}
+  <div class="lightbox" id="gallery-lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <div class="lightbox-title" id="lightbox-title"></div>
+    <div class="lightbox-desc" id="lightbox-desc"></div>
+  </div>
+
+  <script>
+    function openLightbox(src, title, desc) {
+      var lightbox = document.getElementById('gallery-lightbox');
+      var img = document.getElementById('lightbox-img');
+      var titleEl = document.getElementById('lightbox-title');
+      var descEl = document.getElementById('lightbox-desc');
+      img.src = src;
+      img.alt = title;
+      titleEl.textContent = title;
+      descEl.textContent = desc || '';
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      var lightbox = document.getElementById('gallery-lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('gallery-lightbox').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+  </script>
+
+  {{ partial "footer.html" . }}
+</body>
+
+</html>

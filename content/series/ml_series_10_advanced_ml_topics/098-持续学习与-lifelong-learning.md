@@ -1,6 +1,6 @@
 ---
 title: "持续学习与 lifelong learning"
-date: 2026-04-21
+date: 2026-04-22
 draft: false
 tags: ['持续学习', '终身学习', '灾难性遗忘', 'EWC', '增量学习', '经验回放']
 categories: ["ml_series_10_advanced_ml_topics", "前沿"]

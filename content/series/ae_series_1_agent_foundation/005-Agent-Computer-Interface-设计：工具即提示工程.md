@@ -1,6 +1,6 @@
 ---
 title: "Agent-Computer Interface 设计：工具即提示工程"
-date: 2026-04-21
+date: 2026-04-22
 draft: false
 tags: ['ACI', 'Agent-Computer Interface', 'Poka-yoke', '工具设计', 'Anthropic', 'SWE-bench']
 categories: ["ae_series_1_agent_foundation", "进阶"]

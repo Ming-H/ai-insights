@@ -1,6 +1,6 @@
 ---
 title: "ReAct 模式：思考-行动-观察的 Agent 循环"
-date: 2026-04-22
+date: 2026-04-23
 draft: false
 tags: ['ReAct', 'Reasoning Acting', 'Thought Action Observation', 'CoT', 'Yao et al', 'ICLR 2023']
 categories: ["ae_series_1_agent_foundation", "进阶"]

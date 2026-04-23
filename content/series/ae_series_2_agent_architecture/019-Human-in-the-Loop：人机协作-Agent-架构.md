@@ -1,6 +1,6 @@
 ---
 title: "Human-in-the-Loop：人机协作 Agent 架构"
-date: 2026-04-22
+date: 2026-04-23
 draft: false
 tags: ['Human-in-the-Loop', 'HITL', '审批流程', 'interrupt', 'needs_approval', 'UserProxyAgent', 'RunState']
 categories: ["ae_series_2_agent_architecture", "高级"]

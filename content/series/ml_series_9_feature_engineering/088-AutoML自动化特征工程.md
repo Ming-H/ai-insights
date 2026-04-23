@@ -1,6 +1,6 @@
 ---
 title: "AutoML自动化特征工程"
-date: 2026-04-22
+date: 2026-04-23
 draft: false
 tags: ['AutoML特征', 'Featuretools', 'AutoFeat', '自动化', '端到端学习']
 categories: ["ml_series_9_feature_engineering", "前沿"]

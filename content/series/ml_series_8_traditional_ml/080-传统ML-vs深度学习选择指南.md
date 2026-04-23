@@ -1,6 +1,6 @@
 ---
 title: "传统ML vs深度学习选择指南"
-date: 2026-04-22
+date: 2026-04-23
 draft: false
 tags: ['模型选择', '表格数据', '集成学习', '深度学习', '选型', '可解释性']
 categories: ["ml_series_8_traditional_ml", "综合"]

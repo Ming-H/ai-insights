@@ -1,6 +1,6 @@
 ---
 title: "知识蒸馏Knowledge Distillation"
-date: 2026-04-23
+date: 2026-04-24
 draft: false
 tags: ['知识蒸馏', 'Distillation', '师生模型', '自蒸馏', 'DistilBERT', 'TinyBERT']
 categories: ["ml_series_7_model_optimization", "进阶"]

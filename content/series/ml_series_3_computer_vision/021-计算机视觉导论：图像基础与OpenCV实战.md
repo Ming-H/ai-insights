@@ -1,6 +1,6 @@
 ---
 title: "计算机视觉导论：图像基础与OpenCV实战"
-date: 2026-04-23
+date: 2026-04-24
 draft: false
 tags: ['计算机视觉', 'OpenCV', '图像处理', '滤波', '边缘检测', '颜色空间']
 categories: ["ml_series_3_computer_vision", "入门"]

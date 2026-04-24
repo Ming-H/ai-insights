@@ -1,6 +1,6 @@
 ---
 title: "文本生成与Seq2Seq模型"
-date: 2026-04-23
+date: 2026-04-24
 draft: false
 tags: ['文本生成', 'Seq2Seq', 'GPT', 'T5', 'BART', 'Beam Search', 'BLEU', 'ROUGE']
 categories: ["ml_series_4_natural_language_processing", "进阶"]

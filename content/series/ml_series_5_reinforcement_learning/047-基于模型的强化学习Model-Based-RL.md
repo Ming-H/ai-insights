@@ -1,6 +1,6 @@
 ---
 title: "基于模型的强化学习Model-Based RL"
-date: 2026-04-23
+date: 2026-04-24
 draft: false
 tags: ['Model-Based RL', '世界模型', 'MPC', 'Dreamer', 'MuZero', '规划']
 categories: ["ml_series_5_reinforcement_learning", "前沿"]

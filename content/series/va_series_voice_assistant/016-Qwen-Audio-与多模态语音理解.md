@@ -1,6 +1,6 @@
 ---
 title: "Qwen-Audio 与多模态语音理解"
-date: 2026-04-23
+date: 2026-04-24
 draft: false
 tags: ['Qwen-Audio', 'Qwen3-Omni', 'SpeechGPT', '多模态', '音频理解', '语音多模态']
 categories: ["va_series_voice_assistant", "前沿"]

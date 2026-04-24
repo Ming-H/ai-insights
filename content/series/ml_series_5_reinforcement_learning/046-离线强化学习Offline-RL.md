@@ -1,6 +1,6 @@
 ---
 title: "离线强化学习Offline RL"
-date: 2026-04-23
+date: 2026-04-24
 draft: false
 tags: ['离线强化学习', 'Offline RL', 'CQL', 'IQL', '分布偏移', 'BORL']
 categories: ["ml_series_5_reinforcement_learning", "前沿"]

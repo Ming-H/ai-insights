@@ -1,6 +1,6 @@
 ---
 title: "分层 Agent 架构：管理者-执行者模式"
-date: 2026-04-25
+date: 2026-04-26
 draft: false
 tags: ['分层架构', 'Manager Agent', 'Worker Agent', '任务委派', '结果汇总', 'Agents-as-Tools', 'Supervisor']
 categories: ["ae_series_3_multi_agent_systems", "高级"]

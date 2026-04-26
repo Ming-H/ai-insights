@@ -1,6 +1,6 @@
 ---
 title: "多 Agent 综合实战：构建一个软件研发团队"
-date: 2026-04-25
+date: 2026-04-26
 draft: false
 tags: ['综合实战', '软件研发', '需求分析', '架构设计', '代码生成', 'Code Review', '多Agent协作']
 categories: ["ae_series_3_multi_agent_systems", "实战"]

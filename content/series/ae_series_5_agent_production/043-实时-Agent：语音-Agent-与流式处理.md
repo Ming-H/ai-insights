@@ -1,6 +1,6 @@
 ---
 title: "实时 Agent：语音 Agent 与流式处理"
-date: 2026-04-25
+date: 2026-04-26
 draft: false
 tags: ['实时Agent', '语音Agent', '流式处理', 'SSE', 'OpenAI Realtime Agents', '低延迟', 'streaming']
 categories: ["ae_series_5_agent_production", "前沿"]

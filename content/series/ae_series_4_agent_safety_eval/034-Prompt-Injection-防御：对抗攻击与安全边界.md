@@ -1,6 +1,6 @@
 ---
 title: "Prompt Injection 防御：对抗攻击与安全边界"
-date: 2026-04-26
+date: 2026-04-27
 draft: false
 tags: ['Prompt Injection', '对抗攻击', '工具污染', '数据泄露', 'OWASP LLM Top 10', '越狱', '安全防御']
 categories: ["ae_series_4_agent_safety_eval", "高级"]

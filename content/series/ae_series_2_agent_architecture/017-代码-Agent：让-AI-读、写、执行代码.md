@@ -1,6 +1,6 @@
 ---
 title: "代码 Agent：让 AI 读、写、执行代码"
-date: 2026-04-26
+date: 2026-04-27
 draft: false
 tags: ['Code Agent', 'SWE-agent', 'Code Interpreter', '沙箱执行', 'Agent-Computer Interface', '编程Agent']
 categories: ["ae_series_2_agent_architecture", "高级"]

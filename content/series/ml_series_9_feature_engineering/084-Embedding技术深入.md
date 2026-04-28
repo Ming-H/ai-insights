@@ -1,6 +1,6 @@
 ---
 title: "Embedding技术深入"
-date: 2026-04-27
+date: 2026-04-28
 draft: false
 tags: ['Embedding', 'Word2Vec', 'Item2Vec', 'Doc2Vec', 'Graph2Vec', '负采样']
 categories: ["ml_series_9_feature_engineering", "进阶"]

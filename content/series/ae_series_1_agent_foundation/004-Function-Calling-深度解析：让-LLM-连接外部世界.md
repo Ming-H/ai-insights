@@ -1,6 +1,6 @@
 ---
 title: "Function Calling 深度解析：让 LLM 连接外部世界"
-date: 2026-04-27
+date: 2026-04-28
 draft: false
 tags: ['Function Calling', 'JSON Schema', 'parallel tool calls', 'tool_choice', '错误处理', '工具定义']
 categories: ["ae_series_1_agent_foundation", "进阶"]

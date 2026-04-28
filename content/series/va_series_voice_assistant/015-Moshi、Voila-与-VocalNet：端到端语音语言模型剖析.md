@@ -1,6 +1,6 @@
 ---
 title: "Moshi、Voila 与 VocalNet：端到端语音语言模型剖析"
-date: 2026-04-27
+date: 2026-04-28
 draft: false
 tags: ['Moshi', 'Voila', 'VocalNet', '端到端语音模型', '全双工', '语音语言模型', 'SpeechLM']
 categories: ["va_series_voice_assistant", "前沿"]

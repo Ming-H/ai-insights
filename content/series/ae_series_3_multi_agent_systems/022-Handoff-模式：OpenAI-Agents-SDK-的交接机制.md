@@ -1,6 +1,6 @@
 ---
 title: "Handoff 模式：OpenAI Agents SDK 的交接机制"
-date: 2026-04-27
+date: 2026-04-28
 draft: false
 tags: ['OpenAI Agents SDK', 'Handoff', 'Guardrails', 'Agents-as-Tools', 'Input Filter', 'Session', '动态Instructions']
 categories: ["ae_series_3_multi_agent_systems", "进阶"]

@@ -1,6 +1,6 @@
 ---
 title: "Agent 状态管理与持久化"
-date: 2026-04-27
+date: 2026-04-28
 draft: false
 tags: ['状态管理', '持久化', 'Checkpoint', 'Session', '中断恢复', 'Time-travel', 'LangGraph', 'OpenAI']
 categories: ["ae_series_2_agent_architecture", "进阶"]

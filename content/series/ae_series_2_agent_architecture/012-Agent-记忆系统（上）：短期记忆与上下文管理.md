@@ -1,6 +1,6 @@
 ---
 title: "Agent 记忆系统（上）：短期记忆与上下文管理"
-date: 2026-04-28
+date: 2026-04-29
 draft: false
 tags: ['记忆系统', '短期记忆', '上下文窗口', '滑动窗口', 'Memory Stream', 'Generative Agents', '压缩']
 categories: ["ae_series_2_agent_architecture", "进阶"]

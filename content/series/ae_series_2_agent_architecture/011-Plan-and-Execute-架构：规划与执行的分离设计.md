@@ -1,6 +1,6 @@
 ---
 title: "Plan-and-Execute 架构：规划与执行的分离设计"
-date: 2026-04-28
+date: 2026-04-29
 draft: false
 tags: ['Plan-and-Execute', '任务分解', 'hierarchical planning', '重规划', 'Plan-and-Solve', 'LangGraph']
 categories: ["ae_series_2_agent_architecture", "进阶"]

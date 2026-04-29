@@ -1,6 +1,6 @@
 ---
 title: "CrewAI 角色团队：基于角色的多 Agent 协作"
-date: 2026-04-28
+date: 2026-04-29
 draft: false
 tags: ['CrewAI', '角色团队', 'Sequential', 'Hierarchical', 'Flows', '事件驱动', 'YAML配置', 'CLI']
 categories: ["ae_series_3_multi_agent_systems", "高级"]

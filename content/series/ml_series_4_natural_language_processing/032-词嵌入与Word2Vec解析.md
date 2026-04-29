@@ -1,6 +1,6 @@
 ---
 title: "词嵌入与Word2Vec解析"
-date: 2026-04-28
+date: 2026-04-29
 draft: false
 tags: ['词嵌入', 'Word2Vec', 'GloVe', 'FastText', 'ELMo', '词向量']
 categories: ["ml_series_4_natural_language_processing", "进阶"]

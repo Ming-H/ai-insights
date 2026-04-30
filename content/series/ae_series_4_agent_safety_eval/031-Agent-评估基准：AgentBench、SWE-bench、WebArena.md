@@ -1,6 +1,6 @@
 ---
 title: "Agent 评估基准：AgentBench、SWE-bench、WebArena"
-date: 2026-04-29
+date: 2026-04-30
 draft: false
 tags: ['AgentBench', 'SWE-bench', 'WebArena', '评估基准', 'Agent评估', 'benchmark', 'mini-swe-agent', 'SWE-smith']
 categories: ["ae_series_4_agent_safety_eval", "高级"]

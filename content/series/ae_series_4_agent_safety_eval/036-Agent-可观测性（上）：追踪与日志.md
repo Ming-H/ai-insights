@@ -1,6 +1,6 @@
 ---
 title: "Agent 可观测性（上）：追踪与日志"
-date: 2026-05-08
+date: 2026-05-09
 draft: false
 tags: ['可观测性', 'Observability', 'Tracing', 'Span', 'OpenTelemetry', '执行路径', '结构化日志']
 categories: ["ae_series_4_agent_safety_eval", "高级"]

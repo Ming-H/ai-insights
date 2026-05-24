@@ -87,7 +87,9 @@ def sync_daily_digest():
 
             # 提取核心洞察作为标签
             if 'core_insights' in digest_data:
-                tags.extend([f"洞察: {insight[:20]}" for insight in digest_data['core_insights'][:3]])
+                for item in digest_data['core_insights'][:3]:
+                    text = item.get('insight', str(item)) if isinstance(item, dict) else str(item)
+                    tags.append(f"洞察: {text[:20]}")
 
             # 提取分类
             if 'categories' in digest_data:

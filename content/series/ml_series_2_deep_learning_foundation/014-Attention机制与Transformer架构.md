@@ -1,6 +1,6 @@
 ---
 title: "Attention机制与Transformer架构"
-date: 2026-06-30
+date: 2026-07-01
 draft: false
 tags: ['Attention', 'Transformer', 'Self-Attention', 'Multi-Head', 'Position Encoding', 'Seq2Seq']
 categories: ["ml_series_2_deep_learning_foundation", "进阶"]

@@ -1,6 +1,6 @@
 ---
 title: "LangGraph 多 Agent 编排：基于图的工作流"
-date: 2026-09-09
+date: 2026-09-10
 draft: false
 tags: ['LangGraph', 'StateGraph', '条件边', '子图', '嵌套图', 'Supervisor模式', 'LangGraph Studio']
 categories: ["ae_series_3_multi_agent_systems", "高级"]
